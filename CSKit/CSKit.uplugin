@@ -1,0 +1,34 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "CSKit",
+	"Description": "Supports game implementation and debugging.",
+	"Category": "Other",
+	"CreatedBy": "Sennoaki",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": true,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "CSKit",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "CSKitDebug",
+			"Type": "Developer",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "CSKitEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		}
+	]
+}
