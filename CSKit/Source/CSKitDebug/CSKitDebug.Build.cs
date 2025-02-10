@@ -33,11 +33,17 @@ public class CSKitDebug : ModuleRules
 		
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
-			{
-				"CoreUObject",
-				"Engine",
-				"Slate",
-				"SlateCore",
+            {
+                "CoreUObject",
+                "Engine",
+                "Slate",
+                "SlateCore",
+                "InputCore",
+                "RenderCore",
+                "UMG",
+                "Json",
+                "AIModule",
+                "NavigationSystem",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
@@ -49,5 +55,24 @@ public class CSKitDebug : ModuleRules
 				// ... add any modules that your module loads dynamically here ...
 			}
 			);
-	}
+
+        if (Target.Configuration != UnrealTargetConfiguration.Shipping)
+        {
+            PublicDefinitions.Add("USE_CSKIT_DEBUG=1");
+        }
+        else
+        {
+            PublicDefinitions.Add("USE_CSKIT_DEBUG=0");
+        }
+
+        if (Target.bBuildEditor == true)
+        {
+            PrivateDependencyModuleNames.AddRange(
+                new string[]
+                {
+                    "UnrealEd",
+                }
+			);
+        }
+    }
 }
