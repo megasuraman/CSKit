@@ -1,12 +1,24 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "CSKitEditor.h"
+#include "CSKitEditor_DataTableRowSelectorCustomization.h"
 
 #define LOCTEXT_NAMESPACE "FCSKitEditorModule"
 
 void FCSKitEditorModule::StartupModule()
 {
-	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
+	auto& moduleMgr = FModuleManager::Get();
+	if (moduleMgr.IsModuleLoaded("PropertyEditor")) {
+
+		auto& propertyEditorModule = moduleMgr.LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
+
+		propertyEditorModule.RegisterCustomPropertyTypeLayout(
+			("CSKit_DataTableRowSelector"),
+			FOnGetPropertyTypeCustomizationInstance::CreateStatic(&FCSKitEditor_DataTableRowSelectorCustomization::MakeInstance)
+		);
+
+		propertyEditorModule.NotifyCustomizationModuleChanged();
+	}
 }
 
 void FCSKitEditorModule::ShutdownModule()
