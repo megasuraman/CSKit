@@ -43,6 +43,7 @@ public class CSKitEditor : ModuleRules
                 "LevelEditor",
                 "UMG",
                 "Blutility",
+				"EditorWidgets",
 				"CSKit",
                 "CSKitDebug",
 				// ... add private dependencies that you statically link with here ...	

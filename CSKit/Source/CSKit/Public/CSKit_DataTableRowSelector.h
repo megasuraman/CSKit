@@ -30,4 +30,11 @@ public:
 		mDataTablePath = InDataTablePath;
 #endif
 	}
+
+#if WITH_EDITOR
+	//有効なRowNameがセットされてるかどうか
+	bool EditorIsValidRowName() const;
+	bool EditorIsValidRowName_Path() const;
+	bool EditorIsValidRowName_Struct() const;
+#endif
 };

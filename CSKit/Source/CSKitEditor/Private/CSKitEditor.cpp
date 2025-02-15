@@ -1,7 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "CSKitEditor.h"
-#include "CSKitEditor_DataTableRowSelectorCustomization.h"
+#include "PropertyTypeCustomization/CSKitEditor_DataTableRowSelectorCustomization.h"
 
 #define LOCTEXT_NAMESPACE "FCSKitEditorModule"
 
