@@ -78,11 +78,11 @@ bool FCSKitEditor_DataTableRowSelectorCustomization::AppendRowNameListByPath(TAr
 		return false;
 	}
 
-// 	if (mPropertyTitleName.IsEmpty())
-// 	{
-// 		FString LeftString;
-// 		DataTablePath.Split(TEXT("."), &LeftString, &mPropertyTitleName);
-// 	}
+	if (mDisplayName.IsEmpty())
+	{
+		FString LeftString;
+		DataTablePath.Split(TEXT("."), &LeftString, &mDisplayName);
+	}
 
 	if (const UDataTable* DataTable = LoadObject<UDataTable>(nullptr, (*DataTablePath), nullptr, LOAD_None, nullptr))
 	{

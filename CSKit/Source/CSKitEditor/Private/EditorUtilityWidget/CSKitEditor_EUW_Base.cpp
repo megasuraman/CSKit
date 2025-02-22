@@ -1,16 +1,16 @@
 // Copyright 2022 megasuraman
 #include "EditorUtilityWidget/CSKitEditor_EUW_Base.h"
 
-#include "AssetToolsModule.h"
-#include "IAssetTools.h"
 #include "Debug/DebugDrawService.h"
 #include "LevelEditor.h"
 #include "Editor/UnrealEdEngine.h"
 #include "EditorLevelUtils.h"
 #include "Editor.h"
+#include "FileHelpers.h"
+#include "ISourceControlModule.h"
 #include "UnrealEdGlobals.h"
 #include "SLevelViewport.h"
-#include "AssetRegistry/AssetRegistryModule.h"
+#include "SourceControlOperations.h"
 
 
 void UCSKitEditor_EUW_Base::NativeDestruct()
@@ -247,6 +247,103 @@ void UCSKitEditor_EUW_Base::ClearAllSubLevel()
 		}
 #endif
 	}
+}
+
+/**
+ * @brief	指定アセットをセーブ
+ */
+bool UCSKitEditor_EUW_Base::SaveAsset(UObject* InAsset)
+{
+	if (InAsset == nullptr)
+	{
+		return false;
+	}
+	UPackage* AssetPackage = InAsset->GetOutermost();
+	if (AssetPackage == nullptr)
+	{
+		return false;
+	}
+	// CheckOut
+	ISourceControlProvider& SourceControlProvider = ISourceControlModule::Get().GetProvider();
+	const FSourceControlStatePtr SourceControlState = SourceControlProvider.GetState(AssetPackage, EStateCacheUsage::ForceUpdate);
+	if (SourceControlState.IsValid())
+	{
+		if (!SourceControlState->CanCheckout())
+		{
+			return false;
+		}
+		const ECommandResult::Type Result = SourceControlProvider.Execute(ISourceControlOperation::Create<FCheckOut>(), AssetPackage);
+		if (Result != ECommandResult::Succeeded)
+		{
+			return false;
+		}
+	}
+
+	// Save
+	TArray<UPackage*> PackagesToSave;
+	PackagesToSave.Add(AssetPackage);
+	const FEditorFileUtils::EPromptReturnCode PromptReturnCode = FEditorFileUtils::PromptForCheckoutAndSave(PackagesToSave, false, false, nullptr, true);
+	if (PromptReturnCode != FEditorFileUtils::PR_Success)
+	{
+		return false;
+	}
+	return true;
+}
+
+bool UCSKitEditor_EUW_Base::SaveLevel(ULevel* InLevel)
+{
+	if (InLevel == nullptr)
+	{
+		return false;
+	}
+	UPackage* Package = InLevel->GetOutermost();
+	if (Package == nullptr)
+	{
+		return false;
+	}
+	FString AssetPath, AssetFName, AssetExt;
+	FPaths::Split(InLevel->GetPathName(), AssetPath, AssetFName, AssetExt);
+	const FString FileName = FPackageName::LongPackageNameToFilename(AssetPath / AssetFName, FString(TEXT(".umap")));
+
+	// check out
+	ISourceControlProvider& SourceControlProvider = ISourceControlModule::Get().GetProvider();
+	const FSourceControlStatePtr SourceControlState = SourceControlProvider.GetState(*FileName, EStateCacheUsage::ForceUpdate);
+	if (SourceControlState.IsValid())
+	{
+		if (SourceControlState->CanCheckout())
+		{
+			const ECommandResult::Type Result = SourceControlProvider.Execute(ISourceControlOperation::Create<FCheckOut>(), *FileName);
+			if (Result != ECommandResult::Succeeded)
+			{
+				return false;
+			}
+		}
+	}
+
+	bool bSaveResult = false;
+
+	const FFileStatData FileStat = IFileManager::Get().GetStatData(*FileName);
+	if (FileStat.bIsValid
+		&& FileStat.bIsReadOnly
+		)
+	{	// 読み込み専用の場合は保存できない（CheckOutしてあれば外れてるはず） //
+		UE_LOG(LogTemp, Warning, TEXT("File is read-only [%s]."), *FileName);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("Saved [%s]."), *FileName);
+		// SavePackage
+		Package->SetDirtyFlag(true);
+#if 0
+		FSavePackageArgs SavePackageArgs;
+		SavePackageArgs.TopLevelFlags = EObjectFlags::RF_Standalone;
+		bSaveResult = GEditor->SavePackage(Package, nullptr, *FileName, SavePackageArgs);
+#else
+		bSaveResult = GEditor->SavePackage(Package, nullptr, EObjectFlags::RF_Standalone, *FileName);
+#endif
+	}
+
+	return bSaveResult;
 }
 
 /**

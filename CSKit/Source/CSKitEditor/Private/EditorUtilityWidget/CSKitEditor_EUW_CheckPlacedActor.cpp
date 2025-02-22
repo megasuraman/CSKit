@@ -1,6 +1,6 @@
 // Copyright 2020 megasuraman
 /**
- * @file CSKitEditor_EUW_CheckPlacedActor.h
+ * @file CSKitEditor_EUW_CheckPlacedActor.cpp
  * @brief 配置Actorに対するチェック
  * @author megasuraman
  * @date 2024/11/30
@@ -8,8 +8,6 @@
 
 
 #include "EditorUtilityWidget/CSKitEditor_EUW_CheckPlacedActor.h"
-#include "Kismet/GameplayStatics.h"
-#include "Engine/Classes/GameFramework/Character.h"
 #include "Engine/Classes/GameFramework/WorldSettings.h"
 #include "CSKitDebug_Utility.h"
 

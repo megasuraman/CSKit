@@ -7,6 +7,8 @@
  */
 #include "CSKitDebug_SaveData.h"
 
+#include "Misc/FileHelper.h"
+
 void FCSKitDebug_SaveData::Save()
 {
 	mValueList.Empty();

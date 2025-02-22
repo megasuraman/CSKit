@@ -1,7 +1,7 @@
 // Copyright 2020 megasuraman
 /**
  * @file CSKitEditor_EUW_DebugMenu.h
- * @brief DebugMenuŠÖ˜A‚ÌEUW
+ * @brief DebugMenuæ“ä½œç”¨ã®EUW
  * @author megasuraman
  * @date 2025/01/27
  */

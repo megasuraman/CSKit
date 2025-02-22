@@ -1,7 +1,7 @@
 // Copyright 2020 megasuraman
 /**
  * @file CSKitEditor_EUW_DebugMenu.cpp
- * @brief DebugMenu�֘AEUW
+ * @brief DebugMenu操作用EUW
  * @author megasuraman
  * @date 2025/01/27
  */

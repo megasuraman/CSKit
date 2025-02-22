@@ -35,6 +35,10 @@ protected:
 	void LookAtPos(FVector InPos);
 	UFUNCTION(BlueprintCallable, Category = "CSKitEditor_EUW")
 	void ClearAllSubLevel();
+	UFUNCTION(BlueprintCallable, Category = "CSKitEditor_EUW")
+	bool SaveAsset(UObject* InAsset);
+	UFUNCTION(BlueprintCallable, Category = "CSKitEditor_EUW")
+	bool SaveLevel(ULevel* InLevel);
 	
 	virtual void FakeTick();
 	virtual void OnRunGame(const UWorld& InWorld){}
