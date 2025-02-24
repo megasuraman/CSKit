@@ -18,8 +18,18 @@ class CSKITEDITOR_API UCSKitEditor_EUW_AutoConvexCollision : public UCSKitEditor
 	GENERATED_BODY()
 
 public:
+	virtual bool Initialize() override;
+	
 	UFUNCTION(BlueprintCallable)
 	void LoadStaticMeshList();
+	UFUNCTION(BlueprintCallable)
+	void AddIgnoreStaticMesh(TArray<UStaticMesh*> InList);
+	UFUNCTION(BlueprintCallable)
+	bool IsIgnoreStaticMesh(UStaticMesh* InStaticMesh) const;
+
+protected:
+	void SaveStaticMeshIgnoreList();
+	void LoadStaticMeshIgnoreList();
 
 protected:
 	//コリジョンの分割数
@@ -33,6 +43,10 @@ protected:
 	int32 mHullPrecision = 30000;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CSKitEditor_EUW_AutoConvexCollision", meta=(DisplayName = "対象リスト"))
 	TArray<UStaticMesh*> mStaticMeshList;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "CSKitEditor_EUW_AutoConvexCollision", meta=(DisplayName = "無視リスト"))
+	TArray<UStaticMesh*> mStaticMeshIgnoreList;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CSKitEditor_EUW_AutoConvexCollision", meta=(DisplayName = "FilePath"))
 	FString mSavedFilePath = FString(TEXT("AutoConvexCollisionList.txt"));
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CSKitEditor_EUW_AutoConvexCollision", meta=(DisplayName = "IgnoreFilePath"))
+	FString mSavedIgnoreFilePath = FString(TEXT("AutoConvexCollisionIgnoreList.txt"));
 };
