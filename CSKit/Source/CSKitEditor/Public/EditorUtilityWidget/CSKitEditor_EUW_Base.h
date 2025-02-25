@@ -44,6 +44,8 @@ protected:
 	virtual void OnRunGame(const UWorld& InWorld){}
 	virtual void Draw(UCanvas* InCanvas, APlayerController* InPlayerController);
 
+	static FString GetAssetFullPath(const FString& InAssetPath);
+	static int64 GetFileTimeStampSecond(const FString& InAssetFullPath);
 	
 protected:
 	FDelegateHandle mDebugDrawHandle;

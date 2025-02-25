@@ -1,6 +1,7 @@
 // Copyright 2022 megasuraman
 #include "EditorUtilityWidget/CSKitEditor_EUW_Base.h"
 
+
 #include "Debug/DebugDrawService.h"
 #include "LevelEditor.h"
 #include "Editor/UnrealEdEngine.h"
@@ -376,4 +377,32 @@ void UCSKitEditor_EUW_Base::FakeTick()
 void UCSKitEditor_EUW_Base::Draw(UCanvas* InCanvas, APlayerController* InPlayerController)
 {
 	FakeTick();
+}
+
+/**
+ * @brief	/Game/Hoge.Hoge をフルパスに変換
+ */
+FString UCSKitEditor_EUW_Base::GetAssetFullPath(const FString& InAssetPath)
+{
+	FString AssetFullPath;
+	FString TempString;
+	InAssetPath.Split(TEXT("."), &AssetFullPath, &TempString, ESearchCase::IgnoreCase, ESearchDir::FromEnd);
+	AssetFullPath += FString(TEXT(".uasset"));
+	AssetFullPath = AssetFullPath.Replace(TEXT("/Game"), *FPaths::ProjectContentDir());
+	AssetFullPath = FPaths::ConvertRelativePathToFull(AssetFullPath);
+	return AssetFullPath;
+}
+
+/**
+ * @brief	ファイルのタイムスタンプ取得
+ */
+int64 UCSKitEditor_EUW_Base::GetFileTimeStampSecond(const FString& InAssetFullPath)
+{
+#if 0
+	std::filesystem::file_time_type FileTime = std::filesystem::last_write_time(*InAssetFullPath);
+	const auto FileTimeSecond = std::chrono::duration_cast<std::chrono::seconds>(FileTime.time_since_epoch());
+	return FileTimeSecond.count();
+#else
+	return 0;
+#endif
 }
