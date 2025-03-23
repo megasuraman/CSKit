@@ -25,8 +25,8 @@ FVector UCSKitDebug_Math::CalcQuadraticBezier(const FVector& InPosA, const FVect
 {
 	const FVector PosAB = FMath::Lerp(InPosA, InPosB, InRatio);
 	const FVector PosBC = FMath::Lerp(InPosB, InPosC, InRatio);
-	const FVector PosABBC = FMath::Lerp(PosAB, PosBC, InRatio);
-	return PosABBC;
+	const FVector PosAB_BC = FMath::Lerp(PosAB, PosBC, InRatio);
+	return PosAB_BC;
 }
 
 

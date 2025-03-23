@@ -9,7 +9,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
 #include "CSKitDebug_Draw.generated.h"
 
 class UCanvas;
@@ -32,7 +31,7 @@ public:
 		FVector mTargetPos = FVector::ZeroVector;
 		float	mRadius = 10.f;
 		float	mQadCenterRatio = 0.25f;
-		void	Draw(UWorld* InWorld, const FColor& InColor, const uint8 InDepthPriority = 0, const float InThickness = 0.f) const;
+		void	Draw(const UWorld* InWorld, const FColor& InColor, const uint8 InDepthPriority = 0, const float InThickness = 0.f) const;
 	};
 
 	//扇形
@@ -44,14 +43,15 @@ public:
 		float mAngle = 45.f;
 		uint32 mEdgePointNum = 16;
 
-		virtual void	Draw(UWorld* InWorld, const FColor& InColor, const uint8 InDepthPriority = 0, const float InThickness = 0.f) const;
+		virtual ~FanShape() = default;
+		virtual void Draw(UWorld* InWorld, const FColor& InColor, const uint8 InDepthPriority = 0, const float InThickness = 0.f) const;
 	};
 	//先端を削った扇形
 	struct CSKITDEBUG_API FanShapeClipTip : public FanShape
 	{
 		float mNearClipRadius = 300.f;
 
-		virtual void	Draw(UWorld* InWorld, const FColor& InColor, const uint8 InDepthPriority = 0, const float InThickness = 0.f) const override;
+		virtual void Draw(UWorld* InWorld, const FColor& InColor, const uint8 InDepthPriority = 0, const float InThickness = 0.f) const override;
 	};
 
 	static void DrawBrushMesh(const UWorld* InWorld, const ABrush* InBrush, const FColor InColor);
@@ -63,5 +63,7 @@ public:
 	static void DrawCanvasQuadrangle(UCanvas* InCanvas, const FVector2D& InCenterPos, const FVector2D& InExtent, const FLinearColor InColor);
 	static void DrawCanvasQuadrangle(UCanvas* InCanvas, const FVector& InPos, const FVector2D& InExtent, const FLinearColor InColor);
 
+	static void DrawBone(UCanvas* InCanvas, const USkeletalMeshComponent* InSkeletalMeshComponent);
+	static void DrawAxis(const UWorld* InWorld, const FTransform& InTransform, const float InLength=100.f);
 #endif//USE_CSKIT_DEBUG
 };

@@ -28,7 +28,7 @@ void	FCSKitDebug_ScreenWindowText::FittingWindowExtent(class UCanvas* InCanvas)
 		const FString& String = mStringList.GetOrder(i);
 		float StringWidth = 0.f;
 		float StringHeight = 0.f;
-		CalcTextDispWidthHeight(StringWidth, StringHeight, InCanvas, String);
+		CalcTextDrawWidthHeight(StringWidth, StringHeight, InCanvas, String);
 		if (Extent.X < StringWidth + WidthSpaceLen)
 		{
 			Extent.X = StringWidth + WidthSpaceLen;

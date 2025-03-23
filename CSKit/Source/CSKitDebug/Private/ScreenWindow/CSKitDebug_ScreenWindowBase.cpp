@@ -95,18 +95,18 @@ FVector2D	FCSKitDebug_ScreenWindowBase::Draw(UCanvas* InCanvas, const FVector& I
  */
 float	FCSKitDebug_ScreenWindowBase::DrawWindowName(UCanvas* InCanvas, const FVector2D& InPos2D) const
 {
-	const float WindowInsideOffset = 6.f;
-	const float WindowWidthSpace = 4.f;
-	const float WindowHeightSpace = 2.f;
+	constexpr float WindowInsideOffset = 6.f;
+	constexpr float WindowWidthSpace = 4.f;
+	constexpr float WindowHeightSpace = 2.f;
 	float BaseWindowWidth = 0.f;
 	float BaseWindowHeight = 0.f;
-	CalcTextDispWidthHeight(BaseWindowWidth, BaseWindowHeight, InCanvas, mWindowName);
+	CalcTextDrawWidthHeight(BaseWindowWidth, BaseWindowHeight, InCanvas, mWindowName);
 	BaseWindowWidth += WindowInsideOffset * 2.f + WindowWidthSpace*2.f;
 	BaseWindowHeight += WindowHeightSpace * 2.f;
 
 	FVector2D WindowEdgePos = InPos2D;
 	WindowEdgePos.Y -= BaseWindowHeight;
-	const uint32 WindowPointListSize = 4;
+	constexpr uint32 WindowPointListSize = 4;
 	const FVector2D WindowPointList[WindowPointListSize] = {
 		FVector2D(WindowEdgePos.X + WindowInsideOffset, WindowEdgePos.Y),//左上
 		FVector2D(WindowEdgePos.X, WindowEdgePos.Y + BaseWindowHeight),//左下
@@ -145,7 +145,7 @@ float	FCSKitDebug_ScreenWindowBase::DrawWindowName(UCanvas* InCanvas, const FVec
  * @param
  * @return
  */
-UFont* FCSKitDebug_ScreenWindowBase::GetUseFont() const
+UFont* FCSKitDebug_ScreenWindowBase::GetUseFont()
 {
 	return GEngine->GetMediumFont();
 }
@@ -154,7 +154,7 @@ UFont* FCSKitDebug_ScreenWindowBase::GetUseFont() const
  * @param
  * @return
  */
-void	FCSKitDebug_ScreenWindowBase::CalcTextDispWidthHeight(float& OutWidth, float& OutHeight, UCanvas* InCanvas, const FString& InText) const
+void	FCSKitDebug_ScreenWindowBase::CalcTextDrawWidthHeight(float& OutWidth, float& OutHeight, UCanvas* InCanvas, const FString& InText)
 {
 	//InCanvas->TextSize(GetUseFont(), InText, OutWidth, OutHeight, mFontScale, mFontScale);
 	InCanvas->StrLen(GetUseFont(), InText, OutWidth, OutHeight, true);

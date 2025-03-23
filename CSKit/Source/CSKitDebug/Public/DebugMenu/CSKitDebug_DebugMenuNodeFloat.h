@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DebugMenu/CSKitDebug_DebugMenuTableRow.h"
 #include "DebugMenu/CSKitDebug_DebugMenuNodeBase.h"
 
 class CSKITDEBUG_API CSKitDebug_DebugMenuNodeFloat : public CSKitDebug_DebugMenuNodeBase
@@ -18,13 +17,13 @@ public:
 
 protected:
 	virtual void SetInitValue() override;
-	virtual void DrawEditValue(UCanvas* InCanvas, const FVector2D& InPos, const FVector2D& InValueExtent) const;
+	virtual void DrawEditValue(UCanvas* InCanvas, const FVector2D& InPos, const FVector2D& InValueExtent) const override;
 
 private:
-	static const int32 mEditIntegralDigitNum = 7;//®”Œ…”
-	static const int32 mEditDecimalNum = 3;//¬”Œ…”
-	static const int32 mEditDigitNumberNum = mEditIntegralDigitNum + mEditDecimalNum;//Œ…”
-	static const int32 mEditDigitNum = mEditDigitNumberNum + 1;//•„†•ª’Ç‰Á
+	static constexpr int32 mEditIntegralDigitNum = 7;//æ•´æ•°éƒ¨æ¡æ•°
+	static constexpr int32 mEditDecimalNum = 3;//å°‘æ•°éƒ¨æ¡æ•°
+	static constexpr int32 mEditDigitNumberNum = mEditIntegralDigitNum + mEditDecimalNum;//æ•°å€¤æ¡æ•°
+	static constexpr int32 mEditDigitNum = mEditDigitNumberNum + 1;//å…¨æ“ä½œæ¡æ•°
 	TArray<int32> mEditDigitIntList;
-	int32 mEditDigitIndex = 0;//mEditDigitIntList‚Ì•ÒWˆÊ’u
+	int32 mEditDigitIndex = 0;//mEditDigitIntListã®æ“ä½œIndex
 };

@@ -21,11 +21,11 @@ UCSKitDebug_ScreenWindowManager::UCSKitDebug_ScreenWindowManager()
 /**
  * @brief	Window追加
  */
-void	UCSKitDebug_ScreenWindowManager::AddWindowBP(const FName InTag, const FText InMessage, const AActor* InFollowActor, float InDispTime)
+void	UCSKitDebug_ScreenWindowManager::AddWindowBP(const FName InTag, const FText InMessage, const AActor* InFollowActor, float InDrawTime)
 {
 #if USE_CSKIT_DEBUG
 	FCSKitDebug_ScreenWindowOption Option;
-	Option.mDispTime = InDispTime;
+	Option.mDrawTime = InDrawTime;
 	OnAddWindow(InTag, InMessage.ToString(), InFollowActor, Option);
 #endif//USE_CSKIT_DEBUG
 }
@@ -34,7 +34,7 @@ void	UCSKitDebug_ScreenWindowManager::AddWindowBP(const FName InTag, const FText
 /**
  * @brief	Get
  */
-UCSKitDebug_ScreenWindowManager* UCSKitDebug_ScreenWindowManager::Get(UObject* InOwner)
+UCSKitDebug_ScreenWindowManager* UCSKitDebug_ScreenWindowManager::Get(const UObject* InOwner)
 {
 	UGameInstance* GameInstance = InOwner->GetWorld()->GetGameInstance();
 	UCSKitDebug_Subsystem* CSKitDebugSubsystem = GameInstance->GetSubsystem<UCSKitDebug_Subsystem>();
@@ -81,7 +81,7 @@ void	UCSKitDebug_ScreenWindowManager::OnAddWindow(const FName InTag, const FStri
 	{
 		if (Data.mTagName == InTag)
 		{
-			Data.mLifeTime = InOption.mDispTime;
+			Data.mLifeTime = InOption.mDrawTime;
 			Data.mWindow.SetWindowName(InTag.ToString());
 			Data.mWindow.ClearString();
 			Data.mWindow.AddText(InMessage);
@@ -99,7 +99,7 @@ void	UCSKitDebug_ScreenWindowManager::OnAddWindow(const FName InTag, const FStri
 
 	FTempWindowData Data;
 	Data.mTagName = InTag;
-	Data.mLifeTime = InOption.mDispTime;
+	Data.mLifeTime = InOption.mDrawTime;
 	Data.mWindow.SetWindowName(InTag.ToString());
 	Data.mWindow.ClearString();
 	Data.mWindow.AddText(InMessage);
@@ -132,7 +132,7 @@ void UCSKitDebug_ScreenWindowManager::UpdateLifeTime(const float InDeltaSecond)
  */
 void UCSKitDebug_ScreenWindowManager::DrawWindow(UCanvas* InCanvas)
 {
-	FVector2D DispPos(30.f, 30.f);
+	FVector2D DrawPos(30.f, 30.f);
 	for (FTempWindowData& Data : mTempWindowDataList)
 	{
 		if (!Data.mbActive)
@@ -145,8 +145,8 @@ void UCSKitDebug_ScreenWindowManager::DrawWindow(UCanvas* InCanvas)
 		}
 		else
 		{
-			const FVector2D WindowExtent = Data.mWindow.Draw(InCanvas, DispPos);
-			DispPos.X += WindowExtent.X + 10.f;
+			const FVector2D WindowExtent = Data.mWindow.Draw(InCanvas, DrawPos);
+			DrawPos.X += WindowExtent.X + 10.f;
 		}
 	}
 }

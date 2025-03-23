@@ -1,7 +1,7 @@
 // Copyright 2020 megasuraman
 /**
  * @file CSKitDebug_Config.h
- * @brief CSKitDebug—p‚ÌConfig
+ * @brief CSKitDebugï¿½pï¿½ï¿½Config
  * @author megasuraman
  * @date 2020/5/26
  */
@@ -9,7 +9,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
 #include "CSKitDebug_Config.generated.h"
 
 USTRUCT(BlueprintType)
@@ -18,7 +17,7 @@ struct FCSKitDebugKey
 	GENERATED_USTRUCT_BODY();
 
 	UPROPERTY(EditAnywhere, config, Category = CSKitDebugCommand)
-	FKey	mKeyboad;
+	FKey	mKeyboard;
 	UPROPERTY(EditAnywhere, config, Category = CSKitDebugCommand)
 	FKey	mPad;
 

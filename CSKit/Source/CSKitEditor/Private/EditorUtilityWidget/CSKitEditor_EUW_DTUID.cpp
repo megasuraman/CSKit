@@ -35,7 +35,7 @@ void	UCSKitEditor_EUW_DTUID::GenerateDataTableUID(const UDataTable* InDataTable)
 	}
 	CheckDataTableRow(DTUIDInfoList, InDataTable);
 	TMap<FString, FString> StringReplaceMap;
-	CreateStringRelacepMap(StringReplaceMap, DTUIDInfoList, DataTableName);
+	CreateStringReplacepMap(StringReplaceMap, DTUIDInfoList, DataTableName);
 
 	FString BaseFilePath = FPaths::ConvertRelativePathToFull(FPaths::ProjectPluginsDir());
 	BaseFilePath += FString(TEXT("CSKitEditor/Content/EUW/DTUID_Template.txt"));
@@ -155,7 +155,7 @@ void UCSKitEditor_EUW_DTUID::CheckDataTableRow(TArray<FDTUIDInfo>& OutDTUIDList,
 /**
  * @brief
  */
-bool UCSKitEditor_EUW_DTUID::CreateStringRelacepMap(TMap<FString, FString>& OutStringReplaceMap, const TArray<FDTUIDInfo>& InDTUIDList, const FString& InDataTableName) const
+bool UCSKitEditor_EUW_DTUID::CreateStringReplacepMap(TMap<FString, FString>& OutStringReplaceMap, const TArray<FDTUIDInfo>& InDTUIDList, const FString& InDataTableName) const
 {
 	const FString DTUIDName = InDataTableName + FString(TEXT("_UID"));
 	const FString EnumName = FString(TEXT("E")) + DTUIDName;

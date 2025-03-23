@@ -3,8 +3,6 @@
 #include "PropertyTypeCustomization/CSKitEditor_ComboBoxCustomization.h"
 
 #include "PropertyEditing.h"
-#include "Widgets/Input/SNumericEntryBox.h"
-#include "CSKit_DataTableRowSelector.h"
 
 
 #define LOCTEXT_NAMESPACE "FPropertyCustomizeAssistEditor"
@@ -59,9 +57,7 @@ void FStringComboBoxCustomizationBase::SetupSlate(IDetailChildrenBuilder& Struct
 }
 
 //コンボボックスの選択変更時処理
-// ReSharper disable once CppMemberFunctionMayBeConst
-// ReSharper disable once CppPassValueParameterByConstReference
-void FStringComboBoxCustomizationBase::OnSelectionChanged(TSharedPtr<FString> Type, ESelectInfo::Type SelectionType)
+void FStringComboBoxCustomizationBase::OnSelectionChanged(TSharedPtr<FString> Type, ESelectInfo::Type SelectionType) const
 {
 	if (mResultInputHandle.IsValid()
 		&& Type.IsValid())
@@ -71,8 +67,6 @@ void FStringComboBoxCustomizationBase::OnSelectionChanged(TSharedPtr<FString> Ty
 }
 
 //Widget生成時処理
-// ReSharper disable once CppMemberFunctionMayBeConst
-// ReSharper disable once CppPassValueParameterByConstReference
 TSharedRef<SWidget> FStringComboBoxCustomizationBase::OnGenerateWidget(TSharedPtr<FString> Type)
 {
 	return SNew(STextBlock).Text(FText::FromString(*Type));

@@ -8,7 +8,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
 #include "CSKitDebug_ActorSelectManager.generated.h"
 
 class UCanvas;
@@ -27,7 +26,7 @@ class CSKITDEBUG_API UCSKitDebug_ActorSelectManager : public UObject
 public:
 	static UCSKitDebug_ActorSelectManager* sGet(const UWorld* InWorld);
 
-	void	Init();
+	void	Init() const;
 	bool	DebugTick(float InDeltaSecond);
 	void	DebugDraw(class UCanvas* InCanvas);
 	void	EntryDebugSelectComponent(UCSKitDebug_ActorSelectComponent* InComponent);
@@ -40,11 +39,11 @@ protected:
 	ADebugCameraController* GetActiveDebugCameraController() const;
 	void	CheckDebugCameraController();
 	void	CheckSelectTarget();
-	void	OnSelect(AActor* InActor);
-	void	SetActiveTickActor(AActor* InActor, const bool bInActive);
+	void	OnSelect(const AActor* InActor);
+	static void	SetActiveTickActor(AActor* InActor, const bool bInActive);
 
-	void	DrawInfo(UCanvas* InCanvas);
-	void	DrawSelectMarker(UCanvas* InCanvas);
+	void	DrawInfo(UCanvas* InCanvas) const;
+	void	DrawSelectMarker(UCanvas* InCanvas) const;
 	void	DrawMarkAllSelectList(UCanvas* InCanvas);
 
 	void	SetOnlyUpdateSelectActor(const bool bInOnlyUpdate);

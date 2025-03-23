@@ -1,7 +1,10 @@
 // Copyright 2022 megasuraman
 
 #include "DebugMenu/CSKitDebug_DebugMenuNodeFolder.h"
+
+#include "CanvasItem.h"
 #include "DebugMenu/CSKitDebug_DebugMenuManager.h"
+#include "Engine/Canvas.h"
 
 
 void CSKitDebug_DebugMenuNodeFolder::OnEndAction(const FCSKitDebug_DebugMenuNodeActionParameter& InParameter)

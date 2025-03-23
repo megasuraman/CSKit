@@ -136,6 +136,7 @@ void UCSKitEditor_EUW_AutoConvexCollision::AddStaticMeshToTargetFile(UStaticMesh
 	}
 
 	FileString += FString::Printf(TEXT("%s,0\n"), *StaticMeshPath);
+	FFileHelper::SaveStringToFile(FileString, *FilePath, FFileHelper::EEncodingOptions::ForceUTF8);
 }
 
 void UCSKitEditor_EUW_AutoConvexCollision::AddIgnoreStaticMesh(TArray<UStaticMesh*> InList)

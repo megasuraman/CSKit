@@ -1,6 +1,8 @@
 // Copyright 2022 megasuraman
 #include "DebugMenu/CSKitDebug_DebugMenuSave.h"
 
+#include "Misc/FileHelper.h"
+
 void FCSKitDebug_DebugMenuSaveData::Clear()
 {
 	mSaveNodeList.Empty();

@@ -1,7 +1,7 @@
 // Copyright 2020 megasuraman
 /**
  * @file CSKitEditor_EUW_PropertyViewer.h
- * @brief UObjectÇÃPropertyï\é¶
+ * @brief UObject„ÅÆPropertyË°®Á§∫
  * @author megasuraman
  * @date 2022/08/07
  */

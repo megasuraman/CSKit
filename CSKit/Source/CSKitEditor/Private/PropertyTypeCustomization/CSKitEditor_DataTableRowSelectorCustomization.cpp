@@ -2,7 +2,6 @@
 
 #include "PropertyTypeCustomization/CSKitEditor_DataTableRowSelectorCustomization.h"
 
-#include "PropertyEditing.h"
 #include "Widgets/Input/SNumericEntryBox.h"
 #include "CSKit_DataTableRowSelector.h"
 

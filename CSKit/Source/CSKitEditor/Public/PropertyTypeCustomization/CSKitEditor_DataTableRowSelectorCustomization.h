@@ -18,17 +18,13 @@ public:
 	}
 
 protected:
-	//TSharedPtr<IPropertyHandle>‚Ì•Û
 	virtual void SetupPropertyHandle(const TSharedRef<IPropertyHandle>& StructPropertyHandle) override;
-	//•\¦–¼(mDisplayName)İ’è
 	virtual void SetupDisplayName(const TSharedRef<IPropertyHandle>& StructPropertyHandle) override;
-	//ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚É•\¦‚·‚é•¶š—ñ(mStringList)İ’è
 	virtual void SetupStringList(const TSharedRef<IPropertyHandle>& StructPropertyHandle) override;
-	//Slateİ’è
 	virtual void SetupSlate(class IDetailChildrenBuilder& StructBuilder) override;
 
-	//DataTable‚Ìƒtƒ‹ƒpƒX‚©‚ç•¶š—ñæ“¾
+	//DataTableã‹ã‚‰RowNameå–å¾—
 	bool AppendRowNameListByPath(TArray<FString>& OutList, const TSharedRef<IPropertyHandle>& StructPropertyHandle);
-	//UStruct‚©‚ç•¶š—ñæ“¾
+	//UStructã‚’ä½¿ç”¨ã—ã¦ã‚‹DataTableã‹ã‚‰RowNameå–å¾—
 	bool AppendRowNameListByStruct(TArray<FString>& OutList, const TSharedRef<IPropertyHandle>& StructPropertyHandle);
 };

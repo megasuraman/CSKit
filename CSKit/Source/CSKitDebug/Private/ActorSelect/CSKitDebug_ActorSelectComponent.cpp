@@ -8,13 +8,10 @@
 
 #include "ActorSelect/CSKitDebug_ActorSelectComponent.h"
 #include "ActorSelect/CSKitDebug_ActorSelectManager.h"
-#include "CSKitDebug_Subsystem.h"
 #include "CSKitDebug_Draw.h"
 
-#include "EngineUtils.h"
 #include "GameFramework/Pawn.h"
 #include "AIModule/Classes/AIController.h"
-#include "DrawDebugHelpers.h"
 
 // Sets default values for this component's properties
 UCSKitDebug_ActorSelectComponent::UCSKitDebug_ActorSelectComponent()

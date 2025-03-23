@@ -2,13 +2,12 @@
 /**
  * @file CSKitDebug_ScreenWindowManager.h
  * @brief ScreenWindow管理
- * @author SensyuGames
+ * @author megasuraman
  * @date 2023/02/04
  */
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
 #include "CSKitDebug_ScreenWindowText.h"
 #include "CSKitDebug_ScreenWindowManager.generated.h"
 
@@ -17,9 +16,9 @@ class UCanvas;
 
 struct CSKITDEBUG_API FCSKitDebug_ScreenWindowOption
 {
-	FLinearColor	mFrameColor = FLinearColor(0.1f, 0.9f, 0.1f, 1.f);
-	float	mDispTime = -1.f;
-	float	mDispBorderDistance = -1.f;
+	FLinearColor mFrameColor = FLinearColor(0.1f, 0.9f, 0.1f, 1.f);
+	float mDrawTime = -1.f;
+	float mDrawBorderDistance = -1.f;
 };
 
 /**
@@ -34,11 +33,11 @@ public:
 	UCSKitDebug_ScreenWindowManager();
 
 	UFUNCTION(BlueprintCallable, meta = (DevelopmentOnly, Category = "CSKitDebug"))
-	void	AddWindowBP(const FName InTag, const FText InMessage, const AActor* InFollowActor, float InDispTime);
+	void AddWindowBP(const FName InTag, const FText InMessage, const AActor* InFollowActor, float InDrawTime);
 
 #if USE_CSKIT_DEBUG
 public:
-	static	UCSKitDebug_ScreenWindowManager* Get(UObject* InOwner);
+	static	UCSKitDebug_ScreenWindowManager* Get(const UObject* InOwner);
 	void	Init();
 	bool	DebugTick(float InDeltaSecond);
 	void	DebugDraw(UCanvas* InCanvas);

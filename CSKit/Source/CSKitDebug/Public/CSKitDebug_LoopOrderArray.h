@@ -52,11 +52,11 @@ public:
 	}
 
 	const TArray<ElementType>& GetList() const { return mList; }
-	const int32		GetListNum() const { return mList.Num(); }
-	const int32		GetListMaxNum() const { return mList.Max(); }
-	const int32		GetNextIndex() const { return mNextIndex; }
+	int32		GetListNum() const { return mList.Num(); }
+	int32		GetListMaxNum() const { return mList.Max(); }
+	int32		GetNextIndex() const { return mNextIndex; }
 	//最後に追加した要素のListIndex取得
-	const int32		GetLastListIndex() const
+	int32		GetLastListIndex() const
 	{
 		const int32 ListNum = GetListNum();
 		check(ListNum > 0);
@@ -72,7 +72,7 @@ public:
 		return mList[GetLastListIndex()];
 	}
 	//指定の順番のListIndexを取得
-	const int32		GetOrderListIndex(const int32 InOrderIndex) const
+	int32		GetOrderListIndex(const int32 InOrderIndex) const
 	{
 		const int32 ListNum = GetListNum();
 		check(ListNum > 0);

@@ -29,6 +29,16 @@ void	UCSKitDebug_AutoPilotModeBase::SetParent(UCSKitDebug_AutoPilotComponent* In
 	OnSetParent();
 }
 
+UCSKitDebug_AutoPilotComponent* UCSKitDebug_AutoPilotModeBase::GetParent() const
+{
+	return mAutoPilotComponent.Get();
+}
+
+APlayerController* UCSKitDebug_AutoPilotModeBase::GetPlayerController() const
+{
+	return mPlayerController.Get();
+}
+
 /**
  * @brief	パッド入力値取得
  */
@@ -68,8 +78,8 @@ FKey	UCSKitDebug_AutoPilotModeBase::GetKey(ECSKitDebug_AutoPilotKey InKey) const
  */
 void	UCSKitDebug_AutoPilotModeBase::DebugDrawPad(UCanvas* InCanvas)
 {
-	const float VirtualGridLen = 15.f;//グリッド上に図形書くイメージで
-	const FVector2D ButtonPosGridList[(uint8)ECSKitDebug_AutoPilotKey::Num] =
+	constexpr float VirtualGridLen = 15.f;//グリッド上に図形書くイメージで
+	const FVector2D ButtonPosGridList[static_cast<uint8>(ECSKitDebug_AutoPilotKey::Num)] =
 	{
 		FVector2D::ZeroVector,// Invalid,	//0
 		FVector2D(4.0f, 7.0f),// LeftStickX,	//1
@@ -94,7 +104,7 @@ void	UCSKitDebug_AutoPilotModeBase::DebugDrawPad(UCanvas* InCanvas)
 		//(5.f,3.5f)タッチパッド左
 		//(7.f,3.5f)タッチパッド右
 	};
-	const FVector2D ButtonLenGridList[(uint8)ECSKitDebug_AutoPilotKey::Num] =
+	const FVector2D ButtonLenGridList[static_cast<uint8>(ECSKitDebug_AutoPilotKey::Num)] =
 	{
 		FVector2D::UnitVector,// Invalid,	//0
 		FVector2D(2.0f, 2.0f),// LeftStickX,	//1
@@ -132,24 +142,24 @@ void	UCSKitDebug_AutoPilotModeBase::DebugDrawPad(UCanvas* InCanvas)
 	DebugDrawPadSheet(InCanvas, ScreenPos, Extent);
 
 
-	for (uint8 i = 1; i < (uint8)ECSKitDebug_AutoPilotKey::Num; ++i)
+	for (uint8 i = 1; i < static_cast<uint8>(ECSKitDebug_AutoPilotKey::Num); ++i)
 	{
 		const ECSKitDebug_AutoPilotKey KeyId = static_cast<ECSKitDebug_AutoPilotKey>(i);
 
 		const FVector2D CenterPos = ScreenPos + ButtonPosGridList[i] * VirtualGridLen;
-		const FVector2D ExtenetV = ButtonLenGridList[i] * VirtualGridLen * 0.5f;
+		const FVector2D ExtentV = ButtonLenGridList[i] * VirtualGridLen * 0.5f;
 
 		//stickは特殊対処
 		if (KeyId == ECSKitDebug_AutoPilotKey::LeftStickX)
 		{
 			FVector2D AxisV(GetDebugDrawPadInfoAxisValue(ECSKitDebug_AutoPilotKey::LeftStickX), GetDebugDrawPadInfoAxisValue(ECSKitDebug_AutoPilotKey::LeftStickY));
-			DebugDrawStick(InCanvas, AxisV, CenterPos, ExtenetV.X);
+			DebugDrawStick(InCanvas, AxisV, CenterPos, ExtentV.X);
 		}
 		else if (KeyId == ECSKitDebug_AutoPilotKey::RightStickX)
 		{
 			FVector2D AxisV(GetDebugDrawPadInfoAxisValue(ECSKitDebug_AutoPilotKey::RightStickX), GetDebugDrawPadInfoAxisValue(ECSKitDebug_AutoPilotKey::RightStickY));
 			AxisV *= FVector2D(1.f, -1.f);//何故か逆になるので(もしかして順,逆のオプションの影響受けてる？)
-			DebugDrawStick(InCanvas, AxisV, CenterPos, ExtenetV.X);
+			DebugDrawStick(InCanvas, AxisV, CenterPos, ExtentV.X);
 		}
 		else if (KeyId == ECSKitDebug_AutoPilotKey::LeftStickY
 			|| KeyId == ECSKitDebug_AutoPilotKey::RightStickY)
@@ -162,12 +172,12 @@ void	UCSKitDebug_AutoPilotModeBase::DebugDrawPad(UCanvas* InCanvas)
 			if (GetDebugDrawPadInfoAxisValue(KeyId) > 0.f)
 			{
 				FLinearColor FrameColor = FLinearColor(1.f, 0.5f, 0.f);
-				DrawDebugCanvas2DCircle(InCanvas, CenterPos, ExtenetV.X, 10, FrameColor, 2.f);
+				DrawDebugCanvas2DCircle(InCanvas, CenterPos, ExtentV.X, 10, FrameColor, 2.f);
 			}
 		}
 		else
 		{
-			DebugDrawButton(InCanvas, KeyId, CenterPos, ExtenetV);
+			DebugDrawButton(InCanvas, KeyId, CenterPos, ExtentV);
 		}
 	}
 
@@ -184,7 +194,7 @@ void UCSKitDebug_AutoPilotModeBase::InitializeKeyMap()
 		return;
 	}
 
-	mKeyMap.Reserve((int32)ECSKitDebug_AutoPilotKey::Num);
+	mKeyMap.Reserve(static_cast<int32>(ECSKitDebug_AutoPilotKey::Num));
 
 	mKeyMap.Add(ECSKitDebug_AutoPilotKey::LeftStickX, EKeys::Gamepad_LeftX);
 	mKeyMap.Add(ECSKitDebug_AutoPilotKey::LeftStickY, EKeys::Gamepad_LeftY);
@@ -216,9 +226,9 @@ void UCSKitDebug_AutoPilotModeBase::InitializePadDeadZoneMap()
 	{
 		return;
 	}
-
-	const APlayerController* PlayerControler = GetPlayerController();
-	if (const UPlayerInput* PlayerInput = PlayerControler->PlayerInput)
+ 
+	const APlayerController* PlayerController = GetPlayerController();
+	if (const UPlayerInput* PlayerInput = PlayerController->PlayerInput)
 	{
 		for (const FInputAxisConfigEntry& AxisConfigEntry : PlayerInput->AxisConfig)
 		{
@@ -237,9 +247,9 @@ void UCSKitDebug_AutoPilotModeBase::InitializePadDeadZoneMap()
  */
 void	UCSKitDebug_AutoPilotModeBase::DebugDrawPadSheet(UCanvas* InCanvas, const FVector2D& InBasePos, const FVector2D& InExtent)
 {
-	const FLinearColor FrameColor = { 0.5f, 1.f, 0.5f, 1.f };
-	const FLinearColor BackColor = { 0.f, 0.f, 0.f, 0.4f };
-	const uint32 WindowPointListSize = 4;
+	constexpr FLinearColor FrameColor = { 0.5f, 1.f, 0.5f, 1.f };
+	constexpr FLinearColor BackColor = { 0.f, 0.f, 0.f, 0.4f };
+	constexpr uint32 WindowPointListSize = 4;
 	const FVector2D WindowPointList[WindowPointListSize] =
 	{
 		FVector2D(InBasePos.X, InBasePos.Y),//左上
@@ -282,7 +292,7 @@ void	UCSKitDebug_AutoPilotModeBase::DebugDrawArrow2D(UCanvas* InCanvas, const FV
 /**
  * @brief	ボタン表示
  */
-void	UCSKitDebug_AutoPilotModeBase::DebugDrawButton(UCanvas* InCanvas, ECSKitDebug_AutoPilotKey InKey, const FVector2D& InPos, const FVector2D& InExtent)
+void	UCSKitDebug_AutoPilotModeBase::DebugDrawButton(UCanvas* InCanvas, ECSKitDebug_AutoPilotKey InKey, const FVector2D& InPos, const FVector2D& InExtent) const
 {
 	const FLinearColor FrameColor = FLinearColor::White;
 	FLinearColor BackColor = { 0.f, 0.f, 0.f, 0.4f };
@@ -291,7 +301,7 @@ void	UCSKitDebug_AutoPilotModeBase::DebugDrawButton(UCanvas* InCanvas, ECSKitDeb
 		BackColor = FLinearColor(1.f, 0.5f, 0.f);
 	}
 
-	const uint32 WindowPointListSize = 4;
+	constexpr uint32 WindowPointListSize = 4;
 	const FVector2D WindowPointList[WindowPointListSize] =
 	{
 		FVector2D(InPos.X - InExtent.X, InPos.Y - InExtent.Y),//左上

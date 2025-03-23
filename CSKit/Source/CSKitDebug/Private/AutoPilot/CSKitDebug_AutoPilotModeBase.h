@@ -1,7 +1,7 @@
 // Copyright 2021 megasuraman
 /**
  * @file CSKitDebug_AutoPilotModeBase.h
- * @brief ©“®“ü—Í“™‚ğ•â•‚·‚éŠeƒ‚[ƒhˆ—‚Ìƒx[ƒX
+ * @brief ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í“ï¿½ï¿½ï¿½â•ï¿½ï¿½ï¿½ï¿½eï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½ï¿½Ìƒxï¿½[ï¿½X
  * @author megasuraman
  * @date 2021/12/28
  */
@@ -9,13 +9,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Serialization/JsonSerializerMacros.h"
 #include "InputCore/Classes/InputCoreTypes.h"
-#include "UObject/NoExportTypes.h"
 #include "CSKitDebug_AutoPilotModeBase.generated.h"
 
 class UCanvas;
 class UCSKitDebug_AutoPilotComponent;
+class APlayerController;
 
 enum class ECSKitDebug_AutoPilotKey : uint8 {
 	Invalid,
@@ -66,8 +65,8 @@ public:
 
 protected:
 	virtual void	OnSetParent() {}
-	UCSKitDebug_AutoPilotComponent* GetParent() { return mAutoPilotComponent; }
-	class APlayerController* GetPlayerController() const { return mPlayerController; }
+	UCSKitDebug_AutoPilotComponent* GetParent() const;
+	APlayerController* GetPlayerController() const;
 	float	GetDebugDrawPadInfoAxisValue(ECSKitDebug_AutoPilotKey InKey) const;
 	const TMap<FKey, float>& GetPadDeadZoneMap() const { return mPadDeadZoneMap; }
 	FKey GetKey(ECSKitDebug_AutoPilotKey InKey) const;
@@ -83,16 +82,16 @@ private:
 	void	InitializeKeyMap();
 	void	InitializePadDeadZoneMap();
 
-	void	DebugDrawPadSheet(UCanvas* InCanvas, const FVector2D& InBasePos, const FVector2D& InExtent);
-	void	DebugDrawArrow2D(UCanvas* InCanvas, const FVector2D& InStartPos, const FVector2D& InGoalPos, const FLinearColor& InColor, float InArrowLen);
-	void	DebugDrawButton(UCanvas* InCanvas, ECSKitDebug_AutoPilotKey InKey, const FVector2D& InPos, const FVector2D& InExtent);
-	void	DebugDrawStick(UCanvas* InCanvas, const FVector2D& InAxisV, const FVector2D& InPos, const float InRadius);
+	static void	DebugDrawPadSheet(UCanvas* InCanvas, const FVector2D& InBasePos, const FVector2D& InExtent);
+	static void	DebugDrawArrow2D(UCanvas* InCanvas, const FVector2D& InStartPos, const FVector2D& InGoalPos, const FLinearColor& InColor, float InArrowLen);
+	void	DebugDrawButton(UCanvas* InCanvas, ECSKitDebug_AutoPilotKey InKey, const FVector2D& InPos, const FVector2D& InExtent) const;
+	static void	DebugDrawStick(UCanvas* InCanvas, const FVector2D& InAxisV, const FVector2D& InPos, const float InRadius);
 
 
 private:
 	TMap<ECSKitDebug_AutoPilotKey, FKey>	mKeyMap;
 	TMap<FKey, float>	mPadDeadZoneMap;
-	TArray<FCSKitDebug_AutoPilotDebugDrawPadInfo>	mDebugDrawPadInfoList;//ƒpƒbƒh“ü—Í‚ÌƒfƒoƒbƒO•\¦—p‚É
-	UCSKitDebug_AutoPilotComponent* mAutoPilotComponent = nullptr;
-	APlayerController*	mPlayerController = nullptr;
+	TArray<FCSKitDebug_AutoPilotDebugDrawPadInfo> mDebugDrawPadInfoList;
+	TWeakObjectPtr<UCSKitDebug_AutoPilotComponent> mAutoPilotComponent;
+	TWeakObjectPtr<APlayerController> mPlayerController;
 };

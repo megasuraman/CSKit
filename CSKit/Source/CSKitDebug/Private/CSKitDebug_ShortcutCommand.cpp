@@ -11,19 +11,19 @@
 #include "CSKitDebug_Config.h"
 #include "DebugMenu/CSKitDebug_DebugMenuManager.h"
 
-#include "Engine/Canvas.h"
 #include "GameFramework/PlayerInput.h"
 #include "InputCoreTypes.h"
 #include "Engine/DebugCameraController.h"
 
 UCSKitDebug_ShortcutCommand::UCSKitDebug_ShortcutCommand()
 #if USE_CSKIT_DEBUG
-    :mbDebugStopMode(false)
+    : mbDebugStopMode(false)
 	, mbDebugCameraMode(false)
 	, mbDebugStop(false)
 	, mbDebugStep(false)
 	, mbDebugStepRepeat(false)
 	, mbStopMotionBlur(false)
+	, mbRequestReleaseDebugStopAfterMenu(false)
 #endif//USE_CSKIT_DEBUG
 {}
 
@@ -31,7 +31,7 @@ UCSKitDebug_ShortcutCommand::UCSKitDebug_ShortcutCommand()
 /**
  * @brief	Init
  */
-void	UCSKitDebug_ShortcutCommand::Init()
+void	UCSKitDebug_ShortcutCommand::Init() const
 {
 	UCSKitDebug_DebugMenuManager* DebugMenuManager = UCSKitDebug_DebugMenuManager::sGet(this);
 
@@ -72,7 +72,7 @@ bool	UCSKitDebug_ShortcutCommand::DebugTick(float InDeltaSecond)
         //デバッグメニューon/off
         if (CSKitDebugConfig->mDebugCommand_DebugMenuKey.IsJustPressed(*PlayerInput))
         {
-            SwicthDebugMenuActive(PlayerController);
+            SwitchDebugMenuActive(PlayerController);
             return true;
         }
 		//デバッグストップon/off
@@ -288,7 +288,7 @@ void UCSKitDebug_ShortcutCommand::CheckSecretCommand(APlayerController* InPlayer
 /**
  * @brief	DebugMenuのon/off切り替え
  */
-void	UCSKitDebug_ShortcutCommand::SwicthDebugMenuActive(APlayerController* InPlayerController)
+void	UCSKitDebug_ShortcutCommand::SwitchDebugMenuActive(APlayerController* InPlayerController)
 {
     UCSKitDebug_Subsystem* CSKitDebug = Cast<UCSKitDebug_Subsystem>(GetOuter());
     UCSKitDebug_DebugMenuManager* DebugMenuManager = CSKitDebug->GetDebugMenuManager();

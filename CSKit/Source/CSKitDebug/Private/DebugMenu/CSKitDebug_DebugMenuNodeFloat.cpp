@@ -2,6 +2,10 @@
 
 #include "DebugMenu/CSKitDebug_DebugMenuNodeFloat.h"
 
+#include "CanvasItem.h"
+#include "DrawDebugHelpers.h"
+#include "Engine/Canvas.h"
+
 
 void CSKitDebug_DebugMenuNodeFloat::OnBeginAction()
 {
@@ -168,21 +172,21 @@ void CSKitDebug_DebugMenuNodeFloat::DrawEditValue(UCanvas* InCanvas, const FVect
 	const FLinearColor WindowBackColor = GetWindowBackColor();
 	const FLinearColor WindowFrameColor = GetWindowFrameColor();
 	const FLinearColor FontColor = GetFontColor();
-	// â∫ï~Ç´
+	// 下敷き
 	{
 		FCanvasTileItem Item(SubWindowPos, WindowExtent, WindowBackColor);
 		Item.BlendMode = ESimpleElementBlendMode::SE_BLEND_Translucent;
 		InCanvas->DrawItem(Item);
 	}
-	// òg
+	// 枠
 	{
 		FCanvasBoxItem Item(SubWindowPos, WindowExtent);
-		Item.SetColor(GetSelectColor());
+		Item.SetColor(WindowFrameColor);
 		Item.LineThickness = 3.f;
 		InCanvas->DrawItem(Item);
 	}
 
-	const float DigitLineLength = 6.f;
+	constexpr float DigitLineLength = 6.f;
 	const float EditDigitPosY = SubWindowPos.Y + 15.f;
 	for (int32 i = mEditDecimalNum; i < mEditDigitNum; ++i)
 	{
@@ -208,11 +212,11 @@ void CSKitDebug_DebugMenuNodeFloat::DrawEditValue(UCanvas* InCanvas, const FVect
 		{
 			const FVector2D LinePosBegin(EditDigitPosX + 1.f, EditDigitPosY);
 			const FVector2D LinePosEnd(EditDigitPosX + DigitLineLength, EditDigitPosY);
-			const FLinearColor LineColor(0.9f, 0.9f, 0.1f, 1.f);
+			constexpr FLinearColor LineColor(0.9f, 0.9f, 0.1f, 1.f);
 			DrawDebugCanvas2DLine(InCanvas, LinePosBegin, LinePosEnd, LineColor, 2.f);
 		}
 	}
-	{//è¨êîì_
+	{//表示
 		const float EditDigitPosX = 8.f + SubWindowPos.X + 8.f * static_cast<float>(mEditDigitNum - mEditDecimalNum);
 		FString DrawString = FString::Printf(TEXT("."));
 		FCanvasTextItem Item(FVector2D(EditDigitPosX, SubWindowPos.Y), FText::FromString(DrawString), GEngine->GetSmallFont(), FontColor);
@@ -232,7 +236,7 @@ void CSKitDebug_DebugMenuNodeFloat::DrawEditValue(UCanvas* InCanvas, const FVect
 		{
 			const FVector2D LinePosBegin(EditDigitPosX + 1.f, EditDigitPosY);
 			const FVector2D LinePosEnd(EditDigitPosX + DigitLineLength, EditDigitPosY);
-			const FLinearColor LineColor(0.9f, 0.9f, 0.1f, 1.f);
+			constexpr FLinearColor LineColor(0.9f, 0.9f, 0.1f, 1.f);
 			DrawDebugCanvas2DLine(InCanvas, LinePosBegin, LinePosEnd, LineColor, 2.f);
 		}
 	}

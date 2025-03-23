@@ -78,7 +78,7 @@ void UCSKitDebug_AutoPilotModeRecord::RequestPlayInputRecord(const FString& InFi
 /**
  * @brief	
  */
-bool	UCSKitDebug_AutoPilotModeRecord::IsFinihPlay() const
+bool	UCSKitDebug_AutoPilotModeRecord::IsFinishPlay() const
 {
 	if (mMode == ECommandMode::PlayInputRecord
 		&& mPlayInputRecordState == EPlayInputRecordState::Finish
@@ -127,12 +127,12 @@ FString	UCSKitDebug_AutoPilotModeRecord::GetFilePath() const
  */
 bool UCSKitDebug_AutoPilotModeRecord::UpdatePlayInputRecord(float DeltaTime)
 {
-	APlayerController* PlayerControler = GetPlayerController();
-	//PlayerControler->FlushPressedKeys();
-	PlayerControler->InputAxis(EKeys::Gamepad_LeftX, 0.f, DeltaTime, 1, true);
-	PlayerControler->InputAxis(EKeys::Gamepad_LeftY, 0.f, DeltaTime, 1, true);
-	PlayerControler->InputAxis(EKeys::Gamepad_RightX, 0.f, DeltaTime, 1, true);
-	PlayerControler->InputAxis(EKeys::Gamepad_RightY, 0.f, DeltaTime, 1, true);
+	APlayerController* PlayerController = GetPlayerController();
+	//PlayerController->FlushPressedKeys();
+	PlayerController->InputAxis(EKeys::Gamepad_LeftX, 0.f, DeltaTime, 1, true);
+	PlayerController->InputAxis(EKeys::Gamepad_LeftY, 0.f, DeltaTime, 1, true);
+	PlayerController->InputAxis(EKeys::Gamepad_RightX, 0.f, DeltaTime, 1, true);
+	PlayerController->InputAxis(EKeys::Gamepad_RightY, 0.f, DeltaTime, 1, true);
 
 	switch (mPlayInputRecordState)
 	{
@@ -210,19 +210,19 @@ bool UCSKitDebug_AutoPilotModeRecord::LoadInputRecordFile(float DeltaTime)
  */
 bool UCSKitDebug_AutoPilotModeRecord::WaitPlayInputRecordFile(float DeltaTime)
 {
-	APlayerController* PlayerControler = GetPlayerController();
-	ACharacter* Player = Cast<ACharacter>(PlayerControler->GetPawn());
+	APlayerController* PlayerController = GetPlayerController();
+	ACharacter* Player = Cast<ACharacter>(PlayerController->GetPawn());
 	if (Player)
 	{
 		const FVector StartPos(mCommand.mStartPosX, mCommand.mStartPosY, mCommand.mStartPosZ);
 		const FRotator StartRot(mCommand.mStartRotatorPitch, mCommand.mStartRotatorYaw, mCommand.mStartRotatorRoll);
-		const FRotator CameraRot(mCommand.mStartCameraRotatorPitch, mCommand.mStartCameraRotatorYaw, mCommand.mStartCameraRotatorRoll);
-		const FRotator ControlRot(mCommand.mStartControllerPitch, StartRot.Yaw, CameraRot.Yaw);
+		//const FRotator CameraRot(mCommand.mStartCameraRotatorPitch, mCommand.mStartCameraRotatorYaw, mCommand.mStartCameraRotatorRoll);
+		//const FRotator ControlRot(mCommand.mStartControllerPitch, StartRot.Yaw, CameraRot.Yaw);
 		if (FVector::DistSquared(StartPos, Player->GetActorLocation()) > FMath::Square(0.1f)
 			|| !StartRot.Equals(Player->GetActorRotation()))
 		{
 			Player->SetActorLocationAndRotation(StartPos, StartRot, false, nullptr, ETeleportType::TeleportPhysics);
-			//PlayerControler->SetControlRotation(CameraRot, ControlRot);
+			//PlayerController->SetControlRotation(CameraRot, ControlRot);
 			return true;
 		}
 	}
@@ -241,8 +241,8 @@ bool UCSKitDebug_AutoPilotModeRecord::WaitPlayInputRecordFile(float DeltaTime)
  */
 bool UCSKitDebug_AutoPilotModeRecord::PlayInputRecordFile(float DeltaTime)
 {
-	UCSKitDebug_AutoPilotComponent* Parent = GetParent();
-	APlayerController* PlayerControler = GetPlayerController();
+	//UCSKitDebug_AutoPilotComponent* Parent = GetParent();
+	APlayerController* PlayerController = GetPlayerController();
 
 	for (const FCommandNode& InCommand : mCommand.mList)
 	{
@@ -254,18 +254,18 @@ bool UCSKitDebug_AutoPilotModeRecord::PlayInputRecordFile(float DeltaTime)
 			if (Key.IsAxis1D())
 			//if (Key.IsFloatAxis())
 			{
-				PlayerControler->InputAxis(Key, InCommand.mAxisValue, InCommand.mDeltaTime, 1, true);
+				PlayerController->InputAxis(Key, InCommand.mAxisValue, InCommand.mDeltaTime, 1, true);
 				AddDebugDrawPadInfo(FCSKitDebug_AutoPilotDebugDrawPadInfo(KeyId, InCommand.mAxisValue));
 			}
 			else
 			{
 				if (mPlayFrame == InCommand.mBeginFrame)
 				{
-					PlayerControler->InputKey(Key, EInputEvent::IE_Pressed, 1.f, true);
+					PlayerController->InputKey(Key, EInputEvent::IE_Pressed, 1.f, true);
 				}
 				else
 				{
-					PlayerControler->InputKey(Key, EInputEvent::IE_Repeat, 1.f, true);
+					PlayerController->InputKey(Key, EInputEvent::IE_Repeat, 1.f, true);
 				}
 				AddDebugDrawPadInfo(FCSKitDebug_AutoPilotDebugDrawPadInfo(KeyId, 1.f));
 			}
@@ -275,11 +275,11 @@ bool UCSKitDebug_AutoPilotModeRecord::PlayInputRecordFile(float DeltaTime)
 			if (Key.IsAxis1D())
 			//if (Key.IsFloatAxis())
 			{
-				//PlayerControler->InputAxis(*Key, InCommand.mAxisValue, InCommand.mDeltaTime, 1, true);
+				//PlayerController->InputAxis(*Key, InCommand.mAxisValue, InCommand.mDeltaTime, 1, true);
 			}
 			else
 			{
-				PlayerControler->InputKey(Key, EInputEvent::IE_Released, 1.f, true);
+				PlayerController->InputKey(Key, EInputEvent::IE_Released, 1.f, true);
 			}
 		}
 	}
@@ -304,8 +304,8 @@ bool UCSKitDebug_AutoPilotModeRecord::UpdateInputRecord(float DeltaTime)
 		break;
 	case ECommandMode::EndRecord:
 	{
-		const FString SavedPath = GetFilePath();
-		const bool bSave = FFileHelper::SaveStringToFile(mCommand.ToJson(), *SavedPath);
+		//const FString SavedPath = GetFilePath();
+		//const bool bSave = FFileHelper::SaveStringToFile(mCommand.ToJson(), *SavedPath);
 		SetMode(ECommandMode::Invalid);
 		break;
 	}
@@ -319,10 +319,10 @@ bool UCSKitDebug_AutoPilotModeRecord::UpdateInputRecord(float DeltaTime)
  */
 bool UCSKitDebug_AutoPilotModeRecord::BeginInputRecord(float DeltaTime)
 {
-	APlayerController* PlayerControler = GetPlayerController();
+	APlayerController* PlayerController = GetPlayerController();
 	mCommand.mList.Empty();
 	mBeforeFrameCommandList.Empty();
-	ACharacter* Player = Cast<ACharacter>(PlayerControler->GetPawn());
+	ACharacter* Player = Cast<ACharacter>(PlayerController->GetPawn());
 	if (Player)
 	{
 		mCommand.mStartPosX = Player->GetActorLocation().X;
@@ -332,11 +332,11 @@ bool UCSKitDebug_AutoPilotModeRecord::BeginInputRecord(float DeltaTime)
 		mCommand.mStartRotatorYaw = Player->GetActorRotation().Yaw;
 		mCommand.mStartRotatorRoll = Player->GetActorRotation().Roll;
 
-		const FRotator CameraRot = PlayerControler->GetControlRotation();
+		const FRotator CameraRot = PlayerController->GetControlRotation();
 		mCommand.mStartCameraRotatorPitch = CameraRot.Pitch;
 		mCommand.mStartCameraRotatorYaw = CameraRot.Yaw;
 		mCommand.mStartCameraRotatorRoll = CameraRot.Roll;
-		mCommand.mStartControllerPitch = PlayerControler->GetControlRotation().Pitch;
+		mCommand.mStartControllerPitch = PlayerController->GetControlRotation().Pitch;
 	}
 
 	mPlayFrame = 0;
@@ -349,11 +349,11 @@ bool UCSKitDebug_AutoPilotModeRecord::BeginInputRecord(float DeltaTime)
  */
 bool UCSKitDebug_AutoPilotModeRecord::RecordingInput(float DeltaTime)
 {
-	UCSKitDebug_AutoPilotComponent* Parent = GetParent();
-	APlayerController* PlayerControler = GetPlayerController();
+	//UCSKitDebug_AutoPilotComponent* Parent = GetParent();
+	APlayerController* PlayerController = GetPlayerController();
 	CommandPtrList ActiveCommandPtrList;
 
-	bool bAnyInput = false;
+	//bool bAnyInput = false;
 	for (uint32 i = 0; i < static_cast<uint32>(ECSKitDebug_AutoPilotKey::Num); ++i)
 	{
 		const ECSKitDebug_AutoPilotKey KeyId = static_cast<ECSKitDebug_AutoPilotKey>(i);
@@ -367,7 +367,7 @@ bool UCSKitDebug_AutoPilotModeRecord::RecordingInput(float DeltaTime)
 		if (Key.IsAxis1D())
 		//if (Key.IsFloatAxis())
 		{
-			Temp.mAxisValue = PlayerControler->GetInputAnalogKeyState(Key);
+			Temp.mAxisValue = PlayerController->GetInputAnalogKeyState(Key);
 			const float* PadDeadZonePtr = GetPadDeadZoneMap().Find(Key);
 			if (PadDeadZonePtr == nullptr)
 			{
@@ -390,7 +390,7 @@ bool UCSKitDebug_AutoPilotModeRecord::RecordingInput(float DeltaTime)
 		}
 		else
 		{
-			if (PlayerControler->IsInputKeyDown(Key))
+			if (PlayerController->IsInputKeyDown(Key))
 			{
 				bInput = true;
 				Temp.mInputEventId = EInputEvent::IE_Pressed;
@@ -400,7 +400,7 @@ bool UCSKitDebug_AutoPilotModeRecord::RecordingInput(float DeltaTime)
 
 		if (bInput)
 		{
-			bAnyInput = true;
+			//bAnyInput = true;
 
 			int32 InputIndex = INDEX_NONE;
 			for (int32 f = 0; f < mBeforeFrameCommandList.Num(); ++f)
@@ -433,7 +433,7 @@ bool UCSKitDebug_AutoPilotModeRecord::RecordingInput(float DeltaTime)
 	//if (bInputUI
 	//	&& bAnyInput)
 	//{
-	//	PlayerControler->PlayerInput->FlushPressedKeys();
+	//	PlayerController->PlayerInput->FlushPressedKeys();
 	//}
 
 	return true;
@@ -448,8 +448,8 @@ void	UCSKitDebug_AutoPilotModeRecord::DebugUpdateSelectInfo(UDebugSelectComponen
 	InDebugSelect.AddDebugInfo(FString::Printf(TEXT("mPlayFrame : %d"), mPlayFrame));
 	InDebugSelect.AddDebugInfo(FString::Printf(TEXT("DeltaTime : %.5f"), DeltaTime));
 
-	APlayerController* PlayerControler = GetPlayerController();
-	APawn* Player = PlayerControler->GetPawn();
+	APlayerController* PlayerController = GetPlayerController();
+	APawn* Player = PlayerController->GetPawn();
 	InDebugSelect.AddDebugInfo(FString::Printf(TEXT("Pos : %s"), *Player->GetActorLocation().ToString()));
 
 	DebugUpdateSelectInfo_Player(InDebugSelect);
@@ -508,8 +508,8 @@ void	UCSKitDebug_AutoPilotModeRecord::OnPushUIKey(const FKey& InKey)
  */
 void	UCSKitDebug_AutoPilotModeRecord::DebugUpdateSelectInfo_Player(UDebugSelectComponent& InDebugSelect)
 {
-	APlayerController* PlayerControler = GetPlayerController();
-	APlayer* Player = Cast<APlayer>(PlayerControler->GetPawn());
+	APlayerController* PlayerController = GetPlayerController();
+	APlayer* Player = Cast<APlayer>(PlayerController->GetPawn());
 	if (Player == nullptr)
 	{
 		return;
@@ -520,7 +520,7 @@ void	UCSKitDebug_AutoPilotModeRecord::DebugUpdateSelectInfo_Player(UDebugSelectC
 		const UActionStateComponent_Player* ActionStateComponent = Player->GetActionState();
 		InDebugSelect.AddDebugInfo(FString::Printf(TEXT("PlayerActionState : %s"), *PlayerStateToString(ActionStateComponent->GetCurrentPlayerStateType()).ToString()));
 		InDebugSelect.AddDebugInfo(FString::Printf(TEXT("Guts : %d"), Player->GetEnableWilson()));
-		//DebugSelectComponent->AddDebugInfo(FString::Printf(TEXT("PlayerMoveType : %s"), *DebugGetDispNamePlayerMoveType()));
+		//DebugSelectComponent->AddDebugInfo(FString::Printf(TEXT("PlayerMoveType : %s"), *DebugGetDrawNamePlayerMoveType()));
 		//const UStatusComponent_Player* StatusComponent = Player->GetStatusComponent();
 	}
 	InDebugSelect.EndDebugInfoCategory();
@@ -531,7 +531,7 @@ void	UCSKitDebug_AutoPilotModeRecord::DebugUpdateSelectInfo_Player(UDebugSelectC
 void	UCSKitDebug_AutoPilotModeRecord::DebugUpdateSelectInfo_InputKey(UDebugSelectComponent& InDebugSelect)
 {
 	UCSKitDebug_AutoPilotComponent* Parent = GetParent();
-	APlayerController* PlayerControler = GetPlayerController();
+	APlayerController* PlayerController = GetPlayerController();
 	InDebugSelect.BeginDebugInfoCategory(FString::Printf(TEXT("Input")));
 	{
 		for (uint32 i = 0; i < static_cast<uint32>(ECSKitDebug_AutoPilotMode::Num); ++i)
@@ -544,7 +544,7 @@ void	UCSKitDebug_AutoPilotModeRecord::DebugUpdateSelectInfo_InputKey(UDebugSelec
 			//if (Key.IsAxis1D())
 			if (Key.IsFloatAxis())
 			{
-				const float AxisValue = PlayerControler->GetInputAnalogKeyState(*Key);
+				const float AxisValue = PlayerController->GetInputAnalogKeyState(*Key);
 				if (FMath::Abs(AxisValue) > 0.f)
 				{
 					InDebugSelect.AddDebugInfo(FString::Printf(TEXT("Key : %s(%.2f)"), *AutoPilotUtil::GetAutoPilotKeyName(static_cast<ECSKitDebug_AutoPilotMode>(i)), AxisValue));
@@ -552,7 +552,7 @@ void	UCSKitDebug_AutoPilotModeRecord::DebugUpdateSelectInfo_InputKey(UDebugSelec
 			}
 			else
 			{
-				if (PlayerControler->IsInputKeyDown(*Key))
+				if (PlayerController->IsInputKeyDown(*Key))
 				{
 					InDebugSelect.AddDebugInfo(FString::Printf(TEXT("Key : %s"), *AutoPilotUtil::GetAutoPilotKeyName(static_cast<ECSKitDebug_AutoPilotMode>(i))));
 				}

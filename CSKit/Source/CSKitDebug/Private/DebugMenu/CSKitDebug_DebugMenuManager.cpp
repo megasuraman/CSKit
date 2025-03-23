@@ -1,8 +1,9 @@
 // Copyright 2022 megasuraman
 #include "DebugMenu/CSKitDebug_DebugMenuManager.h"
 
+#include "CanvasItem.h"
 #include "CSKitDebug_Subsystem.h"
-#include "DebugMenu/CSKitDebug_DebugMenuManager.h"
+#include "CSKitDebug_Config.h"
 #include "DebugMenu/CSKitDebug_DebugMenuNodeBool.h"
 #include "DebugMenu/CSKitDebug_DebugMenuNodeInt.h"
 #include "DebugMenu/CSKitDebug_DebugMenuNodeFloat.h"
@@ -10,6 +11,8 @@
 #include "DebugMenu/CSKitDebug_DebugMenuNodeList.h"
 #include "DebugMenu/CSKitDebug_DebugMenuNodeButton.h"
 #include "DebugMenu/CSKitDebug_DebugMenuTableRow.h"
+#include "Engine/Canvas.h"
+#include "GameFramework/PlayerController.h"
 
 UCSKitDebug_DebugMenuManager* UCSKitDebug_DebugMenuManager::sGet(const UObject* InObject)
 {
@@ -185,7 +188,7 @@ CSKitDebug_DebugMenuNodeBase* UCSKitDebug_DebugMenuManager::AddNode(const FStrin
 		return *NodeBase;
 	}
 
-	CSKitDebug_DebugMenuNodeBase* NewNode = nullptr;
+	CSKitDebug_DebugMenuNodeBase* NewNode;
 	switch (InNodeData.mKind)
 	{
 	case ECSKitDebug_DebugMenuValueKind::Bool:
@@ -384,11 +387,11 @@ void UCSKitDebug_DebugMenuManager::ChangeSelectNode(const bool bInDown)
 void UCSKitDebug_DebugMenuManager::DrawMainFolderPath(UCanvas* InCanvas, const FVector2D& InPos) const
 {
 	const FVector2D WindowExtent(200.f, 20.f);
-	const float ValueLineOffsetX = 150.f;
+	//constexpr float ValueLineOffsetX = 150.f;
 	const FVector2D StringOffset(2.f, 2.f);
-	const FLinearColor WindowBackColor(0.01f, 0.01f, 0.01f, 0.5f);
-	const FLinearColor WindowFrameColor(0.1f, 0.9f, 0.1f, 1.f);
-	const FLinearColor FontColor(0.1f, 0.9f, 0.1f, 1.f);
+	constexpr FLinearColor WindowBackColor(0.01f, 0.01f, 0.01f, 0.5f);
+	constexpr FLinearColor WindowFrameColor(0.1f, 0.9f, 0.1f, 1.f);
+	constexpr FLinearColor FontColor(0.1f, 0.9f, 0.1f, 1.f);
 	// 下敷き
 	{
 		FCanvasTileItem Item(InPos, WindowExtent, WindowBackColor);

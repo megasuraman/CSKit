@@ -2,6 +2,9 @@
 
 #include "DebugMenu/CSKitDebug_DebugMenuNodeButton.h"
 
+#include "CanvasItem.h"
+#include "Engine/Canvas.h"
+
 
 void CSKitDebug_DebugMenuNodeButton::OnEndAction(const FCSKitDebug_DebugMenuNodeActionParameter& InParameter)
 {

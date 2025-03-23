@@ -9,7 +9,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
 #include "CSKitDebug_ShortcutCommand.generated.h"
 
 
@@ -27,7 +26,7 @@ class CSKITDEBUG_API UCSKitDebug_ShortcutCommand : public UObject
 
 #if USE_CSKIT_DEBUG
 public:
-	void	Init();
+	void	Init() const;
 	bool	DebugTick(float InDeltaSecond);
 	void	DebugDraw(class UCanvas* InCanvas);
 
@@ -44,7 +43,7 @@ protected:
 	void	CheckDebugCameraMode(APlayerController* InPlayerController);
 	void	CheckSecretCommand(APlayerController* InPlayerController);
 
-	void	SwicthDebugMenuActive(APlayerController* InPlayerController);
+	void	SwitchDebugMenuActive(APlayerController* InPlayerController);
 	void	SetDebugStop(bool bInStop, APlayerController* InPlayerController);
 	void	SetStopMotionBlur(bool bInStop, APlayerController* InPlayerController);
 

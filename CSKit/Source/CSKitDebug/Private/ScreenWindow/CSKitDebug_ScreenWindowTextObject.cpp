@@ -9,9 +9,7 @@
 
 #include "ScreenWindow/CSKitDebug_ScreenWindowTextObject.h"
 
-#include "Engine/Canvas.h"
 #include "Engine/Engine.h"
-#include "CanvasItem.h"
 #include "Debug/DebugDrawService.h"
 
 

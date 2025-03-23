@@ -9,7 +9,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
 #include "CSKitDebug_LoopOrderArray.h"
 #include "CSKitDebug_ScreenWindowBase.h"
 #include "CSKitDebug_ScreenWindowText.generated.h"
@@ -23,7 +22,7 @@ struct CSKITDEBUG_API FCSKitDebug_ScreenWindowText : public FCSKitDebug_ScreenWi
     GENERATED_USTRUCT_BODY()
 
     FCSKitDebug_ScreenWindowText(){}
-    virtual ~FCSKitDebug_ScreenWindowText(){}
+    virtual ~FCSKitDebug_ScreenWindowText() override {}
  
 public:
 	virtual void    FittingWindowExtent(class UCanvas* InCanvas) override;

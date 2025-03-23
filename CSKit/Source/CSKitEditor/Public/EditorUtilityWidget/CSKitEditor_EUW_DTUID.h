@@ -34,6 +34,6 @@ protected:
 	};
 	bool	GetExistDTUID(TArray<FDTUIDInfo>& OutDTUIDList, const FString& InPath) const;
 	void	CheckDataTableRow(TArray<FDTUIDInfo>& OutDTUIDList, const UDataTable* InDataTable) const;
-	bool	CreateStringRelacepMap(TMap<FString, FString>& OutStringReplaceMap, const TArray<FDTUIDInfo>& InDTUIDList, const FString& InDataTableName) const;
+	bool	CreateStringReplacepMap(TMap<FString, FString>& OutStringReplaceMap, const TArray<FDTUIDInfo>& InDTUIDList, const FString& InDataTableName) const;
 	bool	GetNewFileString(FString& OutFileString, const FString& InBaseFilePath, const TMap<FString, FString>& InStringReplaceMap);
 };

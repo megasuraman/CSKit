@@ -17,7 +17,7 @@
 #include "NavigationSystem.h"
 #include "DrawDebugHelpers.h"
 #include "NavLinkCustomComponent.h"
-#include "EnvironmentQuery/EnvQueryManager.h"
+#include "Engine/Canvas.h"
 #include "EnvironmentQuery/Items/EnvQueryItemType_VectorBase.h"
 #include "EnvironmentQuery/EnvQueryDebugHelpers.h"
 
@@ -25,7 +25,7 @@
 /**
  * @brief	8面体風矢印表示
  */
-void UCSKitDebug_Draw::OctahedronArrow::Draw(UWorld* InWorld, const FColor& InColor, const uint8 InDepthPriority, const float InThickness) const
+void UCSKitDebug_Draw::OctahedronArrow::Draw(const UWorld* InWorld, const FColor& InColor, const uint8 InDepthPriority, const float InThickness) const
 {
 	if (GEngine->GetNetMode(InWorld) == NM_DedicatedServer)
 	{
@@ -33,7 +33,7 @@ void UCSKitDebug_Draw::OctahedronArrow::Draw(UWorld* InWorld, const FColor& InCo
 	}
 
 	ULineBatchComponent* const LineBatcher = InWorld->LineBatcher;
-	if (LineBatcher == NULL)
+	if (LineBatcher == nullptr)
 	{
 		return;
 	}
@@ -42,7 +42,7 @@ void UCSKitDebug_Draw::OctahedronArrow::Draw(UWorld* InWorld, const FColor& InCo
 	const float Extent = mRadius;
 	const FVector TargetV = mTargetPos - mBasePos;
 	const FRotator TargetRotator = TargetV.Rotation();
-	const uint32 QuadPosNum = 4;
+	constexpr uint32 QuadPosNum = 4;
 	const FVector QuadPosList[QuadPosNum] =
 	{
 		mBasePos + TargetRotator.RotateVector(FVector(TargetLen * mQadCenterRatio,Extent,Extent)),
@@ -77,7 +77,7 @@ void	UCSKitDebug_Draw::FanShape::Draw(UWorld* InWorld, const FColor& InColor, co
 	}
 
 	ULineBatchComponent* const LineBatcher = InWorld->LineBatcher;
-	if (LineBatcher == NULL)
+	if (LineBatcher == nullptr)
 	{
 		return;
 	}
@@ -89,7 +89,7 @@ void	UCSKitDebug_Draw::FanShape::Draw(UWorld* InWorld, const FColor& InColor, co
 
 	const float HalfAngle = mAngle * 0.5f;
 
-	const float AngleInterval = mAngle / (float)mEdgePointNum;
+	const float AngleInterval = mAngle / static_cast<float>(mEdgePointNum);
 	float PointAngle = -HalfAngle;
 	for (uint32 i = 0; i < mEdgePointNum; ++i)
 	{
@@ -118,7 +118,7 @@ void	UCSKitDebug_Draw::FanShapeClipTip::Draw(UWorld* InWorld, const FColor& InCo
 	ULineBatchComponent* const LineBatcher = InWorld->LineBatcher;
 	if (mEdgePointNum == 0
 		|| GEngine->GetNetMode(InWorld) == NM_DedicatedServer
-		|| LineBatcher == NULL
+		|| LineBatcher == nullptr
 		|| mNearClipRadius >= mRadius
 		)
 	{
@@ -137,7 +137,7 @@ void	UCSKitDebug_Draw::FanShapeClipTip::Draw(UWorld* InWorld, const FColor& InCo
 
 	const float HalfAngle = mAngle * 0.5f;
 
-	const float AngleInterval = mAngle / (float)mEdgePointNum;
+	const float AngleInterval = mAngle / static_cast<float>(mEdgePointNum);
 	for (int32 ArcIndex = 0; ArcIndex < 2; ++ArcIndex)
 	{
 		const bool bNearArc = (ArcIndex == 1);
@@ -270,12 +270,12 @@ void	UCSKitDebug_Draw::DrawPathFollowRoute(UWorld* InWorld, UCanvas* InCanvas, c
 		return;
 	}
 
-	const FColor PassagePathColor(20, 20, 255);
-	const FColor PlanPathColor(255, 165, 20);
+	constexpr FColor PassagePathColor(20, 20, 255);
+	constexpr FColor PlanPathColor(255, 165, 20);
 	const int32 PathPointNum = PathInstance->GetPathPoints().Num();
-	const int32 NeedPointNum = 2;
-	const int32 CurrentPathIndex = (int32)PathFollowingComponent->GetCurrentPathIndex();
-	const int32 NextPathIndex = (int32)PathFollowingComponent->GetNextPathIndex();
+	constexpr int32 NeedPointNum = 2;
+	const int32 CurrentPathIndex = static_cast<int32>(PathFollowingComponent->GetCurrentPathIndex());
+	const int32 NextPathIndex = static_cast<int32>(PathFollowingComponent->GetNextPathIndex());
 	if (PathPointNum < NeedPointNum
 		|| CurrentPathIndex >= PathPointNum
 		|| NextPathIndex >= PathPointNum
@@ -288,7 +288,7 @@ void	UCSKitDebug_Draw::DrawPathFollowRoute(UWorld* InWorld, UCanvas* InCanvas, c
 	FVector BeginLocation = PathInstance->GetPathPoints()[0].Location;
 	DrawDebugLine(World, BeginLocation, BeginLocation + FVector(0.f, 0.f, 100.f), PassagePathColor);
 
-	const float OctahedronRadius = 10.f;
+	constexpr float OctahedronRadius = 10.f;
 	const FVector OctahedronBasePosOffset(0.f, 0.f, 80.f);
 	{
 		UCSKitDebug_Draw::OctahedronArrow CurrentPathArrow;
@@ -386,8 +386,8 @@ void	UCSKitDebug_Draw::DrawLastEQS(UWorld* InWorld, UCanvas* InCanvas, const AAI
 	{
 		return;
 	}
-	const FColor LineColor_Safe(20, 200, 20);
-	const FColor LineColor_Out(20, 20, 200);
+	constexpr FColor LineColor_Safe(20, 200, 20);
+	constexpr FColor LineColor_Out(20, 20, 200);
 	const bool bUseMidResults = QueryInstance && (QueryInstance->Items.Num() < QueryInstance->DebugData.DebugItems.Num());
 	const FEnvQueryDebugData& InstanceDebugData = QueryInstance->DebugData;
 	const TArray<FEnvQueryItemDetails>& Details = InstanceDebugData.DebugItemDetails;
@@ -425,7 +425,7 @@ void	UCSKitDebug_Draw::DrawLastEQS(UWorld* InWorld, UCanvas* InCanvas, const AAI
 	EQSDebug::FQueryData DebugItem;
 	UEnvQueryDebugHelpers::QueryToDebugData(*QueryInstance, DebugItem, MAX_int32);
 
-	const float OctahedronRadius = 5.f;
+	constexpr float OctahedronRadius = 5.f;
 	const FVector OctahedronTopOffset(0.f, 0.f, 50.f);
 	UWorld* World = InWorld;
 	// スコアを求めたアイテムを表示
@@ -525,7 +525,7 @@ void	UCSKitDebug_Draw::DrawLastEQS(UWorld* InWorld, UCanvas* InCanvas, const AAI
  */
 void	UCSKitDebug_Draw::DrawCanvasQuadrangle(UCanvas* InCanvas, const FVector2D& InCenterPos, const FVector2D& InExtent, const FLinearColor InColor)
 {
-	const uint32 PointListSize = 4;
+	constexpr uint32 PointListSize = 4;
 	const FVector2D PointList[PointListSize] = {
 		FVector2D(InCenterPos.X - InExtent.X, InCenterPos.Y + InExtent.Y),//左上
 		FVector2D(InCenterPos.X - InExtent.X, InCenterPos.Y - InExtent.Y),//左下
@@ -551,6 +551,61 @@ void	UCSKitDebug_Draw::DrawCanvasQuadrangle(UCanvas* InCanvas, const FVector& In
 
 	const FVector2D ScreenPos(ProjectPos);
 	UCSKitDebug_Draw::DrawCanvasQuadrangle(InCanvas, ScreenPos, InExtent, InColor);
+}
+
+void UCSKitDebug_Draw::DrawBone(UCanvas* InCanvas, const USkeletalMeshComponent* InSkeletalMeshComponent)
+{
+	if (InSkeletalMeshComponent == nullptr)
+	{
+		return;
+	}
+	//const TArray<int32>& MasterBoneMap = MeshComponent->GetMasterBoneMap();
+	const int32 BoneNum = InSkeletalMeshComponent->GetNumBones();
+	FColor LineColor(144, 238, 144);
+	UWorld* World = InSkeletalMeshComponent->GetWorld();
+	for (int32 i = 0; i < BoneNum; ++i)
+	{
+		const FName ParentBoneName = InSkeletalMeshComponent->GetParentBone(InSkeletalMeshComponent->GetBoneName(i));
+		const int32 ParentBoneIndex = InSkeletalMeshComponent->GetBoneIndex(ParentBoneName);
+		if (ParentBoneIndex == INDEX_NONE)
+		{
+			continue;
+		}
+		const FMatrix ParentBoneMatrix = InSkeletalMeshComponent->GetBoneMatrix(ParentBoneIndex);
+		const FMatrix BoneMatrix = InSkeletalMeshComponent->GetBoneMatrix(i);
+		const FVector Start = ParentBoneMatrix.GetOrigin();
+		const FVector End = BoneMatrix.GetOrigin();
+
+		OctahedronArrow Arrow;
+		Arrow.mBasePos = Start;
+		Arrow.mTargetPos = End;
+		Arrow.Draw(World, LineColor, 255);
+
+		if (InSkeletalMeshComponent)
+		{
+			FCSKitDebug_ScreenWindowText ScreenWindowText;
+			ScreenWindowText.AddText(FString::Printf(TEXT("%s"), *InSkeletalMeshComponent->GetBoneName(i).ToString()));
+			ScreenWindowText.Draw(InCanvas, End, 300.f);
+		}
+	}
+}
+
+void UCSKitDebug_Draw::DrawAxis(const UWorld* InWorld, const FTransform& InTransform, const float InLength)
+{
+	const FVector BasePos = InTransform.GetLocation();
+	const FRotator BaseRot = InTransform.GetRotation().Rotator();
+	{
+		const FVector AxisV = BaseRot.RotateVector(FVector(InLength, 0.f, 0.f));
+		DrawDebugDirectionalArrow(InWorld, BasePos, BasePos + AxisV, 10.f, FColor::Red, false, -1.f, UINT8_MAX, 1.f);
+	}
+	{
+		const FVector AxisV = BaseRot.RotateVector(FVector(0.f, InLength, 0.f));
+		DrawDebugDirectionalArrow(InWorld, BasePos, BasePos + AxisV, 10.f, FColor::Green, false, -1.f, UINT8_MAX, 1.f);
+	}
+	{
+		const FVector AxisV = BaseRot.RotateVector(FVector(0.f, 0.f, InLength));
+		DrawDebugDirectionalArrow(InWorld, BasePos, BasePos + AxisV, 10.f, FColor::Blue, false, -1.f, UINT8_MAX, 1.f);
+	}
 }
 
 #endif//USE_CSKIT_DEBUG

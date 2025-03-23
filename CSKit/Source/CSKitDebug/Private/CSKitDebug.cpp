@@ -17,7 +17,7 @@ void FCSKitDebugModule::StartupModule()
 	if (SettingsModule != nullptr)
 	{
 		SettingsModule->RegisterSettings(
-			"Project", //ƒvƒƒWƒFƒNƒgİ’è‚Éo‚·‚½‚ß‚É
+			"Project", //ProjectSettingã«è¡¨ç¤ºã™ã‚‹ãŸã‚
 			"Plugins",
 			"CSKitDebug",
 			LOCTEXT("CSKitDebugName", "CSKitDebug"),
@@ -37,7 +37,7 @@ void FCSKitDebugModule::ShutdownModule()
 	if (SettingsModule != nullptr)
 	{
 		SettingsModule->UnregisterSettings(
-			"Project", //ƒvƒƒWƒFƒNƒgİ’è‚Éo‚·‚½‚ß‚É
+			"Project", //ï¿½vï¿½ï¿½ï¿½Wï¿½Fï¿½Nï¿½gï¿½İ’ï¿½Éoï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½
 			"Plugins",
 			"CSKitDebug"
 		);

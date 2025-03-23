@@ -27,28 +27,28 @@ public:
 
 
 protected:
-	//TSharedPtr<IPropertyHandle>‚Ì•Û(mResultInputHandle‚Ìİ’è•K{)
+	//TSharedPtr<IPropertyHandle>
 	virtual void SetupPropertyHandle(const TSharedRef<IPropertyHandle>& StructPropertyHandle){};
-	//•\¦–¼(mDisplayName)İ’è
+	//è¡¨ç¤ºåè¨­å®š
 	virtual void SetupDisplayName(const TSharedRef<IPropertyHandle>& StructPropertyHandle){};
-	//ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚É•\¦‚·‚é•¶š—ñ(mStringList)İ’è
+	//ãƒªã‚¹ãƒˆè¨­å®š
 	virtual void SetupStringList(const TSharedRef<IPropertyHandle>& StructPropertyHandle){}
-	//Slateİ’è
+	//Slate
 	virtual void SetupSlate(class IDetailChildrenBuilder& StructBuilder);
-	//ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚Ì‘I‘ğ•ÏXˆ—
-	void OnSelectionChanged(TSharedPtr<FString> Type, ESelectInfo::Type SelectionType);
-	//Widget¶¬ˆ—
+	//é¸æŠå¤‰æ›´æ™‚
+	void OnSelectionChanged(TSharedPtr<FString> Type, ESelectInfo::Type SelectionType) const;
+	//Widgetç”Ÿæˆæ™‚
 	TSharedRef<SWidget> OnGenerateWidget(TSharedPtr<FString> Type);
-	//ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚Å‘I‘ğ’†‚Ì•¶š—ñæ“¾
+	//é¸æŠä¸­ã®æ–‡å­—åˆ—å–å¾—
 	FText GetSelectedTypeText() const;
-	//ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚Å‘I‘ğ’†‚ÌIndexæ“¾
+	//é¸æŠä¸­ã®Indexå–å¾—
 	int32 GetSelectIndex() const;
-	//o—ÍæƒvƒƒpƒeƒB‚É“KØ‚È•¶š—ñƒZƒbƒg‚³‚ê‚Ä‚é‚©ƒ`ƒFƒbƒN
+	//æœ‰åŠ¹ãªå…¥åŠ›å€¤ã‹ãƒã‚§ãƒƒã‚¯
 	void CheckActiveResultInput();
 
 protected:
-	TArray< TSharedPtr<FString> > mStringList;//ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚É•\¦‚·‚é•¶š—ñƒŠƒXƒg
+	TArray< TSharedPtr<FString> > mStringList;
 	TSharedPtr<class SSearchableComboBox> mComboBox;
-	TSharedPtr< IPropertyHandle > mResultInputHandle;//ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚Ì‘I‘ğ‚µ‚½•¶š—ñ‚ÌŠi”[æ
-	FString mDisplayName;//ƒvƒƒpƒeƒB‚Ì•\¦–¼
+	TSharedPtr< IPropertyHandle > mResultInputHandle;
+	FString mDisplayName;
 };

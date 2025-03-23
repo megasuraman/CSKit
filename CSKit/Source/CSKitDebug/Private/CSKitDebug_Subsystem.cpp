@@ -5,20 +5,15 @@
  * @author megasuraman
  * @date 2020/7/24
  */
-
-
 #include "CSKitDebug_Subsystem.h"
 
-#include "CSKitDebug_ShortcutCommand.h"
 #include "ActorSelect/CSKitDebug_ActorSelectManager.h"
-#include "DebugMenu/CSKitDebug_DebugMenuManager.h"
-#include "ScreenWindow/CSKitDebug_ScreenWindowManager.h"
 #include "CSKitDebug_Config.h"
-
-#include "Engine/Canvas.h"
-#include "Engine/Engine.h"
-#include "CanvasItem.h"
+#include "CSKitDebug_ShortcutCommand.h"
 #include "Debug/DebugDrawService.h"
+#include "DebugMenu/CSKitDebug_DebugMenuManager.h"
+#include "Engine/Engine.h"
+#include "ScreenWindow/CSKitDebug_ScreenWindowManager.h"
 
 DEFINE_LOG_CATEGORY(CSKitDebugLog);
 
@@ -51,8 +46,6 @@ void	UCSKitDebug_Subsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	RequestTick(true);
 	RequestDraw(true);
-
-	UWorld* Wold = GetWorld();
 
 	if (mGCObject.mDebugMenuManager == nullptr)
 	{
@@ -132,7 +125,7 @@ void	UCSKitDebug_Subsystem::RequestDraw(const bool bInActive)
 /**
  * @brief	Tick
  */
-bool	UCSKitDebug_Subsystem::DebugTick(float InDeltaSecond)
+bool	UCSKitDebug_Subsystem::DebugTick(float InDeltaSecond) const
 {
 	const UCSKitDebug_Config* CSKitDebugConfig = GetDefault<UCSKitDebug_Config>();
 	if (!CSKitDebugConfig->mbActiveCSKitDebug)
@@ -162,7 +155,7 @@ bool	UCSKitDebug_Subsystem::DebugTick(float InDeltaSecond)
 /**
  * @brief	Draw
  */
-void	UCSKitDebug_Subsystem::DebugDraw(UCanvas* InCanvas, APlayerController* InPlayerController)
+void	UCSKitDebug_Subsystem::DebugDraw(UCanvas* InCanvas, APlayerController* InPlayerController) const
 {
 	if (mGCObject.mShortcutCommand)
 	{

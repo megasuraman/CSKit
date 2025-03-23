@@ -12,6 +12,7 @@
 #include "CSKitDebug_SaveData.h"
 #include "CSKitDebug_Subsystem.generated.h"
 
+class UCSKitDebug_ScreenWindowManager;
 class UCSKitDebug_ShortcutCommand;
 class UCSKitDebug_ActorSelectManager;
 class UCSKitDebugMenuManager;
@@ -46,8 +47,8 @@ protected:
 	void	RequestTick(const bool bInActive);
 	void	RequestDraw(const bool bInActive);
 
-	bool	DebugTick(float InDeltaSecond);
-	void	DebugDraw(class UCanvas* InCanvas, class APlayerController* InPlayerController);
+	bool	DebugTick(float InDeltaSecond) const;
+	void	DebugDraw(class UCanvas* InCanvas, class APlayerController* InPlayerController) const;
 
 protected:
 	struct FGCObjectCSKitDebug : public FGCObject

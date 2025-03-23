@@ -1,7 +1,7 @@
 // Copyright 2021 megasuraman
 /**
  * @file CSKitDebug_AutoPilotModeRecord.h
- * @brief ©“®“ü—Í ƒpƒbƒh“ü—Í‚ğ•Û‘¶,Ä¶‚·‚éƒ‚[ƒh
+ * @brief ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½pï¿½bï¿½hï¿½ï¿½ï¿½Í‚ï¿½Û‘ï¿½,ï¿½Äï¿½ï¿½ï¿½ï¿½éƒ‚ï¿½[ï¿½h
  * @author megasuraman
  * @date 2021/12/28
  */
@@ -21,7 +21,7 @@ class CSKITDEBUG_API UCSKitDebug_AutoPilotModeRecord : public UCSKitDebug_AutoPi
 	GENERATED_BODY()
 
 	/* ------------------------------------------------------------
-		!©“®‘€ìƒ‚[ƒh
+		!ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ìƒ‚ï¿½[ï¿½h
 	------------------------------------------------------------ */
 	enum class ECommandMode : uint8
 	{
@@ -33,7 +33,7 @@ class CSKITDEBUG_API UCSKitDebug_AutoPilotModeRecord : public UCSKitDebug_AutoPi
 		EndRecord,
 	};
 	/* ------------------------------------------------------------
-		!“ü—Í‹L˜^ƒ‚[ƒh‚Ìó‘Ô
+		!ï¿½ï¿½ï¿½Í‹Lï¿½^ï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½Ìï¿½ï¿½
 	------------------------------------------------------------ */
 	enum class EPlayInputRecordState : uint8
 	{
@@ -44,7 +44,7 @@ class CSKITDEBUG_API UCSKitDebug_AutoPilotModeRecord : public UCSKitDebug_AutoPi
 		Finish,
 	};
 	/* ------------------------------------------------------------
-	   !©“®‘€ì‚ÌƒRƒ}ƒ“ƒh’P‘Ì
+	   !ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ìï¿½ÌƒRï¿½}ï¿½ï¿½ï¿½hï¿½Pï¿½ï¿½
 	------------------------------------------------------------ */
 	struct FCommandNode : public FJsonSerializable
 	{
@@ -64,7 +64,7 @@ class CSKITDEBUG_API UCSKitDebug_AutoPilotModeRecord : public UCSKitDebug_AutoPi
 		float	mDeltaTime = 0.f;
 		uint32	mKeyId = 0;
 		uint32	mInputEventId = 0;
-		int32	mIndex = INDEX_NONE;//CommandPtrList‚©‚çmList‚ÌIndex‚ğæ“¾‚·‚é‚½‚ß‚ÉBBB
+		int32	mIndex = INDEX_NONE;//CommandPtrListï¿½ï¿½ï¿½ï¿½mListï¿½ï¿½Indexï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½é‚½ï¿½ß‚ÉBï¿½Bï¿½B
 
 		bool	IsSameInput(const FCommandNode& InCommand) const
 		{
@@ -74,7 +74,7 @@ class CSKITDEBUG_API UCSKitDebug_AutoPilotModeRecord : public UCSKitDebug_AutoPi
 		}
 	};
 	/* ------------------------------------------------------------
-	   !©“®‘€ì‚ÌƒRƒ}ƒ“ƒhƒŠƒXƒg
+	   !ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ìï¿½ÌƒRï¿½}ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½Xï¿½g
 	------------------------------------------------------------ */
 	struct FCommandList : public FJsonSerializable
 	{
@@ -114,7 +114,7 @@ public:
 
 	void	SetMode(ECommandMode InMode);
 	void	RequestPlayInputRecord(const FString& InFileName);
-	bool	IsFinihPlay() const;
+	bool	IsFinishPlay() const;
 	void	RequestBeginRecord(const FString& InFileName);
 	void	RequestEndRecord();
 	void	RequestIdle();

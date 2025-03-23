@@ -8,19 +8,8 @@
 #include "EditorUtilityWidget/CSKitEditor_EUW_PropertyViewer.h"
 
 #include "Editor.h"
-#include "LevelEditorViewport.h"
-#include "Engine/LocalPlayer.h"
-#include "GameFramework/PlayerController.h"
-#include "LevelEditor.h"
-#include "SLevelViewport.h"
-#include "LevelEditorViewport.h"
-#include "Debug/DebugDrawService.h"
 #include "Engine/Engine.h"
-#include "Kismet/GameplayStatics.h"
 #include "UnrealEd/Public/Editor.h"
-#include "UnrealEd/Public/UnrealEdGlobals.h"
-#include "UnrealEd/Classes/Editor/UnrealEdEngine.h"
-#include "Misc/FileHelper.h"
 
 UCSKitEditor_EUW_PropertyViewer::UCSKitEditor_EUW_PropertyViewer(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -469,8 +458,7 @@ FString UCSKitEditor_EUW_PropertyViewer::GetDebugInfoInternal(FProperty* Propert
 	FBoolProperty* BoolProperty = CastField<FBoolProperty>(Property);
 	if (BoolProperty)
 	{
-		const FCoreTexts& CoreTexts = FCoreTexts::Get();
-
+		//const FCoreTexts& CoreTexts = FCoreTexts::Get();
 		DebugValue = BoolProperty->GetPropertyValue(PropertyValue) ? FString(TEXT("True")) : FString(TEXT("False"));
 		return DebugValue;
 	}
@@ -478,7 +466,7 @@ FString UCSKitEditor_EUW_PropertyViewer::GetDebugInfoInternal(FProperty* Propert
 	FNameProperty* NameProperty = CastField<FNameProperty>(Property);
 	if (NameProperty)
 	{
-		DebugValue = (*(FName*)PropertyValue).ToString();
+		DebugValue = ((FName*)PropertyValue)->ToString();
 		return DebugValue;
 	}
 
@@ -575,7 +563,7 @@ FString UCSKitEditor_EUW_PropertyViewer::GetDebugInfoInternal(FProperty* Propert
 		}
 		else
 		{
-			DebugValue = FString::Printf(TEXT("%d"), Value);
+			DebugValue = FString::Printf(TEXT("%lld"), Value);
 		}
 
 		return DebugValue;
@@ -614,7 +602,7 @@ FString UCSKitEditor_EUW_PropertyViewer::GetDebugInfoInternal(FProperty* Propert
 	{
 		FScriptSetHelper SetHelper(SetProperty, PropertyValue);
 		DebugValue = FString::Printf(TEXT("SetSize(%d)"), SetHelper.Num());
-		uint8* PropData = SetHelper.GetElementPtr(0);
+		//uint8* PropData = SetHelper.GetElementPtr(0);
 
 // 		int32 Index = 0;
 // 		for (int32 Count = SetHelper.Num(); Count; PropData += SetProperty->SetLayout.Size, ++Index)

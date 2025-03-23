@@ -2,7 +2,11 @@
 
 
 #include "DebugMenu/CSKitDebug_DebugMenuNodeBase.h"
-#include "DebugMenu/CSKitDebug_DebugMenuManager.h"
+
+#include "CanvasItem.h"
+#include "CSKitDebug_Subsystem.h"
+#include "DrawDebugHelpers.h"
+#include "Engine/Canvas.h"
 
 
 CSKitDebug_DebugMenuNodeBase::CSKitDebug_DebugMenuNodeBase()
@@ -77,7 +81,7 @@ void CSKitDebug_DebugMenuNodeBase::OnEndAction(const FCSKitDebug_DebugMenuNodeAc
 void CSKitDebug_DebugMenuNodeBase::Draw(UCanvas* InCanvas, const FVector2D& InPos, const bool bInSelect) const
 {
 	FVector2D WindowExtent(300.f, 20.f);
-	const float ValueLineOffsetX = 200.f;
+	constexpr float ValueLineOffsetX = 200.f;
 	const bool bFolderNode = mNodeData.mKind == ECSKitDebug_DebugMenuValueKind::Folder;
 	if (bFolderNode)
 	{

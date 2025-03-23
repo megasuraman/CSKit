@@ -2,6 +2,9 @@
 
 #include "DebugMenu/CSKitDebug_DebugMenuNodeList.h"
 
+#include "CanvasItem.h"
+#include "Engine/Canvas.h"
+
 
 void CSKitDebug_DebugMenuNodeList::OnBeginAction()
 {
@@ -13,19 +16,19 @@ void CSKitDebug_DebugMenuNodeList::OnBeginAction()
 	mEditDrawIndexMax = ListNum-1;
 	if (ListNum >= mEditDrawListNum)
 	{
-		if (mEditSelectIndex < mEditDrawListInitCursolOffset)
+		if (mEditSelectIndex < mEditDrawListInitCursorOffset)
 		{
 			mEditDrawIndexMin = 0;
 			mEditDrawIndexMax = mEditDrawListNum - 1;
 		}
-		else if(mEditSelectIndex > ListNum - mEditDrawListInitCursolOffset)
+		else if(mEditSelectIndex > ListNum - mEditDrawListInitCursorOffset)
 		{
 			mEditDrawIndexMin = ListNum - mEditDrawListNum;
 			mEditDrawIndexMax = ListNum - 1;
 		}
 		else
 		{
-			mEditDrawIndexMin = FMath::Max(mEditSelectIndex - mEditDrawListInitCursolOffset, 0);
+			mEditDrawIndexMin = FMath::Max(mEditSelectIndex - mEditDrawListInitCursorOffset, 0);
 			mEditDrawIndexMax = FMath::Min(mEditDrawIndexMin + mEditDrawListNum, ListNum - 1);
 		}
 	}
@@ -200,7 +203,7 @@ void CSKitDebug_DebugMenuNodeList::DrawEditValue(UCanvas* InCanvas, const FVecto
 		}
 		{// 枠
 			FCanvasBoxItem Item(ScrollBarFramePos, ScrollBarFrameExtent);
-			Item.SetColor(GetWindowFrameColor());
+			Item.SetColor(WindowFrameColor);
 			Item.LineThickness = 1.f;
 			InCanvas->DrawItem(Item);
 		}

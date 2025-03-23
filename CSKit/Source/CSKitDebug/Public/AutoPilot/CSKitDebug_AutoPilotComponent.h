@@ -45,9 +45,9 @@ protected:
 	virtual void BeginDestroy() override;
 
 public:
-	void	PreProcessInput(float DeltaTime);
-	void	PostProcessInput(float DeltaTime);
-	class APlayerController* GetPlayerController();
+	void	PreProcessInput(float DeltaTime) const;
+	void	PostProcessInput(float DeltaTime) const;
+	class APlayerController* GetPlayerController() const;
 
 	void	SetMode(ECSKitDebug_AutoPilotMode InMode);
 	void	SetIgnoreDefaultInput(const bool InIgnore);
@@ -60,11 +60,11 @@ public:
 
 protected:
 	void	RequestDebugDraw(const bool bInActive);
-	void	DebugDraw(class UCanvas* InCanvas, class APlayerController* InPlayerController);
+	void	DebugDraw(class UCanvas* InCanvas, class APlayerController* InPlayerController) const;
 
 	void	OnBeginMode();
 	void	OnEndMode();
-	void	SetFixFrameRate(bool InFix);
+	static void	SetFixFrameRate(bool InFix);
 
 private:
 	UPROPERTY()

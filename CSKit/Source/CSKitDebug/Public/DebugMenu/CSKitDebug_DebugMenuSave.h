@@ -1,4 +1,4 @@
-// Copyright 2022 megasruaman
+// Copyright 2022 megasuraman
 #pragma once
 
 #include "CoreMinimal.h"

@@ -8,10 +8,12 @@
 #include "CSKitDebug_Utility.h"
 
 #include "EnvironmentQuery/EnvQueryManager.h"
-#include "DrawDebugHelpers.h"
+#include "NavigationSystem.h"
+#include "Engine/DebugCameraController.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Engine/LocalPlayer.h"
+#include "GameFramework/PlayerController.h"
 
 #if WITH_EDITOR
 #include "Editor.h"

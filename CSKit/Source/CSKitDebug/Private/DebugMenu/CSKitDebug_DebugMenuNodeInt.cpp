@@ -2,6 +2,10 @@
 
 #include "DebugMenu/CSKitDebug_DebugMenuNodeInt.h"
 
+#include "CanvasItem.h"
+#include "DrawDebugHelpers.h"
+#include "Engine/Canvas.h"
+
 
 void CSKitDebug_DebugMenuNodeInt::OnBeginAction()
 {
@@ -136,12 +140,11 @@ void CSKitDebug_DebugMenuNodeInt::DrawEditValue(UCanvas* InCanvas, const FVector
 	// 枠
 	{
 		FCanvasBoxItem Item(SubWindowPos, WindowExtent);
-		Item.SetColor(GetSelectColor());
+		Item.SetColor(WindowFrameColor);
 		Item.LineThickness = 3.f;
 		InCanvas->DrawItem(Item);
 	}
 
-	const float DigitLineLength = 6.f;
 	const float EditDigitPosY = SubWindowPos.Y + 15.f;
 	for (int32 i = 0; i < mEditDigitIntListNum; ++i)
 	{
@@ -165,9 +168,10 @@ void CSKitDebug_DebugMenuNodeInt::DrawEditValue(UCanvas* InCanvas, const FVector
 		}
 		if (i == mEditDigitIntIndex)
 		{
+			constexpr float DigitLineLength = 6.f;
 			const FVector2D LinePosBegin(EditDigitPosX + 1.f, EditDigitPosY);
 			const FVector2D LinePosEnd(EditDigitPosX + DigitLineLength, EditDigitPosY);
-			const FLinearColor LineColor(0.9f, 0.9f, 0.1f, 1.f);
+			constexpr FLinearColor LineColor(0.9f, 0.9f, 0.1f, 1.f);
 			DrawDebugCanvas2DLine(InCanvas, LinePosBegin, LinePosEnd, LineColor, 2.f);
 		}
 	}

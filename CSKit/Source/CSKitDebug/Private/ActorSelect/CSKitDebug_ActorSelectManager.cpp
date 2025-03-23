@@ -16,6 +16,7 @@
 
 #include "Engine/Canvas.h"
 #include "CanvasItem.h"
+#include "CSKitDebug_Subsystem.h"
 
 #if USE_CSKIT_DEBUG
 
@@ -29,7 +30,7 @@ UCSKitDebug_ActorSelectManager* UCSKitDebug_ActorSelectManager::sGet(const UWorl
 /**
  * @brief	Init
  */
-void	UCSKitDebug_ActorSelectManager::Init()
+void	UCSKitDebug_ActorSelectManager::Init() const
 {
  	UCSKitDebug_DebugMenuManager* DebugMenuManager = UCSKitDebug_DebugMenuManager::sGet(this);
 
@@ -206,7 +207,7 @@ void UCSKitDebug_ActorSelectManager::CheckSelectTarget()
 /**
  * @brief	対象選択時
  */
-void UCSKitDebug_ActorSelectManager::OnSelect(AActor* InActor)
+void UCSKitDebug_ActorSelectManager::OnSelect(const AActor* InActor)
 {
 	UCSKitDebug_ActorSelectComponent* DebugSelectComponent = InActor->FindComponentByClass<UCSKitDebug_ActorSelectComponent>();
 	if (DebugSelectComponent == nullptr)
@@ -258,7 +259,7 @@ void UCSKitDebug_ActorSelectManager::SetActiveTickActor(AActor* InActor, const b
 /**
  * @brief	全体情報表示
  */
-void	UCSKitDebug_ActorSelectManager::DrawInfo(UCanvas* InCanvas)
+void	UCSKitDebug_ActorSelectManager::DrawInfo(UCanvas* InCanvas) const
 {
 	FCSKitDebug_ScreenWindowText ScreenWindow;
 	ScreenWindow.SetWindowName(FString(TEXT("CSKitDebug_ActorSelectManager")));
@@ -269,7 +270,7 @@ void	UCSKitDebug_ActorSelectManager::DrawInfo(UCanvas* InCanvas)
 /**
  * @brief	画面中央の選択マーク
  */
-void	UCSKitDebug_ActorSelectManager::DrawSelectMarker(UCanvas* InCanvas)
+void	UCSKitDebug_ActorSelectManager::DrawSelectMarker(UCanvas* InCanvas) const
 {
 	ADebugCameraController* DebugCameraController = GetActiveDebugCameraController();
 	if (DebugCameraController == nullptr)
@@ -283,7 +284,7 @@ void	UCSKitDebug_ActorSelectManager::DrawSelectMarker(UCanvas* InCanvas)
 	const FVector CenterPos(CamLoc + CamRot.Vector() * 5000.f * 20.f);
 	//const FVector2D CenterPos2D(InCanvas->SizeX * 0.5f, InCanvas->SizeY * 0.5f);
 	const FVector2D CenterPos2D( InCanvas->Project(CenterPos) );
-	const float ExtentLen = 10.f;
+	constexpr float ExtentLen = 10.f;
 	const FColor Color = FColor::Red;
 	{
 		FCanvasLineItem Item(FVector2D(CenterPos2D + FVector2D(ExtentLen)), FVector2D(CenterPos2D - FVector2D(ExtentLen)));

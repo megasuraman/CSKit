@@ -29,14 +29,14 @@ public:
 	UCSKitDebug_ActorSelectComponent();
 
 	UFUNCTION(BlueprintCallable, meta = (DevelopmentOnly, Category = "CSKitDebug"))
-	void    AddTextBP(const FString& InString)
+	void AddTextBP(const FString& InString)
 	{
 #if USE_CSKIT_DEBUG
 		mScreenWindow.AddText(InString);
 #endif//USE_CSKIT_DEBUG
 	}
 	UFUNCTION(BlueprintCallable, meta = (DevelopmentOnly, Category = "CSKitDebug"))
-	void    AddPreDrawDelegateBP(FDebugSelectPreDrawDelegate InDelegate)
+	void AddPreDrawDelegateBP(FDebugSelectPreDrawDelegate InDelegate)
 	{
 #if USE_CSKIT_DEBUG
 		mPreDrawDelegate = InDelegate;
@@ -54,14 +54,14 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason);
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 public:
 	void    AddText(const FString& InString)
 	{
 		mScreenWindow.AddText(InString);
 	}
-    void    AddPreDrawDelegate(FDebugSelectPreDrawDelegate InDelegate)
+    void    AddPreDrawDelegate(const FDebugSelectPreDrawDelegate& InDelegate)
     {
         mPreDrawDelegate = InDelegate;
         mbUsePreDrawDelegate = true;

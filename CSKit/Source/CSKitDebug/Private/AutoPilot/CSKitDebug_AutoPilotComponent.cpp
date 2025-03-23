@@ -12,7 +12,6 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "Debug/DebugDrawService.h"
-#include "GameFramework/PlayerInput.h"
 #include "InputCoreTypes.h"
 
 // Sets default values for this component's properties
@@ -45,7 +44,7 @@ void UCSKitDebug_AutoPilotComponent::BeginDestroy()
 /**
  * @brief PlayerInputの処理前
  */
-void UCSKitDebug_AutoPilotComponent::PreProcessInput(float DeltaTime)
+void UCSKitDebug_AutoPilotComponent::PreProcessInput(float DeltaTime) const
 {
 	if (UGameplayStatics::IsGamePaused(GetWorld()))
 	{
@@ -61,7 +60,7 @@ void UCSKitDebug_AutoPilotComponent::PreProcessInput(float DeltaTime)
 /**
  * @brief PlayerInputの処理後
  */
-void UCSKitDebug_AutoPilotComponent::PostProcessInput(float DeltaTime)
+void UCSKitDebug_AutoPilotComponent::PostProcessInput(float DeltaTime) const
 {
 	if (UGameplayStatics::IsGamePaused(GetWorld()))
 	{
@@ -77,7 +76,7 @@ void UCSKitDebug_AutoPilotComponent::PostProcessInput(float DeltaTime)
 /**
  * @brief APlayerControllerを取得
  */
-APlayerController* UCSKitDebug_AutoPilotComponent::GetPlayerController()
+APlayerController* UCSKitDebug_AutoPilotComponent::GetPlayerController() const
 {
 	return Cast<APlayerController>(GetOwner());
 }
@@ -154,7 +153,7 @@ bool UCSKitDebug_AutoPilotComponent::IsFinishPlayRecord() const
 {
 	if (const UCSKitDebug_AutoPilotModeRecord* ModeRecord = Cast<UCSKitDebug_AutoPilotModeRecord>(mActiveMode))
 	{
-		return ModeRecord->IsFinihPlay();
+		return ModeRecord->IsFinishPlay();
 	}
 	return false;
 }
@@ -218,7 +217,7 @@ void	UCSKitDebug_AutoPilotComponent::RequestDebugDraw(const bool bInActive)
 /**
  * @brief	Draw
  */
-void	UCSKitDebug_AutoPilotComponent::DebugDraw(UCanvas* InCanvas, APlayerController* InPlayerController)
+void	UCSKitDebug_AutoPilotComponent::DebugDraw(UCanvas* InCanvas, APlayerController* InPlayerController) const
 {
 	if (mActiveMode)
 	{

@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DebugMenu/CSKitDebug_DebugMenuTableRow.h"
 #include "DebugMenu/CSKitDebug_DebugMenuNodeBase.h"
 
 class CSKITDEBUG_API CSKitDebug_DebugMenuNodeList : public CSKitDebug_DebugMenuNodeBase
@@ -18,11 +17,11 @@ public:
 
 protected:
 	virtual void SetInitValue() override;
-	virtual void DrawEditValue(UCanvas* InCanvas, const FVector2D& InPos, const FVector2D& InValueExtent) const;
+	virtual void DrawEditValue(UCanvas* InCanvas, const FVector2D& InPos, const FVector2D& InValueExtent) const override;
 
 private:
-	static const int32 mEditDrawListNum = 9;//表示するリスト項目数
-	static const int32 mEditDrawListInitCursolOffset = mEditDrawListNum/2;//選択カーソルの初期オフセット
+	static constexpr int32 mEditDrawListNum = 9;//表示するリスト項目数
+	static constexpr int32 mEditDrawListInitCursorOffset = mEditDrawListNum/2;//選択カーソルの初期オフセット
 	int32 mEditSelectIndex = 0;
 	int32 mEditDrawIndexMin = 0;
 	int32 mEditDrawIndexMax = 0;
