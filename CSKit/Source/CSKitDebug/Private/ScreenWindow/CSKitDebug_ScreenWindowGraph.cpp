@@ -13,9 +13,9 @@
 #include "DrawDebugHelpers.h"
 
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void FCSKitDebug_ScreenWindowGraph::InitWindowExtent()
 {
 	const float GraphWidth = mMaxValueDrawLen.X + mOffsetDrawLenOverMaxValue.X;
@@ -24,9 +24,9 @@ void FCSKitDebug_ScreenWindowGraph::InitWindowExtent()
 	SetWindowExtent(WindowScreenExtent);
 }
 
-/* ------------------------------------------------------------
-   !�X�V����
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void	FCSKitDebug_ScreenWindowGraph::Update(float InDeltaTime)
 {
 	if (mLineDataList.Num() == 0)
@@ -37,9 +37,9 @@ void	FCSKitDebug_ScreenWindowGraph::Update(float InDeltaTime)
 	mSec += InDeltaTime;
 }
 
-/* ------------------------------------------------------------
-   !�X�R�A�ǉ�
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void	FCSKitDebug_ScreenWindowGraph::AddScore(const FName& InLineName, const float InScore)
 {
 	for (LineData& Data : mLineDataList)
@@ -91,9 +91,9 @@ void	FCSKitDebug_ScreenWindowGraph::AddScore(const FName& InLineName, const floa
 		AddLineData.mScoreDataList.Push(TempData);
 	}
 }
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void	FCSKitDebug_ScreenWindowGraph::SetScoreLineColor(const FName& InLineName, const FLinearColor InColor)
 {
 	for (LineData& Data : mLineDataList)
@@ -105,9 +105,9 @@ void	FCSKitDebug_ScreenWindowGraph::SetScoreLineColor(const FName& InLineName, c
 		}
 	}
 }
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void	FCSKitDebug_ScreenWindowGraph::SetScoreLineDisplayName(const FName& InLineName, const FString& InDisplayName)
 {
 	for (LineData& Data : mLineDataList)
@@ -120,9 +120,9 @@ void	FCSKitDebug_ScreenWindowGraph::SetScoreLineDisplayName(const FName& InLineN
 	}
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void FCSKitDebug_ScreenWindowGraph::SetScoreLineHide(const FName& InLineName, const bool bInHide)
 {
 	for (LineData& Data : mLineDataList)
@@ -135,17 +135,17 @@ void FCSKitDebug_ScreenWindowGraph::SetScoreLineHide(const FName& InLineName, co
 	}
 }
 
-/* ------------------------------------------------------------
-   !�K�C�h�p�̐��ǉ�
------------------------------------------------------------- */
+/**
+ * @brief ガイド用の線追加
+ */
 void	FCSKitDebug_ScreenWindowGraph::AddGuideScoreLine(const GuideScoreLineData& InData)
 {
 	mGuideScoreLineData.Add(InData);
 }
 
-/* ------------------------------------------------------------
-   !Window�̉��~���\���㏈��
------------------------------------------------------------- */
+/**
+ * @brief Windowの下敷き表示後処理
+ */
 void	FCSKitDebug_ScreenWindowGraph::DrawAfterBackground(UCanvas* InCanvas, const FVector2D& InPos2D) const
 {
 	FLinearColor AxisColor = { 1.f, 1.f, 1.f, 1.f };
