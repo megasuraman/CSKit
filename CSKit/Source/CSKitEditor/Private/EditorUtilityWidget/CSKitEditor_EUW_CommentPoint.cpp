@@ -58,6 +58,11 @@ void UCSKitEditor_EUW_CommentPoint::CollectCommentPointList()
 			continue;
 		}
 
+		if (CommentPoint->IsDrawAlways())
+		{//単体で表示されてるのでスキップ
+			continue;
+		}
+
 		if(mFilterPriority != ECSKitDebug_CommentPriority::Invalid
 			&& CommentPoint->GetPriority() != mFilterPriority)
 		{

@@ -46,6 +46,7 @@ public:
 	FString GetTitle() const{return mTitle;}
 	FString GetLastCommentOwner() const;
 	bool IsAlreadyReadAllComment() const;
+	bool IsDrawAlways() const{return mbDrawAlways;}
 
 protected:
 	virtual void PostInitProperties() override;
@@ -64,6 +65,9 @@ protected:
 	TArray<FCSKitDebug_CommentData> mCommentDataList;
 	UPROPERTY(EditAnywhere, Meta = (DisplayName = "重要度", DisplayPriority = 1))
 	ECSKitDebug_CommentPriority mPriority = ECSKitDebug_CommentPriority::Middle;
+	//UCSKitEditor_EUW_CommentPointなしで単体で描画可能
+	UPROPERTY(EditAnywhere, Meta = (DisplayName = "常に表示", DisplayPriority = 3))
+	bool mbDrawAlways = false;
 	
 private:
 	FDelegateHandle mDebugDrawHandle;

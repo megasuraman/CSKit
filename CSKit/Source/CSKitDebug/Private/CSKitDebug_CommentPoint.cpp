@@ -97,7 +97,10 @@ bool ACSKitDebug_CommentPoint::IsAlreadyReadAllComment() const
 void ACSKitDebug_CommentPoint::PostInitProperties()
 {
 	Super::PostInitProperties();
-	//DebugRequestDraw(true);
+	if (mbDrawAlways)
+	{
+		DebugRequestDraw(true);
+	}
 }
 
 void ACSKitDebug_CommentPoint::PostLoad()
@@ -110,7 +113,7 @@ void ACSKitDebug_CommentPoint::PostLoad()
 void ACSKitDebug_CommentPoint::BeginDestroy()
 {
 	Super::BeginDestroy();
-	//DebugRequestDraw(false);
+	DebugRequestDraw(false);
 }
 
 void ACSKitDebug_CommentPoint::DebugRequestDraw(const bool bInActive)
@@ -198,7 +201,7 @@ bool ACSKitDebug_CommentPoint::CanEditChange(const FProperty* InProperty) const
 		return false;
 	}
 
-	//�쐬�Җ{�l�ȊO�ҏW�s��
+	//作成者本人以外編集不可
 	if(InProperty->GetName() == FString(TEXT("mTitle"))
 		|| InProperty->GetName() == FString(TEXT("mPriority")))
 	{
@@ -221,6 +224,7 @@ void ACSKitDebug_CommentPoint::PostEditChangeProperty(FPropertyChangedEvent& Pro
 			}
 		}
 	}
+	DebugRequestDraw(mbDrawAlways);
 }
 
 void ACSKitDebug_CommentPoint::PostEditImport()
