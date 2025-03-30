@@ -48,6 +48,8 @@ class CSKITDEBUG_API UCSKitDebug_Config : public UObject
 public:
 	UPROPERTY(EditAnywhere, config, Category = CSKitDebug)
 	bool	mbActiveCSKitDebug = true;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="CSKitDebug")
+	TSubclassOf<UCheatManager> mCheatClass;
 
 	UPROPERTY(EditAnywhere, config, Category = CSKitDebugCommand)
 	FCSKitDebugKey	mDebugCommand_ReadyKey;
