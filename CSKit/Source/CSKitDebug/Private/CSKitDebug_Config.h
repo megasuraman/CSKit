@@ -11,6 +11,8 @@
 #include "CoreMinimal.h"
 #include "CSKitDebug_Config.generated.h"
 
+class UCheatManager;
+
 USTRUCT(BlueprintType)
 struct FCSKitDebugKey
 {
