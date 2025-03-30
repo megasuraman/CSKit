@@ -49,5 +49,15 @@ public class CSKit : ModuleRules
 				// ... add any modules that your module loads dynamically here ...
 			}
 			);
+
+		if (Target.Configuration != UnrealTargetConfiguration.Shipping)
+		{
+			PrivateDependencyModuleNames.AddRange(
+				new string[]
+				{
+					"CSKitDebug"
+				}
+			);
+		}
 	}
 }
