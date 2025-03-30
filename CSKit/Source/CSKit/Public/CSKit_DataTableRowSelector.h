@@ -1,4 +1,11 @@
 // Copyright 2022 megasuraman
+/**
+ * @file CSKit_DataTableRowSelector.h
+ * @brief プロパティでDataTableのRowNameをコンボボックス選択できる構造体
+ *			FCSKitEditor_DataTableRowSelectorCustomizationで対応
+ * @author megasuraman
+ * @date 2020/05/27
+ */
 
 #pragma once
 
@@ -18,7 +25,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "CSKit_DataTableRowSelector")
 	FString mDataTablePath;
 	UPROPERTY(EditAnywhere, Category = "CSKit_DataTableRowSelector")
-	UStruct* mDataTableStruct;
+	UStruct* mDataTableStruct = nullptr;
 	UPROPERTY(EditAnywhere, Category = "CSKit_DataTableRowSelector")
 	FString mDisplayName;
 #endif
