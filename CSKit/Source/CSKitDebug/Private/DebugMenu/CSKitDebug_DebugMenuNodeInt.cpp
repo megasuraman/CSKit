@@ -34,8 +34,6 @@ void CSKitDebug_DebugMenuNodeInt::OnBeginAction()
 
 void CSKitDebug_DebugMenuNodeInt::OnEndAction(const FCSKitDebug_DebugMenuNodeActionParameter& InParameter)
 {
-	CSKitDebug_DebugMenuNodeBase::OnEndAction(InParameter);
-
 	int32 IntValue = 0;
 	int32 DigitValue = 1;
 	for (int32 i = 0; i < mEditDigitNum; ++i)
@@ -49,6 +47,8 @@ void CSKitDebug_DebugMenuNodeInt::OnEndAction(const FCSKitDebug_DebugMenuNodeAct
 	}
 
 	SetValueInt(IntValue);
+	
+	CSKitDebug_DebugMenuNodeBase::OnEndAction(InParameter);
 }
 
 void CSKitDebug_DebugMenuNodeInt::OnJustPressedUpKey()

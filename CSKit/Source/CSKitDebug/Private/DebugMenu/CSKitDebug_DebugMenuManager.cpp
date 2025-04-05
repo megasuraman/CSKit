@@ -35,38 +35,16 @@ void UCSKitDebug_DebugMenuManager::BeginDestroy()
 void UCSKitDebug_DebugMenuManager::Init()
 {
 	ClearNode();
-
-	const UCSKitDebug_Config* CSKitDebugConfig = GetDefault<UCSKitDebug_Config>();
-	const UDataTable* DataTable = CSKitDebugConfig->mDebugMenuDataTable.LoadSynchronous();
-	if (DataTable == nullptr)
-	{
-		return;
-	}
-
+	
 	FindOrAddFolder(mRootPath);
-
-	TArray<FName> RowNameList = DataTable->GetRowNames();
-	for (const FName& RowName : RowNameList)
-	{
-		const FCSKitDebug_DebugMenuTableRow* DebugMenuTableRow = DataTable->FindRow<FCSKitDebug_DebugMenuTableRow>(RowName, FString());
-		if (DebugMenuTableRow == nullptr)
-		{
-			continue;
-		}
-
-		FFolder NodeFolder;
-		for(const FCSKitDebug_DebugMenuNodeData& NodeData : DebugMenuTableRow->mNodeList)
-		{
-			AddNode(RowName.ToString(), NodeData);
-		}
-	}
+	
+	SetupMenuByDataTable();
 
 	SetupDefaultMenu();
 
 	SetMainFolder(mRootPath);
 
-
-	if (UCSKitDebug_Subsystem::sGetSaveData().GetBool(FString(TEXT("DebugMenu_AutoLoad"))))
+	if (IsAutoLoad())
 	{
 		Load(FCSKitDebug_DebugMenuNodeActionParameter());
 		mbDoneAutoLoad = true;
@@ -310,6 +288,32 @@ void UCSKitDebug_DebugMenuManager::SetActive(const bool bInActive)
 	mbActive = bInActive;
 }
 
+void UCSKitDebug_DebugMenuManager::SetupMenuByDataTable()
+{
+	const UCSKitDebug_Config* CSKitDebugConfig = GetDefault<UCSKitDebug_Config>();
+	const UDataTable* DataTable = CSKitDebugConfig->mDebugMenuDataTable.LoadSynchronous();
+	if (DataTable == nullptr)
+	{
+		return;
+	}
+
+	TArray<FName> RowNameList = DataTable->GetRowNames();
+	for (const FName& RowName : RowNameList)
+	{
+		const FCSKitDebug_DebugMenuTableRow* DebugMenuTableRow = DataTable->FindRow<FCSKitDebug_DebugMenuTableRow>(RowName, FString());
+		if (DebugMenuTableRow == nullptr)
+		{
+			continue;
+		}
+
+		FFolder NodeFolder;
+		for(const FCSKitDebug_DebugMenuNodeData& NodeData : DebugMenuTableRow->mNodeList)
+		{
+			AddNode(RowName.ToString(), NodeData);
+		}
+	}
+}
+
 void UCSKitDebug_DebugMenuManager::SetupDefaultMenu()
 {
 	const FString BaseDebugMenuPath(TEXT("CSKitDebug/DebugMenu"));
@@ -320,6 +324,11 @@ void UCSKitDebug_DebugMenuManager::SetupDefaultMenu()
 	{
 		const auto& Delegate = FCSKitDebug_DebugMenuNodeActionDelegate::CreateUObject(this, &UCSKitDebug_DebugMenuManager::Load);
 		AddNode_Button(BaseDebugMenuPath, FString(TEXT("Load")), Delegate);
+	}
+	{
+		const auto& Delegate = FCSKitDebug_DebugMenuNodeActionDelegate::CreateUObject(this, &UCSKitDebug_DebugMenuManager::OnSetAutoLoadByDebugMenu);
+		CSKitDebug_DebugMenuNodeBase* DebugMenuNodeBase = AddNode_Bool(BaseDebugMenuPath, FString(TEXT("AutoLoad")), IsAutoLoad());
+		DebugMenuNodeBase->SetNodeAction(Delegate);
 	}
 }
 
@@ -539,4 +548,15 @@ void UCSKitDebug_DebugMenuManager::Load(const FCSKitDebug_DebugMenuNodeActionPar
 			Node->Load(MapElement.Value, InParameter);
 		}
 	}
+}
+
+void UCSKitDebug_DebugMenuManager::OnSetAutoLoadByDebugMenu(const FCSKitDebug_DebugMenuNodeActionParameter& InParameter) const
+{
+	const bool AutoLoad = GetNodeValue_Bool(FString(TEXT("CSKitDebug/DebugMenu/AutoLoad")));
+	UCSKitDebug_Subsystem::sGetSaveData().SetBool(FString(TEXT("DebugMenu_AutoLoad")), AutoLoad);
+}
+
+bool UCSKitDebug_DebugMenuManager::IsAutoLoad()
+{
+	return UCSKitDebug_Subsystem::sGetSaveData().GetBool(FString(TEXT("DebugMenu_AutoLoad")));
 }

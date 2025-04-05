@@ -9,11 +9,11 @@
 
 void CSKitDebug_DebugMenuNodeFolder::OnEndAction(const FCSKitDebug_DebugMenuNodeActionParameter& InParameter)
 {
-	CSKitDebug_DebugMenuNodeBase::OnEndAction(InParameter);
 	if (UCSKitDebug_DebugMenuManager* Manager = GetManager())
 	{
 		Manager->SetMainFolder(GetPath());
 	}
+	CSKitDebug_DebugMenuNodeBase::OnEndAction(InParameter);
 }
 
 void CSKitDebug_DebugMenuNodeFolder::OnJustPressedRightKey()

@@ -36,9 +36,8 @@ void CSKitDebug_DebugMenuNodeList::OnBeginAction()
 
 void CSKitDebug_DebugMenuNodeList::OnEndAction(const FCSKitDebug_DebugMenuNodeActionParameter& InParameter)
 {
-	CSKitDebug_DebugMenuNodeBase::OnEndAction(InParameter);
-
 	SetValueList(mEditSelectIndex);
+	CSKitDebug_DebugMenuNodeBase::OnEndAction(InParameter);
 }
 
 void CSKitDebug_DebugMenuNodeList::OnJustPressedUpKey()

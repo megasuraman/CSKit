@@ -55,8 +55,6 @@ void CSKitDebug_DebugMenuNodeFloat::OnBeginAction()
 
 void CSKitDebug_DebugMenuNodeFloat::OnEndAction(const FCSKitDebug_DebugMenuNodeActionParameter& InParameter)
 {
-	CSKitDebug_DebugMenuNodeBase::OnEndAction(InParameter);
-
 	FString FloatString;
 	for (int32 i = 0; i < mEditDecimalNum; ++i)
 	{
@@ -84,6 +82,8 @@ void CSKitDebug_DebugMenuNodeFloat::OnEndAction(const FCSKitDebug_DebugMenuNodeA
 	}
 
 	SetValueString(FloatString);
+	
+	CSKitDebug_DebugMenuNodeBase::OnEndAction(InParameter);
 }
 
 void CSKitDebug_DebugMenuNodeFloat::OnJustPressedUpKey()

@@ -36,6 +36,7 @@ public:
 	bool IsActive() const {return mbActive;}
 
 protected:
+	void SetupMenuByDataTable();
 	void SetupDefaultMenu();
 	void ClearNode();
 	APlayerController* FindPlayerController() const;
@@ -48,6 +49,8 @@ protected:
 	FString CheckPathString(const FString& InPath) const;
 	void Save(const FCSKitDebug_DebugMenuNodeActionParameter& InParameter);
 	void Load(const FCSKitDebug_DebugMenuNodeActionParameter& InParameter);
+	void OnSetAutoLoadByDebugMenu(const FCSKitDebug_DebugMenuNodeActionParameter& InParameter) const;
+	static bool IsAutoLoad();
 
 private:
 	struct FFolder

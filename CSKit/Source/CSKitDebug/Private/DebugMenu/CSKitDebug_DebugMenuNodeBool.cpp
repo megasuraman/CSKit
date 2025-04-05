@@ -5,8 +5,8 @@
 
 void CSKitDebug_DebugMenuNodeBool::OnEndAction(const FCSKitDebug_DebugMenuNodeActionParameter& InParameter)
 {
-	CSKitDebug_DebugMenuNodeBase::OnEndAction(InParameter);
 	SetValueBool(!GetBool());
+	CSKitDebug_DebugMenuNodeBase::OnEndAction(InParameter);
 }
 
 void CSKitDebug_DebugMenuNodeBool::SetInitValue()
