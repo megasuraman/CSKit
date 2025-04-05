@@ -13,18 +13,9 @@
 #include "GameFramework/Pawn.h"
 #include "AIModule/Classes/AIController.h"
 
-// Sets default values for this component's properties
 UCSKitDebug_ActorSelectComponent::UCSKitDebug_ActorSelectComponent()
-#if USE_CSKIT_DEBUG
-	:mbSelect(false)
-	,mbUsePreDrawDelegate(false)
-#endif//USE_CSKIT_DEBUG
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
-
-	// ...
 }
 
 
@@ -56,6 +47,16 @@ void UCSKitDebug_ActorSelectComponent::EndPlay(const EEndPlayReason::Type EndPla
 	}
 }
 
+void UCSKitDebug_ActorSelectComponent::AddText(const FString& InString)
+{
+	mScreenWindow.AddText(InString);
+}
+
+void UCSKitDebug_ActorSelectComponent::SetDrawDelegate(const FCSKitDebug_ActorSelectDrawDelegate& InDelegate)
+{
+	mDrawDelegate = InDelegate;
+}
+
 /**
  * @brief	選択状態設定
  */
@@ -82,13 +83,13 @@ void	UCSKitDebug_ActorSelectComponent::DebugDraw(UCanvas* InCanvas)
 		return;
 	}
 
-	if (mbUsePreDrawDelegate)
+	if (mDrawDelegate.IsBound())
 	{
-		mPreDrawDelegate.Execute();
+		mScreenWindow.AddText(mDrawDelegate.Execute(InCanvas));
 	}
 
 	mScreenWindow.FittingWindowExtent(InCanvas);
-	mScreenWindow.SetWindowFrameColor(GetMyColor());
+	mScreenWindow.SetWindowFrameColor(GetColor());
 	mScreenWindow.Draw(InCanvas, OwnerActor->GetActorLocation());
 
 	mScreenWindow.ClearString();
@@ -122,6 +123,6 @@ void	UCSKitDebug_ActorSelectComponent::DrawMark(UCanvas* InCanvas) const
 	
 	const FVector OwnerPos = OwnerActor->GetActorLocation();
 	const FVector2D ExtentV(5.f, 5.f);
-	UCSKitDebug_Draw::DrawCanvasQuadrangle(InCanvas, OwnerPos, ExtentV, GetMyColor());
+	UCSKitDebug_Draw::DrawCanvasQuadrangle(InCanvas, OwnerPos, ExtentV, GetColor());
 }
 #endif//USE_CSKIT_DEBUG
