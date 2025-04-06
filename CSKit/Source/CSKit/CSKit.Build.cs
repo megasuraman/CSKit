@@ -38,6 +38,8 @@ public class CSKit : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
+				"NavigationSystem",
+				"AIModule"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
