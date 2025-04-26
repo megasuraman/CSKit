@@ -247,6 +247,45 @@ void UCSKitDebug_Draw::DrawBrushWire(const UWorld* InWorld, const ABrush* InBrus
 }
 
 /**
+ * @brief	StaticMeshをWireFrameで表示
+ */
+void UCSKitDebug_Draw::DrawStaticMeshWire(
+	const UWorld* InWorld,
+	const UStaticMesh* InStaticMesh,
+	const FTransform& InTransform,
+	const FColor InColor,
+	const float InLifeTime,
+	const uint8 InDepthPriority,
+	const float InThickness
+	)
+{
+	const FStaticMeshLODResources& LODResource = InStaticMesh->GetRenderData()->LODResources[0];
+	const FPositionVertexBuffer& PositionVertexBuffer = LODResource.VertexBuffers.PositionVertexBuffer;
+	const FRawStaticIndexBuffer& IndexBuffer = LODResource.IndexBuffer;
+
+	const FIndexArrayView Indices = IndexBuffer.GetArrayView();
+	const int32 IndexCount = Indices.Num();
+
+	for (int32 i = 0; i < IndexCount; i += 3)
+	{
+		// 三角形の3頂点のインデックス
+		int32 Index0 = Indices[i];
+		int32 Index1 = Indices[i + 1];
+		int32 Index2 = Indices[i + 2];
+
+		// 頂点座標を取得して、ワールド座標に変換
+		FVector P0 = InTransform.TransformPosition(PositionVertexBuffer.VertexPosition(Index0));
+		FVector P1 = InTransform.TransformPosition(PositionVertexBuffer.VertexPosition(Index1));
+		FVector P2 = InTransform.TransformPosition(PositionVertexBuffer.VertexPosition(Index2));
+
+		// 三角形の各辺を線で描画
+		DrawDebugLine(InWorld, P0, P1, InColor, false, InLifeTime, InDepthPriority, InThickness);
+		DrawDebugLine(InWorld, P1, P2, InColor, false, InLifeTime, InDepthPriority, InThickness);
+		DrawDebugLine(InWorld, P2, P0, InColor, false, InLifeTime, InDepthPriority, InThickness);
+	}
+}
+
+/**
  * @brief	PathFollowComponentの移動ルート表示
  */
 void	UCSKitDebug_Draw::DrawPathFollowRoute(UWorld* InWorld, UCanvas* InCanvas, const AAIController* InAIController, const bool bInShowDetail)
