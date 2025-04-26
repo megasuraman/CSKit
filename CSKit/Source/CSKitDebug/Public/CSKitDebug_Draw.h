@@ -57,6 +57,7 @@ public:
 	static void DrawBrushMesh(const UWorld* InWorld, const ABrush* InBrush, const FColor InColor);
 	static void DrawBrushWire(const UWorld* InWorld, const ABrush* InBrush, const FColor InColor, const uint8 InDepthPriority=0, const float InThickness=0.f, const float InLifeTime=-1.f);
 	static void DrawStaticMeshWire(const UWorld* InWorld, const UStaticMesh* InStaticMesh, const FTransform& InTransform, const FColor InColor, const float InLifeTime=-1.f, const uint8 InDepthPriority=0, const float InThickness=0.f);
+	static void DrawSimpleCollisionWire(const UWorld* InWorld, const UStaticMesh* InStaticMesh, const FTransform& InTransform, const FColor InColor, const float InLifeTime=-1.f, const uint8 InDepthPriority=0, const float InThickness=0.f);
 	
 	static void DrawPathFollowRoute(UWorld* InWorld, UCanvas* InCanvas, const AAIController* InAIController, const bool bInShowDetail);
 	static void DrawLastEQS(UWorld* InWorld, UCanvas* InCanvas, const AAIController* InAIController, const float InShowDetailDistance=500.f);

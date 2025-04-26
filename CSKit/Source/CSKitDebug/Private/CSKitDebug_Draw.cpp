@@ -273,15 +273,87 @@ void UCSKitDebug_Draw::DrawStaticMeshWire(
 		int32 Index1 = Indices[i + 1];
 		int32 Index2 = Indices[i + 2];
 
-		// 頂点座標を取得して、ワールド座標に変換
 		FVector P0 = InTransform.TransformPosition(PositionVertexBuffer.VertexPosition(Index0));
 		FVector P1 = InTransform.TransformPosition(PositionVertexBuffer.VertexPosition(Index1));
 		FVector P2 = InTransform.TransformPosition(PositionVertexBuffer.VertexPosition(Index2));
 
-		// 三角形の各辺を線で描画
 		DrawDebugLine(InWorld, P0, P1, InColor, false, InLifeTime, InDepthPriority, InThickness);
 		DrawDebugLine(InWorld, P1, P2, InColor, false, InLifeTime, InDepthPriority, InThickness);
 		DrawDebugLine(InWorld, P2, P0, InColor, false, InLifeTime, InDepthPriority, InThickness);
+	}
+}
+
+/**
+ * @brief	StaticMeshが持つSimpleCollisionをWire表示
+ */
+void UCSKitDebug_Draw::DrawSimpleCollisionWire(
+	const UWorld* InWorld,
+	const UStaticMesh* InStaticMesh,
+	const FTransform& InTransform,
+	const FColor InColor,
+	const float InLifeTime,
+	const uint8 InDepthPriority,
+	const float InThickness
+	)
+{
+	UBodySetup* BodySetup = InStaticMesh->GetBodySetup();
+
+	if (BodySetup->CollisionTraceFlag == CTF_UseComplexAsSimple)
+	{
+		const UStaticMesh* DrawStaticMesh = InStaticMesh;
+		if(InStaticMesh->ComplexCollisionMesh != nullptr)
+		{
+			DrawStaticMesh = InStaticMesh->ComplexCollisionMesh;
+		}
+		DrawStaticMeshWire(InWorld, DrawStaticMesh, InTransform, InColor, InLifeTime, InDepthPriority, InThickness);
+		return;
+	}
+	
+	// Box
+	for (const FKBoxElem& BoxElem : BodySetup->AggGeom.BoxElems)
+	{
+		FTransform BoxTransform = BoxElem.GetTransform() * InTransform;
+		DrawDebugBox(InWorld, BoxTransform.GetLocation(), FVector(BoxElem.X, BoxElem.Y, BoxElem.Z) * 0.5f,
+			BoxTransform.GetRotation(), InColor, false, InLifeTime, InDepthPriority, InThickness);
+	}
+
+	// Sphere
+	for (const FKSphereElem& SphereElem : BodySetup->AggGeom.SphereElems)
+	{
+		FTransform SphereTransform = SphereElem.GetTransform() * InTransform;
+		DrawDebugSphere(InWorld, SphereTransform.GetLocation(), SphereElem.Radius,
+			16, InColor, false, InLifeTime, InDepthPriority, InThickness);
+	}
+
+	// Capsule
+	for (const FKSphylElem& CapsuleElem : BodySetup->AggGeom.SphylElems)
+	{
+		FTransform CapsuleTransform = CapsuleElem.GetTransform() * InTransform;
+		DrawDebugCapsule(InWorld, CapsuleTransform.GetLocation(),
+			CapsuleElem.Length * 0.5f, CapsuleElem.Radius,
+			CapsuleTransform.GetRotation(), InColor, false, InLifeTime, InDepthPriority, InThickness);
+	}
+
+	// Convex
+	for (const FKConvexElem& ConvexElem : BodySetup->AggGeom.ConvexElems)
+	{
+		const TArray<FVector>& Vertices = ConvexElem.VertexData;
+		const TArray<int32>& Indices = ConvexElem.IndexData;
+		for (int32 i = 0; i < Indices.Num(); i += 3)
+		{
+			// 三角形の3頂点のインデックス
+			int32 Index0 = Indices[i];
+			int32 Index1 = Indices[i + 1];
+			int32 Index2 = Indices[i + 2];
+
+			FVector P0 = InTransform.TransformPosition(ConvexElem.GetTransform().TransformPosition(Vertices[Index0]));
+			FVector P1 = InTransform.TransformPosition(ConvexElem.GetTransform().TransformPosition(Vertices[Index1]));
+			FVector P2 = InTransform.TransformPosition(ConvexElem.GetTransform().TransformPosition(Vertices[Index2]));
+
+			DrawDebugLine(InWorld, P0, P1, InColor, false, InLifeTime, InDepthPriority, InThickness);
+			DrawDebugLine(InWorld, P1, P2, InColor, false, InLifeTime, InDepthPriority, InThickness);
+			DrawDebugLine(InWorld, P2, P0, InColor, false, InLifeTime, InDepthPriority, InThickness);
+		}
 	}
 }
 
