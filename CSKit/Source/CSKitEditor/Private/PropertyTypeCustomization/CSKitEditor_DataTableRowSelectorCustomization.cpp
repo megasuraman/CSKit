@@ -48,6 +48,10 @@ void FCSKitEditor_DataTableRowSelectorCustomization::SetupStringList(const TShar
 		return A < B;
 		});
 
+	if(IsMultiSelected())
+	{
+		mStringList.Add(MakeShareable(new FString(TEXT("--Multi--"))));
+	}
 	mStringList.Add(MakeShareable(new FString(TEXT("None"))));
 	for (const FString& RowName : RowNameList)
 	{

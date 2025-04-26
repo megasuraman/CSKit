@@ -118,7 +118,10 @@ void FStringComboBoxCustomizationBase::CheckActiveResultInput()
 	mResultInputHandle->GetValue(RowName);
 	if (RowName.IsNone())
 	{
-		mResultInputHandle->SetValue(*mStringList[0]);
+		if(!IsMultiSelected())
+		{
+			mResultInputHandle->SetValue(*mStringList[0]);
+		}
 	}
 	else
 	{
@@ -131,11 +134,22 @@ void FStringComboBoxCustomizationBase::CheckActiveResultInput()
 				break;
 			}
 		}
-		if (bInvalidName)
+		if (bInvalidName
+			&& !IsMultiSelected())
 		{
 			mResultInputHandle->SetValue(*mStringList[0]);
 		}
 	}
+}
+
+//複数選択されてる
+bool FStringComboBoxCustomizationBase::IsMultiSelected() const
+{
+	if(mResultInputHandle->GetNumPerObjectValues() >= 2)
+	{
+		return true;
+	}
+	return false;
 }
 
 #undef LOCTEXT_NAMESPACE

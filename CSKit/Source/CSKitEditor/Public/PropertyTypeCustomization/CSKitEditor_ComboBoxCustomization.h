@@ -45,6 +45,8 @@ protected:
 	int32 GetSelectIndex() const;
 	//有効な入力値かチェック
 	void CheckActiveResultInput();
+	//複数選択されてる
+	bool IsMultiSelected() const;
 
 protected:
 	TArray< TSharedPtr<FString> > mStringList;
