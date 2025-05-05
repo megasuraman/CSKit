@@ -650,7 +650,7 @@ bool ACSKit_RecastNavMesh::EditorGenerateNavLink_Init()
 ------------------------------------------------------------ */
 void ACSKit_RecastNavMesh::EditorSetupSpawnLevel()
 {
-	const FString TargetLevelName(TEXT("_LD"));
+	const FString TargetLevelName(TEXT("_Nav"));
 	const TArray<ULevel*> Levels = GetWorld()->GetLevels();
 	for (ULevel* Level : Levels)
 	{

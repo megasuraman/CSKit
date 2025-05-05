@@ -43,7 +43,7 @@ public class CSKitDebug : ModuleRules
                 "UMG",
                 "Json",
                 "AIModule",
-                "NavigationSystem",
+                "NavigationSystem"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

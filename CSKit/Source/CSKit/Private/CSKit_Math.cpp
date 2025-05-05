@@ -1,18 +1,18 @@
 // Copyright 2020 megasuraman
 /**
- * @file CSKitDebug_Math.cpp
+ * @file CSKit_Math.cpp
  * @brief 計算関数等のまとめ
  * @author megasuraman
  * @date 2022/3/19
  */
-#include "CSKitDebug_Math.h"
+#include "CSKit_Math.h"
 
 #include "DrawDebugHelpers.h"
 
  /**
   * @brief	3次式の単純な補間関数(FMath::InterpEaseInOut<float>(0, 1, InRatio, 2.0)に近い)
   */
-float UCSKitDebug_Math::CalcSimpleEaseInOut(float InRatio)
+float UCSKit_Math::CalcSimpleEaseInOut(float InRatio)
 {
 	InRatio = FMath::Clamp(InRatio, 0.f, 1.f);
 	return (3.f - 2.f * InRatio) * FMath::Square(InRatio);
@@ -21,7 +21,7 @@ float UCSKitDebug_Math::CalcSimpleEaseInOut(float InRatio)
 /**
  * @brief	PosA-PosB, PosB-PosCによる2次ベジェ曲線の座標取得(PosBが制御点)
  */
-FVector UCSKitDebug_Math::CalcQuadraticBezier(const FVector& InPosA, const FVector& InPosB, const FVector& InPosC, float InRatio)
+FVector UCSKit_Math::CalcQuadraticBezier(const FVector& InPosA, const FVector& InPosB, const FVector& InPosC, float InRatio)
 {
 	const FVector PosAB = FMath::Lerp(InPosA, InPosB, InRatio);
 	const FVector PosBC = FMath::Lerp(InPosB, InPosC, InRatio);
@@ -31,12 +31,12 @@ FVector UCSKitDebug_Math::CalcQuadraticBezier(const FVector& InPosA, const FVect
 
 
 
-void UCSKitDebug_Math::FCapsule::Draw(const UWorld* InWorld, const FColor InColor) const
+void UCSKit_Math::FCapsule::Draw(const UWorld* InWorld, const FColor InColor) const
 {
 	DrawDebugCapsule(InWorld, mPos, mHalfHeight, mRadius, mRot.Quaternion(), InColor);
 }
 
-void UCSKitDebug_Math::FTriangle::Draw(const UWorld* InWorld, const FColor InColor) const
+void UCSKit_Math::FTriangle::Draw(const UWorld* InWorld, const FColor InColor) const
 {
 	for (int32 i = 0; i < sTrianglePointNum; ++i)
 	{
@@ -49,7 +49,7 @@ void UCSKitDebug_Math::FTriangle::Draw(const UWorld* InWorld, const FColor InCol
 /* ------------------------------------------------------------
    !カプセル同士の衝突判定(Engine側にあるはずだけど見つからないので)
 ------------------------------------------------------------ */
-bool UCSKitDebug_Math::CapsuleCapsuleIntersection(const FCapsule& InBaseCapsule, const FCapsule& InTargetCapsule)
+bool UCSKit_Math::CapsuleCapsuleIntersection(const FCapsule& InBaseCapsule, const FCapsule& InTargetCapsule)
 {
 	const float BaseCapsuleInsideHalfHeight = FMath::Max(InBaseCapsule.mHalfHeight - InBaseCapsule.mRadius, 0.f);
 	const FVector BaseCapsuleInsideHalfHeightV = InBaseCapsule.mRot.RotateVector(FVector(0.f, 0., BaseCapsuleInsideHalfHeight));
@@ -81,7 +81,7 @@ bool UCSKitDebug_Math::CapsuleCapsuleIntersection(const FCapsule& InBaseCapsule,
 /* ------------------------------------------------------------
    !三角形とカプセルの衝突判定(Engine側にあるはずだけど見つからないので)
 ------------------------------------------------------------ */
-bool UCSKitDebug_Math::CapsuleTriangleIntersection(const FCapsule& InCapsule, const FTriangle& InTriangle)
+bool UCSKit_Math::CapsuleTriangleIntersection(const FCapsule& InCapsule, const FTriangle& InTriangle)
 {
 	const FVector CapsuleHalfHeightV = InCapsule.mRot.RotateVector(FVector(0.f, 0.f, InCapsule.mHalfHeight));
 	const FVector CapsulePosTop = InCapsule.mPos + CapsuleHalfHeightV;
@@ -141,7 +141,7 @@ bool UCSKitDebug_Math::CapsuleTriangleIntersection(const FCapsule& InCapsule, co
 /* ------------------------------------------------------------
    !移動カプセルとカプセルとの衝突判定(Engine側にあるはずだけど見つからないので)
 ------------------------------------------------------------ */
-bool UCSKitDebug_Math::CapsuleSweepCapsuleIntersection(
+bool UCSKit_Math::CapsuleSweepCapsuleIntersection(
 	const FCapsule& InFixCapsule,
 	const FCapsule& InSweepCapsuleStart,
 	const FCapsule& InSweepCapsuleEnd

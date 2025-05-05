@@ -1,6 +1,6 @@
 // Copyright 2020 megasuraman
 /**
- * @file CSKitDebug_Math.h
+ * @file CSKit_Math.h
  * @brief 計算関数等のまとめ
  * @author megasuraman
  * @date 2022/3/19
@@ -9,7 +9,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CSKitDebug_Math.generated.h"
+#include "CSKit_Math.generated.h"
 
 class APawn;
 struct FEnvQueryInstance;
@@ -18,12 +18,12 @@ struct FEnvQueryInstance;
  * 
  */
 UCLASS()
-class CSKITDEBUG_API UCSKitDebug_Math : public UObject
+class CSKIT_API UCSKit_Math : public UObject
 {
 	GENERATED_BODY()
 	
 public:
-	UFUNCTION(BlueprintPure, BlueprintCallable, Category = "CSKitDebug_Math")
+	UFUNCTION(BlueprintPure, BlueprintCallable, Category = "CSKit_Math")
 	static float CalcSimpleEaseInOut(float InRatio);
 	
 	static FVector CalcQuadraticBezier(const FVector& InPosA, const FVector& InPosB, const FVector& InPosC, float InRatio);
