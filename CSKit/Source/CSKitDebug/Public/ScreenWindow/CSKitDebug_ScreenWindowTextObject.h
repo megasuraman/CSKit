@@ -15,9 +15,7 @@
 
 DECLARE_DYNAMIC_DELEGATE(FCSKitDebug_ScreenWindowTextPreDrawDelegate);
 
-/**
- * 
- */
+
 UCLASS(Blueprintable)
 class CSKITDEBUG_API UCSKitDebug_ScreenWindowTextObject : public UObject
 {

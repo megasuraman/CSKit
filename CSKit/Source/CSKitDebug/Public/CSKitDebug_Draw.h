@@ -14,9 +14,7 @@
 class UCanvas;
 class AAIController;
 
-/**
- * 
- */
+
 UCLASS()
 class CSKITDEBUG_API UCSKitDebug_Draw : public UObject
 {

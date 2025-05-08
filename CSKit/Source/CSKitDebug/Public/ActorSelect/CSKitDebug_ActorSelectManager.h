@@ -14,9 +14,7 @@ class UCanvas;
 class UCSKitDebug_ActorSelectComponent;
 class ADebugCameraController;
 struct FCSKitDebugMenuNodeGetter;
-/**
- * 
- */
+
 UCLASS()
 class CSKITDEBUG_API UCSKitDebug_ActorSelectManager : public UObject
 {

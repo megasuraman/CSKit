@@ -14,9 +14,7 @@
 
 class APlayerController;
 
-/**
- * 
- */
+
 UCLASS()
 class CSKITDEBUG_API UCSKitDebug_ShortcutCommand : public UObject
 {

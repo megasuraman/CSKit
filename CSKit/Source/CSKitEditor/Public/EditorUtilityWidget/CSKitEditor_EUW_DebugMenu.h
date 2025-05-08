@@ -12,9 +12,7 @@
 #include "EditorUtilityWidget/CSKitEditor_EUW_Base.h"
 #include "CSKitEditor_EUW_DebugMenu.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class CSKITEDITOR_API UCSKitEditor_EUW_DebugMenu : public UCSKitEditor_EUW_Base
 {

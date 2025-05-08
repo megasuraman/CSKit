@@ -17,8 +17,6 @@ USTRUCT(BlueprintType)
 struct FCSKit_AIFlowActionTableRow : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
-
-	FName mName;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "AIFlow", meta = (DisplayName = "BehaviorTree"))
 	TSoftObjectPtr<class UBehaviorTree> mBehaviorTree = nullptr;

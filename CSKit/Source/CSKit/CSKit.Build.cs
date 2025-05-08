@@ -39,7 +39,9 @@ public class CSKit : ModuleRules
 				"Slate",
 				"SlateCore",
 				"NavigationSystem",
-				"AIModule"
+				"AIModule",
+				"Json",
+				"GameplayTags"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

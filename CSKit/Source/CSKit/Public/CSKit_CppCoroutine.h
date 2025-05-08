@@ -9,7 +9,7 @@
 
 #include "CoreMinimal.h"
 
-class CSKit_API CSKit_CppCoroutine
+class CSKIT_API CSKit_CppCoroutine
 {
 public:
 	static constexpr uint32 msStartLineNumber = 0;

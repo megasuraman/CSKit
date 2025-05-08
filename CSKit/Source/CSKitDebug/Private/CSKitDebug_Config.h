@@ -37,9 +37,7 @@ struct FCSKitDebugSecretCommand
 	TArray<FKey> mKeyList;
 };
 
-/**
- * 
- */
+
 UCLASS(config = CSKitDebug, defaultconfig)
 class CSKITDEBUG_API UCSKitDebug_Config : public UObject
 {

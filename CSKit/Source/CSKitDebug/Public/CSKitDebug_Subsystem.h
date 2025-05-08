@@ -23,9 +23,7 @@ class UCSKitDebug_DebugMenuManager;
 
 DECLARE_LOG_CATEGORY_EXTERN(CSKitDebugLog, Log, All);
 
-/**
- * 
- */
+
 UCLASS(BlueprintType)
 class CSKITDEBUG_API UCSKitDebug_Subsystem : public UGameInstanceSubsystem
 {

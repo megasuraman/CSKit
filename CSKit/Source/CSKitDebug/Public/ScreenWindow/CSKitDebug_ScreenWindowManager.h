@@ -21,9 +21,7 @@ struct CSKITDEBUG_API FCSKitDebug_ScreenWindowOption
 	float mDrawBorderDistance = -1.f;
 };
 
-/**
- * 
- */
+
 UCLASS(BlueprintType)
 class CSKITDEBUG_API UCSKitDebug_ScreenWindowManager : public UObject
 {

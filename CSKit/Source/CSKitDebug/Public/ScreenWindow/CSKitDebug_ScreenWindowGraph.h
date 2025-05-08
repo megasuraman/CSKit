@@ -13,9 +13,7 @@
 #include "CSKitDebug_ScreenWindowBase.h"
 #include "CSKitDebug_ScreenWindowGraph.generated.h"
 
-/**
- * 
- */
+
 USTRUCT(Blueprintable)
 struct CSKITDEBUG_API FCSKitDebug_ScreenWindowGraph : public FCSKitDebug_ScreenWindowBase
 {

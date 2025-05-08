@@ -13,9 +13,7 @@
 #include "CSKitEditor_EUW_DTUID.generated.h"
 
 class UDataTable;
-/**
- * 
- */
+
 UCLASS()
 class CSKITEDITOR_API UCSKitEditor_EUW_DTUID : public UCSKitEditor_EUW_Base
 {

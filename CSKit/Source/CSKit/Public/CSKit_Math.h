@@ -14,9 +14,7 @@
 class APawn;
 struct FEnvQueryInstance;
 
-/**
- * 
- */
+
 UCLASS()
 class CSKIT_API UCSKit_Math : public UObject
 {

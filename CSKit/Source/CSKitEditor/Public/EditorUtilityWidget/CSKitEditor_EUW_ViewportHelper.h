@@ -12,9 +12,7 @@
 #include "EditorUtilityWidget/CSKitEditor_EUW_Base.h"
 #include "CSKitEditor_EUW_ViewportHelper.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class CSKITEDITOR_API UCSKitEditor_EUW_ViewportHelper : public UCSKitEditor_EUW_Base
 {

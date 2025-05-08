@@ -14,9 +14,7 @@
 class UFont;
 class UCanvas;
 
-/**
- * 
- */
+
 USTRUCT(Blueprintable)
 struct CSKITDEBUG_API FCSKitDebug_ScreenWindowBase
 {

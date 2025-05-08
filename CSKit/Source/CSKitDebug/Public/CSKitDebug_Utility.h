@@ -14,9 +14,7 @@
 class APawn;
 struct FEnvQueryInstance;
 
-/**
- * 
- */
+
 UCLASS()
 class CSKITDEBUG_API UCSKitDebug_Utility : public UObject
 {
