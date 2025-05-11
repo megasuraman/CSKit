@@ -30,8 +30,19 @@ void FCSKitModule::StartupModule()
 
 void FCSKitModule::ShutdownModule()
 {
+#if WITH_EDITOR
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
+	ISettingsModule* SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings");
+	if (SettingsModule != nullptr)
+	{
+		SettingsModule->UnregisterSettings(
+			"Project",
+			"Plugins",
+			"CSKit"
+		);
+	}
+#endif
 }
 
 #undef LOCTEXT_NAMESPACE

@@ -27,8 +27,7 @@ UCSKit_BTDecorator_BrainQuery::UCSKit_BTDecorator_BrainQuery(const FObjectInitia
 
 #if WITH_EDITOR
 	const UCSKit_Config* CSKitConfig = GetDefault<UCSKit_Config>();
-	mTestSelector.mEditorDataTablePathList.Add(CSKitConfig->mEditorBrainQueryTestNameSelectorDataTablePath);
-	//mTestSelector.mEditorDataTablePathList.Add(CSKitConfig->mEditorBrainQuery_DataTable->GetPathName());
+	mTestSelector.mEditorDataTablePathList.Add(CSKitConfig->mEditorBrainQuery_DataTable->GetPathName());
 	mTestSelector.mEditorDisplayName = FString(TEXT("Test"));
 #endif
 }

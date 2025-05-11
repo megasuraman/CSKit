@@ -36,8 +36,6 @@ public:
 	float mNeedLevelDistanceBorderZero = 4000.f;
 #if WITH_EDITORONLY_DATA
 	UPROPERTY(EditAnywhere, config, Category = CSKit_BrainQuery )
-	FString mEditorBrainQueryTestNameSelectorDataTablePath;
-	UPROPERTY(EditAnywhere, config, Category = CSKit_BrainQuery )
 	TSoftObjectPtr<UDataTable> mEditorBrainQuery_DataTable;
 #endif
 };

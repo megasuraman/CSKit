@@ -37,7 +37,7 @@ void FCSKitDebugModule::ShutdownModule()
 	if (SettingsModule != nullptr)
 	{
 		SettingsModule->UnregisterSettings(
-			"Project", //�v���W�F�N�g�ݒ�ɏo�����߂�
+			"Project",
 			"Plugins",
 			"CSKitDebug"
 		);
