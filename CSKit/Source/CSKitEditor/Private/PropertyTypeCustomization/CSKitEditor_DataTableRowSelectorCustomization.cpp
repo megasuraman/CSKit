@@ -1,5 +1,10 @@
-// Copyright 2022 megasuraman
-
+// Copyright 2020 megasuraman.
+/**
+ * @file CSKitEditor_ComboBoxCustomization.cpp
+ * @brief FCSKit_DataTableRowSelectorを使ってDataTableのRowNameをComboBoxから選択できるように
+ * @author megasuraman
+ * @date 2025/05/05
+ */
 #include "PropertyTypeCustomization/CSKitEditor_DataTableRowSelectorCustomization.h"
 
 #include "Widgets/Input/SNumericEntryBox.h"
@@ -65,7 +70,7 @@ void FCSKitEditor_DataTableRowSelectorCustomization::SetupSlate(IDetailChildrenB
 	{
 		mDisplayName = FString(TEXT("DataTableRowName"));
 	}
-	FStringComboBoxCustomizationBase::SetupSlate(StructBuilder);
+	FCSKitEditor_ComboBoxCustomization::SetupSlate(StructBuilder);
 }
 
 bool FCSKitEditor_DataTableRowSelectorCustomization::AppendRowNameListByPath(TArray<FString>& OutList, const TSharedRef<IPropertyHandle>& StructPropertyHandle)

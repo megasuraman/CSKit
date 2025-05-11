@@ -1,5 +1,10 @@
-// Copyright 2022 megasuraman
-
+// Copyright 2020 megasuraman.
+/**
+ * @file CSKitEditor_ComboBoxCustomization.h
+ * @brief プロパティをComboBox化するためのサポート
+ * @author megasuraman
+ * @date 2025/05/05
+ */
 #pragma once
 
 #include "CoreMinimal.h"
@@ -8,14 +13,14 @@
 #include "PropertyHandle.h"
 
 
-class CSKITEDITOR_API FStringComboBoxCustomizationBase : public IPropertyTypeCustomization
+class CSKITEDITOR_API FCSKitEditor_ComboBoxCustomization : public IPropertyTypeCustomization
 {
 public:
-	FStringComboBoxCustomizationBase();
+	FCSKitEditor_ComboBoxCustomization();
 
 	// static TSharedRef<IPropertyTypeCustomization> MakeInstance()
 	// {
-	// 	return MakeShareable(new FStringComboBoxCustomizationBase);
+	// 	return MakeShareable(new FCSKitEditor_ComboBoxCustomization);
 	// }
 
 	virtual void CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle,

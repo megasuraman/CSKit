@@ -1,13 +1,17 @@
-// Copyright 2022 megasuraman
-
+// Copyright 2020 megasuraman.
+/**
+ * @file CSKitEditor_ComboBoxCustomization.h
+ * @brief FCSKit_DataTableRowSelectorを使ってDataTableのRowNameをComboBoxから選択できるように
+ * @author megasuraman
+ * @date 2025/05/05
+ */
 #pragma once
 
 #include "CoreMinimal.h"
 #include "CSKitEditor_ComboBoxCustomization.h"
 #include "PropertyHandle.h"
 
-
-class CSKITEDITOR_API FCSKitEditor_DataTableRowSelectorCustomization : public FStringComboBoxCustomizationBase
+class CSKITEDITOR_API FCSKitEditor_DataTableRowSelectorCustomization : public FCSKitEditor_ComboBoxCustomization
 {
 public:
 	FCSKitEditor_DataTableRowSelectorCustomization();

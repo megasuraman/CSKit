@@ -7,11 +7,11 @@
 
 #define LOCTEXT_NAMESPACE "FPropertyCustomizeAssistEditor"
 
-FStringComboBoxCustomizationBase::FStringComboBoxCustomizationBase()
+FCSKitEditor_ComboBoxCustomization::FCSKitEditor_ComboBoxCustomization()
 {
 }
 
-void FStringComboBoxCustomizationBase::CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle,
+void FCSKitEditor_ComboBoxCustomization::CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle,
 	class FDetailWidgetRow& HeaderRow,
 	IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
@@ -20,7 +20,7 @@ void FStringComboBoxCustomizationBase::CustomizeHeader(TSharedRef<IPropertyHandl
 	SetupStringList(StructPropertyHandle);
 }
 
-void FStringComboBoxCustomizationBase::CustomizeChildren(TSharedRef<class IPropertyHandle> StructPropertyHandle,
+void FCSKitEditor_ComboBoxCustomization::CustomizeChildren(TSharedRef<class IPropertyHandle> StructPropertyHandle,
 	class IDetailChildrenBuilder& StructBuilder,
 	IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
@@ -28,7 +28,7 @@ void FStringComboBoxCustomizationBase::CustomizeChildren(TSharedRef<class IPrope
 }
 
 //Slate準備
-void FStringComboBoxCustomizationBase::SetupSlate(IDetailChildrenBuilder& StructBuilder)
+void FCSKitEditor_ComboBoxCustomization::SetupSlate(IDetailChildrenBuilder& StructBuilder)
 {
 	if (mStringList.Num() <= 0)
 	{
@@ -47,17 +47,17 @@ void FStringComboBoxCustomizationBase::SetupSlate(IDetailChildrenBuilder& Struct
 		SAssignNew(mComboBox, SSearchableComboBox)
 		.OptionsSource(&mStringList)
 		.InitiallySelectedItem(mStringList[GetSelectIndex()])
-		.OnSelectionChanged(this, &FStringComboBoxCustomizationBase::OnSelectionChanged)
-		.OnGenerateWidget(this, &FStringComboBoxCustomizationBase::OnGenerateWidget)
+		.OnSelectionChanged(this, &FCSKitEditor_ComboBoxCustomization::OnSelectionChanged)
+		.OnGenerateWidget(this, &FCSKitEditor_ComboBoxCustomization::OnGenerateWidget)
 		[
 			SNew(STextBlock)
-			.Text(this, &FStringComboBoxCustomizationBase::GetSelectedTypeText)
+			.Text(this, &FCSKitEditor_ComboBoxCustomization::GetSelectedTypeText)
 		]
 	];
 }
 
 //コンボボックスの選択変更時処理
-void FStringComboBoxCustomizationBase::OnSelectionChanged(TSharedPtr<FString> Type, ESelectInfo::Type SelectionType) const
+void FCSKitEditor_ComboBoxCustomization::OnSelectionChanged(TSharedPtr<FString> Type, ESelectInfo::Type SelectionType) const
 {
 	if (mResultInputHandle.IsValid()
 		&& Type.IsValid())
@@ -67,13 +67,13 @@ void FStringComboBoxCustomizationBase::OnSelectionChanged(TSharedPtr<FString> Ty
 }
 
 //Widget生成時処理
-TSharedRef<SWidget> FStringComboBoxCustomizationBase::OnGenerateWidget(TSharedPtr<FString> Type)
+TSharedRef<SWidget> FCSKitEditor_ComboBoxCustomization::OnGenerateWidget(TSharedPtr<FString> Type)
 {
 	return SNew(STextBlock).Text(FText::FromString(*Type));
 }
 
 //コンボボックスで選択中の文字列取得
-FText FStringComboBoxCustomizationBase::GetSelectedTypeText() const
+FText FCSKitEditor_ComboBoxCustomization::GetSelectedTypeText() const
 {
 	const TSharedPtr<FString> SelectedType = mComboBox->GetSelectedItem();
 	if(SelectedType.IsValid())
@@ -84,7 +84,7 @@ FText FStringComboBoxCustomizationBase::GetSelectedTypeText() const
 }
 
 //コンボボックスで選択中のIndex取得
-int32 FStringComboBoxCustomizationBase::GetSelectIndex() const
+int32 FCSKitEditor_ComboBoxCustomization::GetSelectIndex() const
 {
 	if (!mResultInputHandle.IsValid())
 	{
@@ -107,7 +107,7 @@ int32 FStringComboBoxCustomizationBase::GetSelectIndex() const
 }
 
 //出力先プロパティに適切な文字列セットされてるかチェック
-void FStringComboBoxCustomizationBase::CheckActiveResultInput()
+void FCSKitEditor_ComboBoxCustomization::CheckActiveResultInput()
 {
 	if (!mResultInputHandle.IsValid())
 	{
@@ -143,7 +143,7 @@ void FStringComboBoxCustomizationBase::CheckActiveResultInput()
 }
 
 //複数選択されてる
-bool FStringComboBoxCustomizationBase::IsMultiSelected() const
+bool FCSKitEditor_ComboBoxCustomization::IsMultiSelected() const
 {
 	if(mResultInputHandle->GetNumPerObjectValues() >= 2)
 	{

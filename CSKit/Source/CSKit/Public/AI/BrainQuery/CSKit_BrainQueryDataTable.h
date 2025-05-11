@@ -49,7 +49,7 @@ struct FCSKit_BrainQueryTestNode
 	GENERATED_USTRUCT_BODY()
 
 #if WITH_EDITORONLY_DATA
-	UPROPERTY(EditDefaultsOnly, Category = "BrainQuery", Meta = (DisplayName = "コメント", DisplayPriority = 1, StgSkipExport))
+	UPROPERTY(EditDefaultsOnly, Category = "BrainQuery", Meta = (DisplayName = "コメント", DisplayPriority = 1))
 	FString mEditorComment;
 #endif
 
@@ -75,7 +75,7 @@ struct FCSKit_BrainQueryTestNode
 	uint8 mbInverseScore : 1;
 
 #if WITH_EDITORONLY_DATA
-	UPROPERTY(EditDefaultsOnly, Category = "BrainQuery", Meta = (DisplayName = "[Editor]一時的に無効化", DisplayPriority = 99, StgSkipExport))
+	UPROPERTY(EditDefaultsOnly, Category = "BrainQuery", Meta = (DisplayName = "[Editor]一時的に無効化", DisplayPriority = 99))
 	uint8 mbEditorTestIgnore : 1;
 #endif
 
@@ -111,9 +111,9 @@ struct FCSKit_BrainQueryTest
 	TArray<FCSKit_BrainQueryTestNode> mTestNodeList;
 
 #if WITH_EDITORONLY_DATA
-	UPROPERTY(EditDefaultsOnly, Category = "BrainQuery", Meta = (DisplayName = "(Debug)コメント", DisplayPriority = 1, StgSkipExport))
+	UPROPERTY(EditDefaultsOnly, Category = "BrainQuery", Meta = (DisplayName = "(Debug)コメント", DisplayPriority = 1))
 	FString mEditorComment;
-	UPROPERTY(EditAnywhere, Category = "BrainQuery", Meta = (DisplayName = "(Debug)無効化", DisplayPriority = 2, StgSkipExport))
+	UPROPERTY(EditAnywhere, Category = "BrainQuery", Meta = (DisplayName = "(Debug)無効化", DisplayPriority = 2))
 	uint8 mbEditorSeal : 1;
 #endif
 

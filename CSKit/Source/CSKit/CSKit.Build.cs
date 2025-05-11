@@ -41,7 +41,8 @@ public class CSKit : ModuleRules
 				"NavigationSystem",
 				"AIModule",
 				"Json",
-				"GameplayTags"
+				"GameplayTags",
+				"GameplayTasks"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

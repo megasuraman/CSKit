@@ -42,9 +42,6 @@ struct CSKIT_API FCSKit_ExperienceTableRow : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
 
-	FName mName;
-	int32 mMasterDataIndex = 0;
-
 	UPROPERTY(EditDefaultsOnly, Category = "Experience", meta = (DisplayName = "Score設定値"))
 	TMap<FName, FCSKit_ExperienceScoreElement> mExperienceScoreElement;
 };

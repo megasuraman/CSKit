@@ -12,6 +12,8 @@
 #include "CSKit_Config.generated.h"
 
 
+class UDataTable;
+
 UCLASS(config = CSKit, defaultconfig)
 class UCSKit_Config : public UObject
 {
@@ -33,7 +35,9 @@ public:
 	UPROPERTY(EditAnywhere, config, Category = CSKit_NeedLevel )
 	float mNeedLevelDistanceBorderZero = 4000.f;
 #if WITH_EDITORONLY_DATA
-	UPROPERTY(EditAnywhere, config, Category = CSKit_NeedLevel )
+	UPROPERTY(EditAnywhere, config, Category = CSKit_BrainQuery )
 	FString mEditorBrainQueryTestNameSelectorDataTablePath;
+	UPROPERTY(EditAnywhere, config, Category = CSKit_BrainQuery )
+	TSoftObjectPtr<UDataTable> mEditorBrainQuery_DataTable;
 #endif
 };

@@ -2,6 +2,7 @@
 
 #include "CSKitEditor.h"
 #include "PropertyTypeCustomization/CSKitEditor_DataTableRowSelectorCustomization.h"
+#include "PropertyTypeCustomization/CSKitEditor_BrainQueryTestSelectorCustomization.h"
 
 #define LOCTEXT_NAMESPACE "FCSKitEditorModule"
 
@@ -10,14 +11,18 @@ void FCSKitEditorModule::StartupModule()
 	auto& moduleMgr = FModuleManager::Get();
 	if (moduleMgr.IsModuleLoaded("PropertyEditor")) {
 
-		auto& propertyEditorModule = moduleMgr.LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
+		auto& PropertyEditorModule = moduleMgr.LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
 
-		propertyEditorModule.RegisterCustomPropertyTypeLayout(
+		PropertyEditorModule.RegisterCustomPropertyTypeLayout(
 			("CSKit_DataTableRowSelector"),
 			FOnGetPropertyTypeCustomizationInstance::CreateStatic(&FCSKitEditor_DataTableRowSelectorCustomization::MakeInstance)
+			);
+		PropertyEditorModule.RegisterCustomPropertyTypeLayout(
+			("CSKit_BrainQueryTestSelector"),
+			FOnGetPropertyTypeCustomizationInstance::CreateStatic(&FCSKitEditor_BrainQueryTestSelectorCustomization::MakeInstance)
 		);
 
-		propertyEditorModule.NotifyCustomizationModuleChanged();
+		PropertyEditorModule.NotifyCustomizationModuleChanged();
 	}
 }
 
