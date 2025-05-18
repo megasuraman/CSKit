@@ -14,15 +14,18 @@
 #include "AI/BrainQuery/CSKit_BrainQueryComponent.h"
 #include "AI/Community/CSKit_CommunityComponent.h"
 //#include "EnvironmentMap/CSKit_EnvironmentAwarenessComponent.h"
+#include "CSKit_Config.h"
 #include "AI/Experience/CSKit_ExperienceComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Character.h"
 #include "NavigationSystem.h"
 #include "AI/AIFlow/CSKit_AIFlowComponent.h"
+#include "AI/Blackboard/CSKit_BBInitDataTable.h"
 #include "AI/Notice/CSKit_NoticeComponent.h"
 #include "AI/Recognition/CSKit_RecognitionComponent.h"
 #include "AI/Territory/CSKit_TerritoryComponent.h"
 #include "AI/Worry/CSKit_WorryComponent.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 #if USE_CSKIT_DEBUG
 #include "EnvironmentQuery/EnvQueryDebugHelpers.h"
@@ -136,6 +139,17 @@ bool ACSKit_AIController::RunBehaviorTree(UBehaviorTree* BTAsset)
 #endif
 
 	const bool bSuccess = Super::RunBehaviorTree(BTAsset);
+	if (UBlackboardComponent* BlackboardComponent = GetBlackboardComponent())
+	{
+		const UCSKit_Config* CSKitConfig = GetDefault<UCSKit_Config>();
+		if (UDataTable* DataTable = Cast<UDataTable>(CSKitConfig->mBBInitDataTablePath.LoadSynchronous()))
+		{
+			if (FCSKit_BBInitValueTableRow* InitValue = DataTable->FindRow<FCSKit_BBInitValueTableRow>(mBBInitDataTableRowName, nullptr))
+			{
+				InitValue->ApplyBlackboardValue(*BlackboardComponent);
+			}
+		}
+	}
 	return bSuccess;
 }
 
@@ -266,6 +280,10 @@ void ACSKit_AIController::OnApplyDamage(AActor* InHitTarget, const float InDamag
 ------------------------------------------------------------ */
 void ACSKit_AIController::OnChangeNoticeTarget(AActor* InOldTarget, AActor* InNewTarget)
 {
+	if (UBlackboardComponent* BlackboardComponent = GetBlackboardComponent())
+	{
+		BlackboardComponent->SetValueAsObject(FName(TEXT("NoticeTarget")), InNewTarget);
+	}
 	if (UCSKit_ExperienceComponent* ExperienceComponent = GetCSKitExperience())
 	{
 		ExperienceComponent->OnChangeTarget(InNewTarget);

@@ -138,6 +138,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = CSKit)
 	TMap<FName, bool> mAIAbilityMap;
 	UPROPERTY(EditDefaultsOnly, Category = CSKit)
+	FName mBBInitDataTableRowName;
+	UPROPERTY(EditDefaultsOnly, Category = CSKit)
 	float mLowModeIntervalTime = 3.f;
 	UPROPERTY(EditDefaultsOnly, Category = CSKit)
 	bool mbEverLowMode = false;
