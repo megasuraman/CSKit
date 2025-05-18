@@ -42,9 +42,9 @@ void ACSKit_TerritoryVolume::PreSave(FObjectPreSaveContext ObjectSaveContext)
 }
 #endif
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 bool ACSKit_TerritoryVolume::IsTouch(const FVector& InPos, const float InRadius) const
 {
 	if(!mManualExtentV.IsZero())
@@ -64,9 +64,9 @@ bool ACSKit_TerritoryVolume::IsTouch(const FVector& InPos, const float InRadius)
 	return false;
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_TerritoryVolume::BeginPlay()
 {
 	Super::BeginPlay();
@@ -77,9 +77,9 @@ void ACSKit_TerritoryVolume::BeginPlay()
 	}
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_TerritoryVolume::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
@@ -104,9 +104,9 @@ TArray<FName> ACSKit_TerritoryVolume::EditorGetKindNameList()
 
 #if USE_CSKIT_DEBUG
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_TerritoryVolume::DebugDraw(UCanvas* InCanvas, const bool bInWireFrame) const
 {
 	DebugDrawInfo(InCanvas);
@@ -153,9 +153,9 @@ void ACSKit_TerritoryVolume::DebugDraw(UCanvas* InCanvas, const bool bInWireFram
 		}
 	}
 }
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_TerritoryVolume::DebugDrawInfo(UCanvas* InCanvas) const
 {
 	FCSKitDebug_ScreenWindowText ScreenWindowText;
@@ -166,9 +166,9 @@ void ACSKit_TerritoryVolume::DebugDrawInfo(UCanvas* InCanvas) const
 	ScreenWindowText.AddText(FString::Printf(TEXT("%s"), *UCSKitDebug_Utility::GetActorLevelName(this)));
 	ScreenWindowText.Draw(InCanvas, GetActorLocation());
 }
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 FColor ACSKit_TerritoryVolume::DebugGetColor() const
 {
 	return FColor::Blue;

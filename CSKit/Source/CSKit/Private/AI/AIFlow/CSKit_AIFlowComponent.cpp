@@ -26,25 +26,25 @@ void UCSKit_AIFlowComponent::BeginPlay()
 	Super::BeginPlay();
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_AIFlowComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_AIFlowComponent::SetAIFlow(const ACSKit_AIFlow* InAIFlow)
 {
 	mAIFlow = InAIFlow;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_AIFlowComponent::SetupAIFlowNodeIndex()
 {
 	const ACSKit_AIController* AIController = Cast<ACSKit_AIController>(GetOwner());
@@ -77,9 +77,9 @@ void UCSKit_AIFlowComponent::SetupAIFlowNodeIndex()
 	}
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_AIFlowComponent::StepNextAIFlowNodeIndex()
 {
 	const FCSKit_AIFlowNodeData* TargetNodeData = GetNextNodeData();
@@ -95,17 +95,17 @@ void UCSKit_AIFlowComponent::StepNextAIFlowNodeIndex()
 	mNextIndex = TargetNodeData->mLinkIndexList[SelectListIndex];
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 const ACSKit_AIFlow* UCSKit_AIFlowComponent::GetAIFlow() const
 {
 	return mAIFlow.Get();
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 const FCSKit_AIFlowNodeData* UCSKit_AIFlowComponent::GetNextNodeData() const
 {
 	if(mNextIndex < 0)
@@ -126,9 +126,9 @@ const FCSKit_AIFlowNodeData* UCSKit_AIFlowComponent::GetNextNodeData() const
 	return nullptr;
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 UBehaviorTree* UCSKit_AIFlowComponent::GetNextNodeAction()
 {
 	const FCSKit_AIFlowNodeData* TargetNodeData = GetNextNodeData();

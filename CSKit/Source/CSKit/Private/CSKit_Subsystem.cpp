@@ -26,9 +26,9 @@ DEFINE_LOG_CATEGORY_STATIC(LogCSKit_SubSystem, Warning, All);
 
 CSKit_XorShift UCSKit_Subsystem::msRand;
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 bool UCSKit_Subsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
 	if (!Super::ShouldCreateSubsystem(Outer))
@@ -52,9 +52,9 @@ bool UCSKit_Subsystem::ShouldCreateSubsystem(UObject* Outer) const
 	return true;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_Subsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
@@ -96,9 +96,9 @@ void UCSKit_Subsystem::Initialize(FSubsystemCollectionBase& Collection)
 #endif
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_Subsystem::Deinitialize()
 {
 	Super::Deinitialize();
@@ -186,7 +186,6 @@ ACSKit_EnvironmentMap* UCSKit_Subsystem::FindOwnEnvironmentMapMinVolume(const FV
 	{
 		if (ACSKit_EnvironmentMap* EnvironmentMap = WeakPtr.Get())
 		{
-			// ReSharper disable once CppTooWideScopeInitStatement
 			const float Volume = EnvironmentMap->CalcVolume();
 			if (Volume < MinVolume
 				&& EnvironmentMap->IsInsideAroundBox(InPos))
@@ -237,9 +236,9 @@ void UCSKit_Subsystem::ExitTerritoryVolume(ACSKit_TerritoryVolume* InVolume)
 	}
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 const ACSKit_TerritoryVolume* UCSKit_Subsystem::FindTouchTerritoryVolume(const FVector& InPos, const float InRadius, const FName& InUserName) const
 {
 	for(const auto& WeakPtr : mTerritoryVolumeList)
@@ -259,9 +258,9 @@ const ACSKit_TerritoryVolume* UCSKit_Subsystem::FindTouchTerritoryVolume(const F
 	return nullptr;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_Subsystem::InitXorShiftRand(const uint32 InSeed)
 {
 	UE_LOG(LogCSKit_SubSystem, Log, TEXT("UCSKit_Subsystem::sRand Seed : %d"), InSeed);

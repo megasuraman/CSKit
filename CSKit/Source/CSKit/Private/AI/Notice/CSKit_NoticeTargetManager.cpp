@@ -101,9 +101,9 @@ void UCSKit_NoticeTargetManager::Exit(AActor* InTarget, ACSKit_AIController* InA
 	}
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 int32 UCSKit_NoticeTargetManager::CalcMemberNum(AActor* InTarget, const ACSKit_AIController* InIgnoreAIController) const
 {
 	const FCSKit_SameNoticeGroup* SameNoticeGroup = mSameNoticeGroupMap.Find(InTarget);
@@ -122,9 +122,9 @@ int32 UCSKit_NoticeTargetManager::CalcMemberNum(AActor* InTarget, const ACSKit_A
 	return MemberNum;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 const FCSKit_SameNoticeGroup* UCSKit_NoticeTargetManager::FindSameNoticeGroup(AActor* InTarget) const
 {
 	return mSameNoticeGroupMap.Find(InTarget);

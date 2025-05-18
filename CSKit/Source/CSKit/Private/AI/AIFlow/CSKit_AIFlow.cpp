@@ -85,9 +85,9 @@ void ACSKit_AIFlow::PreSave(FObjectPreSaveContext ObjectSaveContext)
 }
 #endif
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 const FCSKit_AIFlowNodeData* ACSKit_AIFlow::GetNodeData(const int32 InIndex) const
 {
 	if(InIndex >= 0
@@ -98,9 +98,9 @@ const FCSKit_AIFlowNodeData* ACSKit_AIFlow::GetNodeData(const int32 InIndex) con
 	return nullptr;
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlow::PostInitProperties()
 {
 	Super::PostInitProperties();
@@ -119,9 +119,9 @@ void ACSKit_AIFlow::PostInitProperties()
 #endif
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlow::PostLoad()
 {
 	Super::PostLoad();
@@ -131,9 +131,9 @@ void ACSKit_AIFlow::PostLoad()
 #endif
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlow::BeginPlay()
 {
 	Super::BeginPlay();
@@ -145,17 +145,17 @@ void ACSKit_AIFlow::BeginPlay()
 	}
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlow::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlow::BeginDestroy()
 {
 	Super::BeginDestroy();
@@ -165,9 +165,9 @@ void ACSKit_AIFlow::BeginDestroy()
 }
 
 #if USE_CSKIT_DEBUG
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlow::DebugDrawCall(UCanvas* InCanvas) const
 {
 	mDebugDrawSec += GetWorld()->GetDeltaSeconds();
@@ -181,9 +181,9 @@ void ACSKit_AIFlow::DebugDrawCall(UCanvas* InCanvas) const
 	DebugDrawNodeList(InCanvas);
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlow::DebugRequestDraw(const bool bInActive)
 {
 	if (bInActive)
@@ -206,9 +206,9 @@ void ACSKit_AIFlow::DebugRequestDraw(const bool bInActive)
 		}
 	}
 }
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlow::DebugDraw(UCanvas* InCanvas, class APlayerController* InPlayerController)
 {
 #if WITH_EDITOR
@@ -228,9 +228,9 @@ void ACSKit_AIFlow::DebugDraw(UCanvas* InCanvas, class APlayerController* InPlay
 #endif
 	DebugDrawCall(InCanvas);
 }
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlow::DebugDrawInfo(UCanvas* InCanvas) const
 {
 	FCSKitDebug_ScreenWindowText ScreenWindowText;
@@ -238,9 +238,9 @@ void ACSKit_AIFlow::DebugDrawInfo(UCanvas* InCanvas) const
 	ScreenWindowText.AddText(FString::Printf(TEXT("NodeNum : %d"), mNodeDataList.Num()));
 	ScreenWindowText.Draw(InCanvas, GetActorLocation());
 }
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlow::DebugDrawNodeList(UCanvas* InCanvas) const
 {
 	FTransform BaseTransform = GetActorTransform();
@@ -320,9 +320,9 @@ void ACSKit_AIFlow::DebugDrawNodeList(UCanvas* InCanvas) const
 	}
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 bool ACSKit_AIFlow::DebugIsWishDraw() const
 {
 #if WITH_EDITOR
@@ -348,9 +348,9 @@ bool ACSKit_AIFlow::DebugIsWishDraw() const
 #endif
 
 #if WITH_EDITOR
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlow::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
 	Super::PostEditChangeProperty(PropertyChangedEvent);
@@ -360,18 +360,18 @@ void ACSKit_AIFlow::PostEditChangeProperty(FPropertyChangedEvent& PropertyChange
 	EditorSetupNodeDataList();
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlow::EditorSetupNodeDataListButton()
 {
 	EditorSetupNodeDataList();
 	EditorCheckError();
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlow::EditorSetupNodeDataList()
 {
 	TArray<const ACSKit_AIFlowNode*> AIFlowNodeActorList;
@@ -381,9 +381,9 @@ void ACSKit_AIFlow::EditorSetupNodeDataList()
 	EditorGenerateRoute();
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlow::EditorUpdateNodeDataList(const ACSKit_AIFlowNode* InNode)
 {
 	if(InNode == nullptr)
@@ -401,9 +401,9 @@ void ACSKit_AIFlow::EditorUpdateNodeDataList(const ACSKit_AIFlowNode* InNode)
 	}
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 bool ACSKit_AIFlow::EditorCalcNodeBoundingSphere(FVector& OutPos, float& OutRadius) const
 {
 	TArray<const ACSKit_AIFlowNode*> AIFlowNodeActorList;
@@ -439,9 +439,9 @@ bool ACSKit_AIFlow::EditorCalcNodeBoundingSphere(FVector& OutPos, float& OutRadi
 	return true;
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlow::EditorGenerateRoute()
 {
 	switch (mEditorGenerateRouteType)
@@ -453,9 +453,9 @@ void ACSKit_AIFlow::EditorGenerateRoute()
 	}
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlow::EditorGenerateRoute_Loop()
 {
 	//自動生成されたのは一旦削除
@@ -622,9 +622,9 @@ void ACSKit_AIFlow::EditorCheckError() const
 	}
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlow::EditorGetNodeActorList(TArray<const ACSKit_AIFlowNode*>& OutList) const
 {
 	TArray<AActor*> ChildActorList;
@@ -638,9 +638,9 @@ void ACSKit_AIFlow::EditorGetNodeActorList(TArray<const ACSKit_AIFlowNode*>& Out
 	}
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlow::EditorSortNodeActorList(TArray<const ACSKit_AIFlowNode*>& OutList)
 {
 	OutList.Sort([&](const ACSKit_AIFlowNode& Item1, const ACSKit_AIFlowNode& Item2) {
@@ -648,9 +648,9 @@ void ACSKit_AIFlow::EditorSortNodeActorList(TArray<const ACSKit_AIFlowNode*>& Ou
 		});
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlow::EditorSetupNodeActorList(const TArray<const ACSKit_AIFlowNode*>& InList)
 {
 	mNodeDataList.Empty();
@@ -676,18 +676,18 @@ void ACSKit_AIFlow::EditorSetupNodeActorList(const TArray<const ACSKit_AIFlowNod
 	}
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlow::EditorOnAddChild(USceneComponent* InChild)
 {
 	//EditorSetupNodeDataList();
 	mbEditorRequestSetupNodeDataList = true;
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlow::EditorCheckLastSelectedNode()
 {
 	mEditorLastSelectedNode = nullptr;

@@ -6,9 +6,9 @@
 DEFINE_LOG_CATEGORY_STATIC(LogCSKit_BrainQueryTool, Warning, All);
 
 #if WITH_EDITOR
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 bool CSKit_BrainQueryTool::EditorCheckError(const FCSKit_BrainQueryTableRow& InData)
 {
 	bool bError = false;

@@ -31,17 +31,17 @@ void UCSKit_WorryComponent::BeginPlay()
 	Super::BeginPlay();
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_WorryComponent::Setup(const FCSKit_WorryAbilityTableRow& InData)
 {
 	mAbility = InData;;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_WorryComponent::SetTerritoryComponent(const UCSKit_TerritoryComponent* InComponent)
 {
 	mTerritoryComponent = InComponent;
@@ -163,9 +163,9 @@ void UCSKit_WorryComponent::SetSleep(const bool bInSleep)
 	}
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_WorryComponent::GiveUpWorry()
 {
 	if(!IsWishCheckWorryPoint())
@@ -178,9 +178,9 @@ void UCSKit_WorryComponent::GiveUpWorry()
 	SetWishCheckWorryPoint(false);
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_WorryComponent::SetWishCheckWorryPoint(const bool bInWish)
 {
 	if(mbWishCheckWorryPoint == bInWish)
@@ -277,9 +277,9 @@ bool UCSKit_WorryComponent::CheckCollisionVisible(const FVector& InBasePos, AAct
 	return false;
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 bool UCSKit_WorryComponent::IsNearGiveUpPos(const FVector& InTargetPos) const
 {
 	if(mGiveUpWorryPos == FAISystem::InvalidLocation)
@@ -289,9 +289,9 @@ bool UCSKit_WorryComponent::IsNearGiveUpPos(const FVector& InTargetPos) const
 	return (FVector::DistSquared(mGiveUpWorryPos,InTargetPos) < FMath::Square(1000.f));
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_WorryComponent::UpdateGiveUpSec(const float InDeltaSec)
 {
 	if(mGiveUpInterval > 0.f)
@@ -304,9 +304,9 @@ void UCSKit_WorryComponent::UpdateGiveUpSec(const float InDeltaSec)
 	}
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 bool UCSKit_WorryComponent::IsOutsideTerritory(const FVector& InTargetPos) const
 {
 	if(const UCSKit_TerritoryComponent* TerritoryComponent = mTerritoryComponent.Get())
@@ -409,9 +409,9 @@ void UCSKit_WorryComponent::DebugDrawWorryPoint(UCanvas* InCanvas) const
 		);
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_WorryComponent::DebugDrawGiveUpWorryPos(UCanvas* InCanvas) const
 {
 	UCSKitDebug_Draw::OctahedronArrow OctahedronArrow;

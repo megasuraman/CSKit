@@ -52,9 +52,9 @@ bool FCSKit_NeedLevelTarget::SetNeedLevel(const ECSKit_NeedLevel InLevel)
 	return true;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 bool FCSKit_NeedLevelTarget::IsUseFixedPos() const
 {
 	return mFixedPos!=FAISystem::InvalidLocation;
@@ -201,9 +201,9 @@ void UCSKit_NeedLevelManager::ExitTarget(ACSKit_AIController* InAIController)
 	mTargetList.RemoveSingleSwap(Target);
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 FCSKit_NeedLevelTarget* UCSKit_NeedLevelManager::FindNeedLevelTarget(const ACSKit_AIController* InAIController)
 {
 	for (FCSKit_NeedLevelTarget& Target : mTargetList)

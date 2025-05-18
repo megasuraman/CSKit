@@ -17,9 +17,9 @@ class UCanvas;
 class APlayerController;
 class UCSKitDebug_AutoPilotModeBase;
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 enum class ECSKitDebug_AutoPilotMode : uint8
 {
 	Invalid,

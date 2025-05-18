@@ -32,10 +32,9 @@ void UCSKit_CommunityComponent::EndPlay(const EEndPlayReason::Type EndPlayReason
 	RequestExitCommunity();
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
-// ReSharper disable once CppMemberFunctionMayBeStatic
+/**
+ * @brief 
+ */
 void UCSKit_CommunityComponent::Update(const float InDeltaSec)
 {
 }
@@ -240,17 +239,17 @@ APawn* UCSKit_CommunityComponent::GetLeaderPawn() const
 	return nullptr;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_CommunityComponent::AddDelegateOnEntryCommunity(const FCSKit_OnEntryCommunity::FDelegate& InDelegate)
 {
 	mDelegateOnEntryCommunity.Add(InDelegate);
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_CommunityComponent::AddDelegateOnExitCommunity(const FCSKit_OnExitCommunity::FDelegate& InDelegate)
 {
 	mDelegateOnExitCommunity.Add(InDelegate);
@@ -284,17 +283,17 @@ bool UCSKit_CommunityComponent::ExitCommunityByNode(const UCSKit_CommunityNodeBa
 	return false;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_CommunityComponent::OnEntryCommunity() const
 {
 	mDelegateOnEntryCommunity.Broadcast();
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_CommunityComponent::OnExitCommunity() const
 {
 	mDelegateOnExitCommunity.Broadcast();

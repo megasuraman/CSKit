@@ -52,17 +52,17 @@ void UCSKit_TerritoryComponent::Update(const float InDeltaSec)
 	mbInside = Volume->IsTouch(BasePos,mCheckRadius);
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 bool UCSKit_TerritoryComponent::IsOwnTerritoryVolume() const
 {
 	return mTerritoryVolume.IsValid();
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 bool UCSKit_TerritoryComponent::IsTouchTerritoryVolume(const FVector& InPos, const float InRadius) const
 {
 	const ACSKit_TerritoryVolume* Volume = mTerritoryVolume.Get();
@@ -73,9 +73,9 @@ bool UCSKit_TerritoryComponent::IsTouchTerritoryVolume(const FVector& InPos, con
 	return Volume->IsTouch(InPos,InRadius);
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_TerritoryComponent::UpdateTerritoryVolume()
 {
 	const ACSKit_AIController* AIController = Cast<ACSKit_AIController>(GetOwner());

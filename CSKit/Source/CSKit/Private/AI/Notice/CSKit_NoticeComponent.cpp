@@ -34,9 +34,9 @@ void UCSKit_NoticeComponent::BeginPlay()
 	}
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_NoticeComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
@@ -48,9 +48,9 @@ void UCSKit_NoticeComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 }
 
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_NoticeComponent::Setup(const FCSKit_NoticeTableRow& InData)
 {
 	SetScoreWeight(InData.mScoreWeight);
@@ -59,9 +59,9 @@ void UCSKit_NoticeComponent::Setup(const FCSKit_NoticeTableRow& InData)
 	mbOnlyInsideTerritory = InData.mbOnlyInsideTerritory;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_NoticeComponent::SetTerritoryComponent(const UCSKit_TerritoryComponent* InComponent)
 {
 	mTerritoryComponent = InComponent;
@@ -82,17 +82,17 @@ void UCSKit_NoticeComponent::Update(const float InDeltaSec)
 	UpdateSelectTarget(InDeltaSec);
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 AActor* UCSKit_NoticeComponent::GetSelectTarget() const
 {
 	return mSelectTarget.Get();
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 float UCSKit_NoticeComponent::GetSameTargetPriorityScore() const
 {
 	if (mNoticeDataList.Num() > 0)
@@ -102,9 +102,9 @@ float UCSKit_NoticeComponent::GetSameTargetPriorityScore() const
 	return 0.f;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_NoticeComponent::UpdateNoticeDataList()
 {
 	mNoticeDataList.Empty();
@@ -270,9 +270,9 @@ void UCSKit_NoticeComponent::UpdateNoticeDataList()
 	}
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_NoticeComponent::UpdateSelectTarget(const float InDeltaTime)
 {
 	if (mNoticeDataList.Num() == 0)
@@ -294,9 +294,9 @@ void UCSKit_NoticeComponent::UpdateSelectTarget(const float InDeltaTime)
 	}
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_NoticeComponent::SortNoticeDataList()
 {
 	mNoticeDataList.Sort([](const FCSKit_NoticeData& Base, const FCSKit_NoticeData& Target)
@@ -306,9 +306,9 @@ void UCSKit_NoticeComponent::SortNoticeDataList()
 	);
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_NoticeComponent::SetSelectTarget(AActor* InTarget)
 {
 	AActor* OldTarget = mSelectTarget.Get();
@@ -321,9 +321,9 @@ void UCSKit_NoticeComponent::SetSelectTarget(AActor* InTarget)
 	OnChangeSelectTarget(OldTarget, InTarget);
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_NoticeComponent::OnChangeSelectTarget(AActor* InOldTarget, AActor* InNewTarget) const
 {
 	ACSKit_AIController* AIController = Cast<ACSKit_AIController>(GetOwner());

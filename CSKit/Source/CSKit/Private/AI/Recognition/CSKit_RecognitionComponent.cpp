@@ -32,9 +32,9 @@ void UCSKit_RecognitionComponent::BeginPlay()
 	mRecognitionTargetList.Reserve(mMaxRecognitionTargetListSize);
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_RecognitionComponent::Setup(const FCSKit_RecognitionTableRow& InData)
 {
 	SetRecognizeAbility(InData.mRecognizeAbility);
@@ -135,9 +135,9 @@ const FCSKitRecognitionTarget* UCSKit_RecognitionComponent::FindRecognitionTarge
 	return nullptr;
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_RecognitionComponent::SendMessage(AActor* InTarget, const TArray<ACSKit_AIController*>& InReceiverList)
 {
 	if(InTarget == nullptr)

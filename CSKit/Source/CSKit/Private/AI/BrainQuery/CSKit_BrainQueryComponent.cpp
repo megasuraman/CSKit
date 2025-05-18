@@ -384,9 +384,9 @@ void UCSKit_BrainQueryComponent::DebugRequestOutputLog(const bool bInOutputLog)
 	mDebugOutputLogCount = 0;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_BrainQueryComponent::DebugAddForceSelectTestName(const FName& InName)
 {
 	mDebugForceSelectTestNameList.Add(InName);
@@ -416,9 +416,9 @@ void UCSKit_BrainQueryComponent::DebugEndOutputLog()
 	mDebugOutputLog += FString::Printf(TEXT("/***** EndBrainQueryLog(%d) *****/\n"), mDebugOutputLogCount);
 	++mDebugOutputLogCount;
 }
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_BrainQueryComponent::DebugOutputLog_BeginCalcScore(const FCSKit_BrainQueryTest& InTest)
 {
 	if (!mbDebugOutputLog)
@@ -427,9 +427,9 @@ void UCSKit_BrainQueryComponent::DebugOutputLog_BeginCalcScore(const FCSKit_Brai
 	}
 	mDebugOutputLog += FString::Printf(TEXT("\t[BeginCalcScore(%s)]\n"), *InTest.mTestName.ToString());
 }
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_BrainQueryComponent::DebugOutputLog_EndCalcScore(const FCSKit_BrainQueryTest& InTest, const float InScore)
 {
 	if (!mbDebugOutputLog)
@@ -438,9 +438,9 @@ void UCSKit_BrainQueryComponent::DebugOutputLog_EndCalcScore(const FCSKit_BrainQ
 	}
 	mDebugOutputLog += FString::Printf(TEXT("\t[EndCalcScore %s(%.3f)]\n"), *InTest.mTestName.ToString(), InScore);
 }
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_BrainQueryComponent::DebugOutputLog_BeginCalcTestNodeScore(const FCSKit_BrainQueryTestNode& InTest)
 {
 	if (!mbDebugOutputLog)
@@ -459,9 +459,9 @@ void UCSKit_BrainQueryComponent::DebugOutputLog_BeginCalcTestNodeScore(const FCS
 #endif
 	mDebugOutputLog += FString::Printf(TEXT("\t\t[BeginCalcTestNodeScore(%s)]\n"), *TestNodeName);
 }
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_BrainQueryComponent::DebugOutputLog_EndCalcTestNodeScore(const FCSKit_BrainQueryTestNode& InTest, const bool bInPassFilter)
 {
 	if (!mbDebugOutputLog)
@@ -480,9 +480,9 @@ void UCSKit_BrainQueryComponent::DebugOutputLog_EndCalcTestNodeScore(const FCSKi
 #endif
 	mDebugOutputLog += FString::Printf(TEXT("\t\t[EndCalcTestNodeScore(%s) Filter(%d)]\n"), *TestNodeName, bInPassFilter);
 }
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_BrainQueryComponent::DebugOutputLog_EndCalcTestNodeScore(const FCSKit_BrainQueryTestNode& InTest, const float InScore)
 {
 	if (!mbDebugOutputLog)
@@ -505,9 +505,9 @@ void UCSKit_BrainQueryComponent::DebugOutputLog_EndCalcTestNodeScore(const FCSKi
 
 
 #if WITH_EDITOR
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_BrainQueryComponent::EditorCreateModifyData(const FCSKit_BrainQueryTableRow& InBrainQueryTableRow)
 {
 	if (mEditorModifyData == nullptr)
@@ -517,9 +517,9 @@ void UCSKit_BrainQueryComponent::EditorCreateModifyData(const FCSKit_BrainQueryT
 	}
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_BrainQueryComponent::EditorCheckDataSafety(const FCSKit_BrainQueryTableRow& InBrainQueryTableRow)
 {
 	if (!mbEditorCheckedDataSafety)
@@ -529,9 +529,9 @@ void UCSKit_BrainQueryComponent::EditorCheckDataSafety(const FCSKit_BrainQueryTa
 	}
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_BrainQueryComponent::EditorDrawScreenWindowGraph(UCanvas* InCanvas, const float InDeltaSec) const
 {
 	for (const DebugTestResult& Result : mDebugTestResultList)

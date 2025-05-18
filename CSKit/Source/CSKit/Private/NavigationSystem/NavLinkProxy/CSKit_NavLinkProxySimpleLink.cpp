@@ -38,9 +38,9 @@ void ACSKit_NavLinkProxySimpleLink::PostInitProperties()
 }
 
 #if USE_CSKIT_DEBUG
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 FVector ACSKit_NavLinkProxySimpleLink::DebugGetGroundPos(const UWorld* InWorld, const FVector& InPos)
 {
 	const FVector CheckOffsetUp(0.f, 0.f, 100.f);
@@ -55,9 +55,9 @@ FVector ACSKit_NavLinkProxySimpleLink::DebugGetGroundPos(const UWorld* InWorld, 
 	return InPos;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void	ACSKit_NavLinkProxySimpleLink::DebugAssignLink(const TArray<FDebugPointLink>& InList)
 {
 	PointLinks.Empty();
@@ -77,9 +77,9 @@ void	ACSKit_NavLinkProxySimpleLink::DebugAssignLink(const TArray<FDebugPointLink
 		FNavigationSystem::UpdateActorData(*this);
 	}
 }
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void	ACSKit_NavLinkProxySimpleLink::DebugDraw(UCanvas* InCanvas) const
 {
 	const FTransform& ActorTransform = GetTransform();
@@ -124,17 +124,17 @@ void	ACSKit_NavLinkProxySimpleLink::DebugDraw(UCanvas* InCanvas) const
 		++Index;
 	}
 }
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 UClass* ACSKit_NavLinkProxySimpleLink::DebugGetAssignNavArea() const
 {
 	return UCSKit_NavAreaBase::StaticClass();
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 ENavLinkDirection::Type ACSKit_NavLinkProxySimpleLink::DebugGetAssignDirection() const
 {
 	return ENavLinkDirection::BothWays;

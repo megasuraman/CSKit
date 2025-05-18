@@ -31,9 +31,9 @@ bool FCSKit_BlockSensor::Update(float InDeltaTime, const FVector& InPos)
 	}
 	return false;
 }
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void FCSKit_BlockSensor::Reset()
 {
 	mNextLocationLogIndex = 0;

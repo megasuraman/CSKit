@@ -66,18 +66,18 @@ ACSKit_AIFlowNode::ACSKit_AIFlowNode(const FObjectInitializer& ObjectInitializer
 }
 
 #if ENGINE_MAJOR_VERSION == 5
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlowNode::PreSave(FObjectPreSaveContext ObjectSaveContext)
 {
 	Super::PreSave(ObjectSaveContext);
 }
 #endif
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlowNode::PostInitProperties()
 {
 	Super::PostInitProperties();
@@ -89,9 +89,9 @@ void ACSKit_AIFlowNode::PostLoad()
 }
 
 #if WITH_EDITOR
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlowNode::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
 	Super::PostEditChangeProperty(PropertyChangedEvent);
@@ -110,9 +110,9 @@ void ACSKit_AIFlowNode::PostEditChangeProperty(FPropertyChangedEvent& PropertyCh
 		AIFlow->EditorSetupNodeDataList();
 	}
 }
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlowNode::PostEditMove(bool bFinished)
 {
 	Super::PostEditMove(bFinished);
@@ -123,9 +123,9 @@ void ACSKit_AIFlowNode::PostEditMove(bool bFinished)
 	}
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlowNode::PostEditImport()
 {
 	Super::PostEditImport();
@@ -133,9 +133,9 @@ void ACSKit_AIFlowNode::PostEditImport()
 	mbEditorCalledEditImport = true;
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlowNode::EditorAddNextNode()
 {
 	AActor* AIFlowActor = GetAttachParentActor();
@@ -158,18 +158,18 @@ void ACSKit_AIFlowNode::EditorAddNextNode()
 #endif
 	}
 }
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 TArray<FName> ACSKit_AIFlowNode::EditorGetActionNameList()
 {
 	TArray<FName> NameList;
 	return NameList;
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 FString ACSKit_AIFlowNode::EditorCheckError() const
 {
 	FString ErrorInfo;
@@ -197,9 +197,9 @@ FString ACSKit_AIFlowNode::EditorCheckError() const
 	return ErrorInfo;
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlowNode::EditorGetAIFlowNodeData(FCSKit_AIFlowNodeData& OutNode) const
 {
 	if(const ACSKit_AIFlow* AIFlow = Cast<ACSKit_AIFlow>(GetAttachParentActor()))
@@ -213,9 +213,9 @@ void ACSKit_AIFlowNode::EditorGetAIFlowNodeData(FCSKit_AIFlowNodeData& OutNode) 
 	OutNode.mActionName = mActionName;
 	OutNode.mWaitTimeAfterAction = mWaitTimeAfterAction;
 }
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlowNode::EditorAddLinkNode(const ACSKit_AIFlowNode* InNode)
 {
 	if(InNode == nullptr
@@ -226,9 +226,9 @@ void ACSKit_AIFlowNode::EditorAddLinkNode(const ACSKit_AIFlowNode* InNode)
 	mLinkList.AddUnique(TSoftObjectPtr<ACSKit_AIFlowNode>(FSoftObjectPath(InNode)));
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIFlowNode::EditorOnAttached()
 {
 #if ENGINE_MAJOR_VERSION == 5

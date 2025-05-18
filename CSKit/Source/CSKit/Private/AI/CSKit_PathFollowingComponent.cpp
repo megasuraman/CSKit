@@ -244,18 +244,18 @@ bool UCSKit_PathFollowingComponent::IsStraightPath() const
 	return (PathPointNum <= 2);
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_PathFollowingComponent::OverrideInertial(const bool bInOwnInertial, const float InInertialBreak)
 {
 	mbOwnInertial = bInOwnInertial;
 	mInertialBreak = InInertialBreak;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_PathFollowingComponent::FollowPathSegment(float DeltaTime)
 {
 	if(mbFocusBasedMoveMode)
@@ -267,9 +267,9 @@ void UCSKit_PathFollowingComponent::FollowPathSegment(float DeltaTime)
 	Super::FollowPathSegment(DeltaTime);
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_PathFollowingComponent::SetMoveSegment(int32 SegmentStartIndex)
 {
 	Super::SetMoveSegment(SegmentStartIndex);
@@ -282,9 +282,9 @@ void UCSKit_PathFollowingComponent::SetMoveSegment(int32 SegmentStartIndex)
 	}
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 #if ENGINE_MAJOR_VERSION == 5
 bool UCSKit_PathFollowingComponent::ShouldStopMovementOnPathFinished() const
 {
@@ -337,9 +337,9 @@ void UCSKit_PathFollowingComponent::UpdateDirectMoveToActor()
 	MoveSegmentDirection = (TargetPos - BasePos).GetSafeNormal();
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_PathFollowingComponent::FollowPathSegmentFocusBasedMoveMode(const float InDeltaTime)
 {
 #if ENGINE_MAJOR_VERSION == 5
@@ -392,9 +392,9 @@ void UCSKit_PathFollowingComponent::FollowPathSegmentFocusBasedMoveMode(const fl
 	NavMovement->RequestDirectMove(MoveVelocity, bNotFollowingLastSegment);
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_PathFollowingComponent::UpdateManualMoveFocusPos(float& OutYaw, const float InDeltaTime)
 {
 	if (Status != EPathFollowingStatus::Moving
@@ -465,9 +465,9 @@ void UCSKit_PathFollowingComponent::UpdateManualMoveFocusPos(float& OutYaw, cons
 	AIController->SetFocalPoint(mManualMoveFocusPos, EAIFocusPriority::Move);
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_PathFollowingComponent::CheckOverrideJointPathNodeAcceptanceRadius()
 {
 	const FNavigationPath* PathInstance = Path.Get();
@@ -481,9 +481,9 @@ void UCSKit_PathFollowingComponent::CheckOverrideJointPathNodeAcceptanceRadius()
 	}
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_PathFollowingComponent::UpdateInertialBreak(const float InDeltaTime)
 {
 	if(mInertialSpeedV.IsNearlyZero())
@@ -511,9 +511,9 @@ void UCSKit_PathFollowingComponent::UpdateInertialBreak(const float InDeltaTime)
 #endif
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_PathFollowingComponent::ReviseFocusPos(FVector& OutPos, float& OutYaw) const
 {
 	const ACSKit_AIController* AIController = Cast<ACSKit_AIController>(GetOwner());

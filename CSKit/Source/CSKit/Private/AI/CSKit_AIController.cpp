@@ -51,9 +51,9 @@ ACSKit_AIController::ACSKit_AIController(const FObjectInitializer& ObjectInitial
 	FCSKitDebug_SaveData Test;
 	Test.SetBool(FString(), true);
 }
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIController::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
@@ -75,9 +75,9 @@ void ACSKit_AIController::PostInitializeComponents()
 	}
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -126,9 +126,9 @@ void ACSKit_AIController::Tick(float DeltaTime)
 	}
 }
 
-/* ------------------------------------------------------------
-   !BehaviorTree実行
------------------------------------------------------------- */
+/**
+ * @brief BehaviorTree実行
+ */
 bool ACSKit_AIController::RunBehaviorTree(UBehaviorTree* BTAsset)
 {
 #if USE_CSKIT_DEBUG
@@ -153,9 +153,9 @@ bool ACSKit_AIController::RunBehaviorTree(UBehaviorTree* BTAsset)
 	return bSuccess;
 }
 
-/* ------------------------------------------------------------
-   !経路探索リクエスト
------------------------------------------------------------- */
+/**
+ * @brief 経路探索リクエスト
+ */
 void ACSKit_AIController::FindPathForMoveRequest(const FAIMoveRequest& MoveRequest, FPathFindingQuery& Query, FNavPathSharedPtr& OutPath) const
 {
 	Super::FindPathForMoveRequest(MoveRequest, Query, OutPath);
@@ -179,11 +179,11 @@ void ACSKit_AIController::FindPathForMoveRequest(const FAIMoveRequest& MoveReque
  #endif
 }
 
-/* ------------------------------------------------------------
-   !向き更新
-   !Engineの実装が変なので、必要な部分だけ抜粋して自前で用意
-   !（bUpdatePawnで直接PawnのSetActorRotation()されたり）
------------------------------------------------------------- */
+/**
+ * @brief	向き更新
+ *			Engineの実装が変なので、必要な部分だけ抜粋して自前で用意
+ *			（bUpdatePawnで直接PawnのSetActorRotation()されたり）
+ */
 void	ACSKit_AIController::UpdateControlRotation(float DeltaTime, bool bUpdatePawn)
 {
 	UpdateFocalPoint(DeltaTime);
@@ -235,9 +235,9 @@ void	ACSKit_AIController::UpdateControlRotation(float DeltaTime, bool bUpdatePaw
 	SetControlRotation(NewControlRotation);
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 FAIRequestID ACSKit_AIController::RequestMove(const FAIMoveRequest& MoveRequest, FNavPathSharedPtr Path)
 {
 	//非同期リクエスト後に呼び出す際に移動開始可能か再度チェック
@@ -249,9 +249,9 @@ FAIRequestID ACSKit_AIController::RequestMove(const FAIMoveRequest& MoveRequest,
 	return Super::RequestMove(MoveRequest, Path);
 }
 
-/* ------------------------------------------------------------
-   !被ダメージ時
------------------------------------------------------------- */
+/**
+ * @brief 被ダメージ時
+ */
 void ACSKit_AIController::OnTakeDamage(AActor* InDamageCauser, const float InDamage, const uint16 InParamBit)
 {
 	if (UCSKit_RecognitionComponent* RecognitionComponent = GetCSKitRecognition())
@@ -264,9 +264,9 @@ void ACSKit_AIController::OnTakeDamage(AActor* InDamageCauser, const float InDam
 	}
 }
 
-/* ------------------------------------------------------------
-   !与ダメージ時
------------------------------------------------------------- */
+/**
+ * @brief 与ダメージ時
+ */
 void ACSKit_AIController::OnApplyDamage(AActor* InHitTarget, const float InDamage, const uint16 InParamBit)
 {
 	if (UCSKit_ExperienceComponent* ExperienceComponent = GetCSKitExperience())
@@ -275,9 +275,9 @@ void ACSKit_AIController::OnApplyDamage(AActor* InHitTarget, const float InDamag
 	}
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIController::OnChangeNoticeTarget(AActor* InOldTarget, AActor* InNewTarget)
 {
 	if (UBlackboardComponent* BlackboardComponent = GetBlackboardComponent())
@@ -294,49 +294,49 @@ void ACSKit_AIController::OnChangeNoticeTarget(AActor* InOldTarget, AActor* InNe
 	// }
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 UCSKit_CommunityComponent* ACSKit_AIController::GetCSKitCommunity() const
 {
 	return mCSKit_CommunityComponent.Get();
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 // UCSKit_EnvironmentAwarenessComponent* ACSKit_AIController::GetCSKitEnvironmentAwareness() const
 // {
 // 	return mCSKit_EnvironmentAwarenessComponent.Get();
 // }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 UCSKit_TerritoryComponent* ACSKit_AIController::GetCSKitTerritoryComponent() const
 {
 	return mCSKit_TerritoryComponent.Get();
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 UCSKit_WorryComponent* ACSKit_AIController::GetCSKitWorryComponent() const
 {
 	return mCSKit_WorryComponent.Get();
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 UCSKit_AIFlowComponent* ACSKit_AIController::GetCSKitAIFlowComponent() const
 {
 	return mCSKit_AIFlowComponent.Get();
 }
 
-/* ------------------------------------------------------------
-   !経路探索なしの移動リクエスト
------------------------------------------------------------- */
+/**
+ * @brief 経路探索なしの移動リクエスト
+ */
 FPathFollowingRequestResult ACSKit_AIController::MoveToDirect(const AActor* InTarget, const float InAcceptanceRadius)
 {
 	FPathFollowingRequestResult ResultData;
@@ -368,9 +368,9 @@ FPathFollowingRequestResult ACSKit_AIController::MoveToDirect(const AActor* InTa
 	return ResultData;
 }
 
-/* ------------------------------------------------------------
-   !経路探索なしの移動中かどうか
------------------------------------------------------------- */
+/**
+ * @brief 経路探索なしの移動中かどうか
+ */
 bool ACSKit_AIController::IsMoveToDirect(const AActor* InTarget) const
 {
 	const UCSKit_PathFollowingComponent* PathFollowing = Cast<UCSKit_PathFollowingComponent>(GetPathFollowingComponent());
@@ -382,9 +382,9 @@ bool ACSKit_AIController::IsMoveToDirect(const AActor* InTarget) const
 	return PathFollowing->IsPlayingDirectMoveToActor(InTarget);
 }
 
-/* ------------------------------------------------------------
-   !経路探索なしの移動中断
------------------------------------------------------------- */
+/**
+ * @brief 経路探索なしの移動中断
+ */
 void ACSKit_AIController::AbortMoveToDirect(const AActor* InTarget) const
 {
 	UCSKit_PathFollowingComponent* PathFollowing = Cast<UCSKit_PathFollowingComponent>(GetPathFollowingComponent());
@@ -398,9 +398,10 @@ void ACSKit_AIController::AbortMoveToDirect(const AActor* InTarget) const
 		PathFollowing->AbortMove(*this, FPathFollowingResultFlags::UserAbort);
 	}
 }
-/* ------------------------------------------------------------
-   !経路探索なしで外部から直接制御する移動リクエスト
------------------------------------------------------------- */
+
+/**
+ * @brief 経路探索なしで外部から直接制御する移動リクエスト
+ */
 FPathFollowingRequestResult ACSKit_AIController::MoveToDirectControl(const FVector& InTargetPos, const float InAcceptanceRadius, const bool bInFocusNoticeTarget)
 {
 	FPathFollowingRequestResult ResultData;
@@ -446,9 +447,9 @@ FPathFollowingRequestResult ACSKit_AIController::MoveToDirectControl(const FVect
 	return ResultData;
 }
 
-/* ------------------------------------------------------------
-   !経路探索なしで外部から直接制御する移動中かどうか
------------------------------------------------------------- */
+/**
+ * @brief 経路探索なしで外部から直接制御する移動中かどうか
+ */
 bool ACSKit_AIController::IsMoveToDirectControl() const
 {
 	const UCSKit_PathFollowingComponent* PathFollowing = Cast<UCSKit_PathFollowingComponent>(GetPathFollowingComponent());
@@ -460,9 +461,9 @@ bool ACSKit_AIController::IsMoveToDirectControl() const
 	return PathFollowing->IsPlayingDirectMoveControl();
 }
 
-/* ------------------------------------------------------------
-   !経路探索なしで外部から直接制御する移動中断
------------------------------------------------------------- */
+/**
+ * @brief 経路探索なしで外部から直接制御する移動中断
+ */
 void ACSKit_AIController::AbortMoveToDirectControl() const
 {
 	UCSKit_PathFollowingComponent* PathFollowing = Cast<UCSKit_PathFollowingComponent>(GetPathFollowingComponent());
@@ -477,9 +478,9 @@ void ACSKit_AIController::AbortMoveToDirectControl() const
 	}
 }
 
-/* ------------------------------------------------------------
-   !非同期のナビメッシュ経路探索リクエスト
------------------------------------------------------------- */
+/**
+ * @brief 非同期のナビメッシュ経路探索リクエスト
+ */
 uint32	ACSKit_AIController::MoveToAsync(const FAIMoveRequest& InMoveRequest, const FCSKit_AsyncFindPathFinishDelegate& InFinishDelegate)
 {
 	const APawn* OwnerPawn = GetPawn();
@@ -537,9 +538,10 @@ uint32	ACSKit_AIController::MoveToAsync(const FAIMoveRequest& InMoveRequest, con
 
 	return mAsyncPathQueryId;
 }
-/* ------------------------------------------------------------
-   !非同期のナビメッシュ経路探索破棄
------------------------------------------------------------- */
+
+/**
+ * @brief 非同期のナビメッシュ経路探索破棄
+ */
 void	ACSKit_AIController::AbortAsyncFindPathRequest(const uint32 InAsyncPathQueryId)
 {
 	if (mAsyncPathQueryId != INVALID_NAVQUERYID
@@ -553,10 +555,9 @@ void	ACSKit_AIController::AbortAsyncFindPathRequest(const uint32 InAsyncPathQuer
 	}
 }
 
-
-/* ------------------------------------------------------------
-   !注目対象取得
------------------------------------------------------------- */
+/**
+ * @brief 注目対象取得
+ */
 AActor* ACSKit_AIController::GetNoticeTarget() const
 {
 	if (const UCSKit_NoticeComponent* NoticeComponent = GetCSKitNotice())
@@ -565,9 +566,10 @@ AActor* ACSKit_AIController::GetNoticeTarget() const
 	}
 	return nullptr;
 }
-/* ------------------------------------------------------------
-   !AI停止リクエスト
------------------------------------------------------------- */
+
+/**
+ * @brief AI停止リクエスト
+ */
 void ACSKit_AIController::RequestStopAI() const
 {
 	if (UBehaviorTreeComponent* BehaviorTreeComponent = Cast<UBehaviorTreeComponent>(BrainComponent))
@@ -578,9 +580,10 @@ void ACSKit_AIController::RequestStopAI() const
 		}
 	}
 }
-/* ------------------------------------------------------------
-   !AI再開リクエスト
------------------------------------------------------------- */
+
+/**
+ * @brief AI再開リクエスト
+ */
 void ACSKit_AIController::RequestResumeAI() const
 {
 	if (UBehaviorTreeComponent* BehaviorTreeComponent = Cast<UBehaviorTreeComponent>(BrainComponent))
@@ -592,9 +595,9 @@ void ACSKit_AIController::RequestResumeAI() const
 	}
 }
 
-/* ------------------------------------------------------------
-   !AI停止中
------------------------------------------------------------- */
+/**
+ * @brief AI停止中
+ */
 bool ACSKit_AIController::IsPausedAI() const
 {
 	if (UBehaviorTreeComponent* BehaviorTreeComponent = Cast<UBehaviorTreeComponent>(BrainComponent))
@@ -604,9 +607,9 @@ bool ACSKit_AIController::IsPausedAI() const
 	return false;
 }
 
-/* ------------------------------------------------------------
-   !低処理モードon/off
------------------------------------------------------------- */
+/**
+ * @brief 低処理モードon/off
+ */
 void ACSKit_AIController::SetLowMode(const bool bInLowMode)
 {
 	if (mbLowMode == bInLowMode)
@@ -617,9 +620,9 @@ void ACSKit_AIController::SetLowMode(const bool bInLowMode)
 	mLowModeInterval = GetLowModeIntervalTime();
 }
 
-/* ------------------------------------------------------------
-   !対象が仲間かどうか
------------------------------------------------------------- */
+/**
+ * @brief 対象が仲間かどうか
+ */
 bool ACSKit_AIController::IsFriend(const AActor* InTarget) const
 {
 	if (const IGenericTeamAgentInterface* TeamAgentInterface = Cast<IGenericTeamAgentInterface>(GetPawn()))
@@ -630,18 +633,18 @@ bool ACSKit_AIController::IsFriend(const AActor* InTarget) const
 	return false;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIController::SetAbility(const FName& InName, const bool bInFlag)
 {
 	bool& Flag = mAIAbilityMap.FindOrAdd(InName);
 	Flag = bInFlag;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 bool ACSKit_AIController::IsOwnAbility(const FName& InName) const
 {
 	if(const bool* Flag = mAIAbilityMap.Find(InName))
@@ -651,9 +654,9 @@ bool ACSKit_AIController::IsOwnAbility(const FName& InName) const
 	return false;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIController::SetAIFlow(const ACSKit_AIFlow* InAIFlow)
 {
 	if(UCSKit_AIFlowComponent* AIFlowComponent = SafeRegisterAIFlowComponent())
@@ -672,9 +675,9 @@ const ANavigationData* ACSKit_AIController::GetAgentNavigationData() const
 	return nullptr;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
@@ -696,9 +699,9 @@ void ACSKit_AIController::OnPossess(APawn* InPawn)
 	// }
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -721,9 +724,9 @@ void ACSKit_AIController::BeginPlay()
 	}
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
@@ -737,9 +740,9 @@ void ACSKit_AIController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	}
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 UCSKit_AIFlowComponent* ACSKit_AIController::SafeRegisterAIFlowComponent()
 {
 	if(UCSKit_AIFlowComponent* AIFlowComponent = GetCSKitAIFlowComponent())
@@ -755,11 +758,10 @@ UCSKit_AIFlowComponent* ACSKit_AIController::SafeRegisterAIFlowComponent()
 	return nullptr;
 }
 
-/* ------------------------------------------------------------
-   !非同期のナビメッシュ経路探索終了時処理
-   !TaskGraphでUNavigationSystemV1::PerformAsyncQueries()が実行されて、その結果のDelegateをGameThreadに登録して呼び出される
------------------------------------------------------------- */
-// ReSharper disable once CppPassValueParameterByConstReference
+/**
+ * @brief 非同期のナビメッシュ経路探索終了時処理
+ *			TaskGraphでUNavigationSystemV1::PerformAsyncQueries()が実行されて、その結果のDelegateをGameThreadに登録して呼び出される
+ */
 void	ACSKit_AIController::OnFinishFindPathAsync(uint32 InQueryId, ENavigationQueryResult::Type InResult, FNavPathSharedPtr InPath)
 {
 	if (mAsyncPathQueryId != InQueryId)
@@ -809,17 +811,17 @@ void	ACSKit_AIController::OnFinishFindPathAsync(uint32 InQueryId, ENavigationQue
 	mAsyncPathQueryId = INVALID_NAVQUERYID;
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIController::SetAIFlowComponent(UCSKit_AIFlowComponent* InComponent)
 {
 	mCSKit_AIFlowComponent = InComponent;
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIController::AttachTerritoryComponent(const FName& InUserName)
 {
 	if(UCSKit_TerritoryComponent* TerritoryComponent = GetCSKitTerritoryComponent())
@@ -849,9 +851,9 @@ void ACSKit_AIController::AttachTerritoryComponent(const FName& InUserName)
 	}
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIController::DetachTerritoryComponent()
 {
 	UCSKit_TerritoryComponent* TerritoryComponent = GetCSKitTerritoryComponent();
@@ -871,9 +873,9 @@ void ACSKit_AIController::DetachTerritoryComponent()
 	}
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIController::SetHomePosRot()
 {
 	if(const APawn* OwnerPawn = GetPawn())
@@ -883,9 +885,9 @@ void ACSKit_AIController::SetHomePosRot()
 	}
 }
 
-/* ------------------------------------------------------------
-  !ActorWatcher選択時
------------------------------------------------------------- */
+/**
+ * @brief ActorWatcher選択時
+ */
 FString ACSKit_AIController::DebugDrawCallActorWatcher(UCanvas* InCanvas) const
 {
 #if USE_CSKIT_DEBUG
@@ -895,9 +897,9 @@ FString ACSKit_AIController::DebugDrawCallActorWatcher(UCanvas* InCanvas) const
 #endif
 }
 
-/* ------------------------------------------------------------
-   !GhostPlay有効時の入力処理
------------------------------------------------------------- */
+/**
+ * @brief GhostPlay有効時の入力処理
+ */
 void ACSKit_AIController::DebugCallGhostInput(APlayerController* InController)
 {
 #if USE_CSKIT_DEBUG
@@ -908,6 +910,9 @@ void ACSKit_AIController::DebugCallGhostInput(APlayerController* InController)
 #endif
 }
 
+/**
+ * @brief 
+ */
 void ACSKit_AIController::DebugCallGhostInputDraw(UCanvas* InCanvas)
 {
 #if USE_CSKIT_DEBUG
@@ -916,9 +921,9 @@ void ACSKit_AIController::DebugCallGhostInputDraw(UCanvas* InCanvas)
 }
 
 #if USE_CSKIT_DEBUG
-/* ------------------------------------------------------------
-   !詳細ログ取得
------------------------------------------------------------- */
+/**
+ * @brief 詳細ログ取得
+ */
 FString ACSKit_AIController::DebugGetDetailLog() const
 {
 	FString LogString(TEXT("[AIController]\n"));
@@ -945,9 +950,9 @@ FString ACSKit_AIController::DebugGetDetailLog() const
 
 	return LogString;
 }
-/* ------------------------------------------------------------
-   !テスト用BehaviorTree実行リクエスト
------------------------------------------------------------- */
+/**
+ * @brief テスト用BehaviorTree実行リクエスト
+ */
 bool	ACSKit_AIController::DebugTestBehaviorTree(const FString& InFolderPath, const FString& InAssetName, const bool bInLock)
 {
 	FString Path = InFolderPath;
@@ -986,9 +991,9 @@ bool	ACSKit_AIController::DebugTestBehaviorTree(const FString& InFolderPath, con
 	}
 	return false;
 }
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIController::DebugBeginCollectEQSResult()
 {
 	mDebugCollectEQSResult = FCSKitDebug_CollectEQSResult();
@@ -997,9 +1002,9 @@ void ACSKit_AIController::DebugBeginCollectEQSResult()
 		mDebugCollectEQSResult.SetCenterPos(OwnerPawn->GetActorLocation());
 	}
 }
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIController::DebugEndCollectEQSResult(const FString& InResult)
 {
 	mDebugCollectEQSResult.mResult = InResult;
@@ -1107,9 +1112,9 @@ void ACSKit_AIController::DebugEndCollectEQSResult(const FString& InResult)
 #endif
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_AIController::DebugSetGhostPlayMode(const bool bInGhostPlay)
 {
 	APawn* OwnerPawn = GetPawn();
@@ -1141,9 +1146,9 @@ void ACSKit_AIController::DebugSetGhostPlayMode(const bool bInGhostPlay)
 	}
 }
 
-/* ------------------------------------------------------------
-  !AIControllerの詳細ログ取得
------------------------------------------------------------- */
+/**
+ * @brief AIControllerの詳細ログ取得
+ */
 FString ACSKit_AIController::DebugGetDetailLogBase() const
 {
 	FString LogString;
@@ -1154,9 +1159,9 @@ FString ACSKit_AIController::DebugGetDetailLogBase() const
 	return LogString;
 }
 
-/* ------------------------------------------------------------
-  !ActorWatcher選択時
------------------------------------------------------------- */
+/**
+ * @brief ActorWatcher選択時
+ */
 FString ACSKit_AIController::DebugDrawSelectedActorWatcher(UCanvas* InCanvas) const
 {
 	FString DebugInfo;
@@ -1242,9 +1247,9 @@ FString ACSKit_AIController::DebugDrawSelectedActorWatcher(UCanvas* InCanvas) co
 	return DebugInfo;
 }
 
-/* ------------------------------------------------------------
-   !最終EQS取得
------------------------------------------------------------- */
+/**
+ * @brief 最終EQS取得
+ */
 FEnvQueryInstance*	ACSKit_AIController::DebugGetLastEnvQueryInstance(float& OutTimeStamp) const
 {
 #if USE_EQS_DEBUGGER
@@ -1285,9 +1290,9 @@ FEnvQueryInstance*	ACSKit_AIController::DebugGetLastEnvQueryInstance(float& OutT
 #endif
 }
 
-/* ------------------------------------------------------------
-   !EQS情報デバッグ表示
------------------------------------------------------------- */
+/**
+ * @brief EQS情報デバッグ表示
+ */
 FString ACSKit_AIController::DebugDrawSelectedActorWatcherLastEQS(UCanvas* InCanvas) const
 {
 	FString OutString;
@@ -1427,4 +1432,4 @@ FString ACSKit_AIController::DebugDrawSelectedActorWatcherLastEQS(UCanvas* InCan
 
 	return OutString;
 }
-#endif//USE_CSKIT_DEBUG
+#endif

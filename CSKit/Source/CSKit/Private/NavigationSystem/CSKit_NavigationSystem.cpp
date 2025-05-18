@@ -16,9 +16,9 @@ UCSKit_NavigationSystem::UCSKit_NavigationSystem(const FObjectInitializer& Objec
 {
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_NavigationSystem::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
@@ -29,9 +29,9 @@ void UCSKit_NavigationSystem::Tick(float DeltaSeconds)
 	}
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_NavigationSystem::RequestRebuild()
 {
 	for (ANavigationData* NavData : NavDataSet)
@@ -55,9 +55,9 @@ void UCSKit_NavigationSystem::RequestCheckFirstCreate()
 #endif
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_NavigationSystem::UpdateCheckFirstCreate(float DeltaSeconds)
 {
 #if USE_CSKIT_DEBUG
@@ -89,9 +89,9 @@ void UCSKit_NavigationSystem::OnLoadedStage()
 }
 
 #if USE_CSKIT_DEBUG
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_NavigationSystem::DebugRequestDrawSafeNavMesh(const bool bInDraw)
 {
 	for (ANavigationData* NavData : NavDataSet)
@@ -103,9 +103,9 @@ void UCSKit_NavigationSystem::DebugRequestDrawSafeNavMesh(const bool bInDraw)
 	}
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_NavigationSystem::DebugResetCheckFirstCreate()
 {
 	mbRequestCheckFirstCreate = false;
@@ -114,9 +114,9 @@ void UCSKit_NavigationSystem::DebugResetCheckFirstCreate()
 #endif
 
 #if WITH_EDITOR
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_NavigationSystem::EditorRequestGenerateNavLink()
 {
 	for (ANavigationData* NavData : NavDataSet)
@@ -128,9 +128,9 @@ void UCSKit_NavigationSystem::EditorRequestGenerateNavLink()
 	}
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 bool UCSKit_NavigationSystem::EditorIsGeneratingNavLink() const
 {
 	for (const ANavigationData* NavData : NavDataSet)

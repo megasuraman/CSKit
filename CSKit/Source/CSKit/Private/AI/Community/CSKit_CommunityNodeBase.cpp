@@ -259,9 +259,9 @@ float UCSKit_CommunityNodeBase::CalcCenterRadius() const
 	return FMath::Sqrt(RadiusMaxSq);
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_CommunityNodeBase::CheckOwnNoticeTarget()
 {
 	TArray<ACSKit_AIController*> MemberList;

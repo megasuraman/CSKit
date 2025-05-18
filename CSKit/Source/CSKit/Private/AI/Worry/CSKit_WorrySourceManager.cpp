@@ -82,9 +82,9 @@ void UCSKit_WorrySourceManager::Update(const float InDeltaSec)
 	}
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_WorrySourceManager::EntryWorrySource(const FName& InName, const FVector& InPos, const AActor* InSourceActor)
 {
 	const FCSKit_WorrySourceTableRow* WorrySourceTableRow = FindWorrySourceTableRow(InName);
@@ -120,9 +120,9 @@ void UCSKit_WorrySourceManager::EntryWorrySource(const FName& InName, const FVec
 	GridElement.mWorrySourceList.Add(AddWorrySource);
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 FCSKit_WorryGridIndex UCSKit_WorrySourceManager::CalcGridIndex(const FVector& InPos) const
 {
 	FCSKit_WorryGridIndex GridIndex;
@@ -148,9 +148,9 @@ FCSKit_WorryGridIndex UCSKit_WorrySourceManager::CalcGridIndex(const FVector& In
 	return GridIndex;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_WorrySourceManager::CollectTouchSource(TArray<FCSKit_WorrySource>& OutList, const FVector& InPos, const float InRadius, const float InHeight) const
 {
 	const FCSKit_WorryGridIndex BaseGridIndex = CalcGridIndex(InPos);

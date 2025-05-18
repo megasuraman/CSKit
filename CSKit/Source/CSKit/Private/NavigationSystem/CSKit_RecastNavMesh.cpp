@@ -30,9 +30,9 @@ ACSKit_RecastNavMesh::ACSKit_RecastNavMesh(const FObjectInitializer& ObjectIniti
 {
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_RecastNavMesh::BeginPlay()
 {
 	Super::BeginPlay();
@@ -42,9 +42,9 @@ void ACSKit_RecastNavMesh::BeginPlay()
 #endif
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_RecastNavMesh::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
@@ -54,9 +54,9 @@ void ACSKit_RecastNavMesh::EndPlay(const EEndPlayReason::Type EndPlayReason)
 #endif
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_RecastNavMesh::RequestRebuild()
 {
 	if (const UNavigationSystemV1* NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld()))
@@ -236,9 +236,9 @@ void ACSKit_RecastNavMesh::DebugDraw(UCanvas* InCanvas, class APlayerController*
 #endif
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_RecastNavMesh::DebugDrawNavmeshTriangle(UCanvas* InCanvas) const
 {
 	constexpr int32 ColorListNum = 8;
@@ -438,9 +438,9 @@ void ACSKit_RecastNavMesh::DebugUpdateSafeNavMeshTriangle()
 		mbDebugFinishCollectSafeNavMesh = true;
 	}
 }
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_RecastNavMesh::DebugDrawSafeNavMesh()
 {
 	TArray<int32> IndexList;
@@ -518,9 +518,9 @@ bool ACSKit_RecastNavMesh::EditorIsGeneratingNavLink() const
 	return mEditorGenerateNavLinkPhase != ECSKit_GenerateNavLinkPhase::Invalid;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 bool ACSKit_RecastNavMesh::EditorTick(float InDeltaSec)
 {
 	switch (mEditorGenerateNavLinkPhase)
@@ -581,9 +581,9 @@ bool ACSKit_RecastNavMesh::EditorTick(float InDeltaSec)
 	return true;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_RecastNavMesh::EditorSetGenerateNavLinkPhase(ECSKit_GenerateNavLinkPhase InPhase)
 {
 	if(mEditorGenerateNavLinkPhase == InPhase)
@@ -629,9 +629,9 @@ void ACSKit_RecastNavMesh::EditorSetGenerateNavLinkPhase(ECSKit_GenerateNavLinkP
 }
 
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 bool ACSKit_RecastNavMesh::EditorGenerateNavLink_Init()
 {
 	mEditorGenerateNavLinkStartTime = FPlatformTime::Seconds();
@@ -645,9 +645,9 @@ bool ACSKit_RecastNavMesh::EditorGenerateNavLink_Init()
 	return true;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_RecastNavMesh::EditorSetupSpawnLevel()
 {
 	const FString TargetLevelName(TEXT("_Nav"));
@@ -670,9 +670,9 @@ void ACSKit_RecastNavMesh::EditorSetupSpawnLevel()
 	}
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_RecastNavMesh::EditorSetupFolderPath()
 {
 	mEditorSpawnFolderPath.Empty();
@@ -711,9 +711,9 @@ void ACSKit_RecastNavMesh::EditorSetupFolderPath()
 	mEditorSpawnFolderPath += TEXT("NavigationData");
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_RecastNavMesh::EditorSetupSafePosList()
 {
 	mEditorSafePosList.Empty();
@@ -738,9 +738,9 @@ void ACSKit_RecastNavMesh::EditorDeleteNavLinkProxyDoor() const
 	}
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 bool ACSKit_RecastNavMesh::EditorSetupNavMeshEdge()
 {
 	if (!NavDataGenerator.IsValid()
@@ -828,9 +828,9 @@ bool ACSKit_RecastNavMesh::EditorIsSafePath(const FVector& InTargetPos) const
 	return false;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 bool ACSKit_RecastNavMesh::EditorGenerateNavLink_Door() const
 {
 	if (mDoorClass == nullptr)
@@ -871,9 +871,9 @@ bool ACSKit_RecastNavMesh::EditorGenerateNavLink_Door() const
 	return true;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 bool ACSKit_RecastNavMesh::EditorGenerateNavLink_Finish() const
 {
 	CollectGarbage(GARBAGE_COLLECTION_KEEPFLAGS, true);
@@ -891,9 +891,9 @@ bool ACSKit_RecastNavMesh::EditorGenerateNavLink_Finish() const
 	return true;
 }
 
-/* ------------------------------------------------------------
-   !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void ACSKit_RecastNavMesh::EditorDrawNavMeshEdge(UCanvas* InCanvas) const
 {
 	if (mEditorGenerateNavLinkPhase != ECSKit_GenerateNavLinkPhase::Invalid)
