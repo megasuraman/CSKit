@@ -36,6 +36,8 @@ public:
 	float mNeedLevelDistanceBorderZero = 4000.f;
 	UPROPERTY(EditAnywhere, config, Category = CSKit_AI, meta = (MetaClass = "/Script/CSKit.FCSKit_BBInitValueTableRow") )
 	TSoftObjectPtr<UDataTable> mBBInitDataTablePath;
+	UPROPERTY(EditAnywhere, config, Category = CSKit_AI, meta = (MetaClass = "/Script/CSKit.FCSKit_AIFlowActionTableRow") )
+	TSoftObjectPtr<UDataTable> mAIFlowNodeActionDataTablePath;
 #if WITH_EDITORONLY_DATA
 	UPROPERTY(EditAnywhere, config, Category = CSKit_BrainQuery )
 	TSoftObjectPtr<UDataTable> mEditorBrainQuery_DataTable;

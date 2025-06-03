@@ -9,6 +9,7 @@
 
 #include "CSKit_SceneComponent.h"
 #include "AI/AIFlow/CSKit_AIFlow.h"
+#include "AI/AIFlow/CSKit_AIFlowDataTable.h"
 #include "Components/BillboardComponent.h"
 
 #if USE_CSKIT_DEBUG
@@ -24,6 +25,12 @@ ACSKit_AIFlowNode::ACSKit_AIFlowNode(const FObjectInitializer& ObjectInitializer
 #if WITH_EDITOR
 	const auto ChangedDelegate = FCSKit_OnAttachedDelegate::CreateUObject(this, &ACSKit_AIFlowNode::EditorOnAttached);
 	CSKitSceneComponent->EditorSetOnAttachedDelegate(ChangedDelegate);
+
+	mActionRowSelector.mDataTableStruct = FCSKit_AIFlowActionTableRow::StaticStruct();
+	// const UCSKit_Config* CSKitConfig = GetDefault<UCSKit_Config>();
+	// if (UDataTable* DataTable = Cast<UDataTable>(CSKitConfig->mAIFlowNodeActionDataTablePath.LoadSynchronous()))
+	// {
+	mActionRowSelector.mDisplayName = FString(TEXT("アクション"));
 #endif
 	
 	bNetLoadOnClient = false;
@@ -210,7 +217,7 @@ void ACSKit_AIFlowNode::EditorGetAIFlowNodeData(FCSKit_AIFlowNodeData& OutNode) 
 	{
 		OutNode.mPos = GetActorLocation();
 	}
-	OutNode.mActionName = mActionName;
+	OutNode.mActionName = mActionRowSelector.mRowName;
 	OutNode.mWaitTimeAfterAction = mWaitTimeAfterAction;
 }
 /**
@@ -239,6 +246,7 @@ void ACSKit_AIFlowNode::EditorOnAttached()
 	mbEditorCalledEditImport = false;
 	
 	mLinkList.Empty();
+	mActionRowSelector.mRowName = FName();
 	mActionName = FName();
 	
 	const ACSKit_AIFlow* AIFlow = Cast<ACSKit_AIFlow>(GetAttachParentActor());

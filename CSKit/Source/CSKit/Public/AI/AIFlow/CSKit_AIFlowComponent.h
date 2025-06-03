@@ -31,13 +31,15 @@ public:
 	const ACSKit_AIFlow* GetAIFlow() const;
 	const FCSKit_AIFlowNodeData* GetNextNodeData() const;
 	virtual class UBehaviorTree* GetNextNodeAction();
+	bool IsFinished() const{return mbFinished;}
 
 protected:
-	virtual const FCSKit_AIFlowActionTableRow* GetAIFlowActionTableRow(const FName& InActionName) const{return nullptr;}
+	virtual const FCSKit_AIFlowActionTableRow* GetAIFlowActionTableRow(const FName& InActionName) const;
 
 private:
 	TWeakObjectPtr<const ACSKit_AIFlow> mAIFlow;
 	int32 mNextIndex = INDEX_NONE;
+	bool mbFinished = false;
 
 #if USE_CSKIT_DEBUG
 public:

@@ -8,6 +8,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CSKit_DataTableRowSelector.h"
 #include "GameFramework/Actor.h"
 #include "CSKit_AIFlowNode.generated.h"
 
@@ -43,7 +44,7 @@ struct CSKIT_API FCSKit_AIFlowNodeData
 #endif
 };
 
-UCLASS(Blueprintable, BlueprintType)
+UCLASS(Blueprintable, BlueprintType, HideCategories = (Rendering,Replication,Collision,Input,Actor,LOD,Cooking))
 class CSKIT_API ACSKit_AIFlowNode : public AActor
 {
 	GENERATED_BODY()
@@ -63,6 +64,8 @@ protected:
 protected:
 	UPROPERTY(EditInstanceOnly, Category = "AIFlowNode", meta=(DisplayName = "Linkリスト"))
 	TArray<TSoftObjectPtr<ACSKit_AIFlowNode>> mLinkList;
+	UPROPERTY(EditInstanceOnly, Category = "AIFlowNode", meta=(DisplayName = "アクション"))
+	FCSKit_DataTableRowSelector mActionRowSelector;
 	UPROPERTY(EditInstanceOnly, Category = "AIFlowNode", meta=(DisplayName = "アクション", GetOptions="EditorGetActionNameList"))
 	FName mActionName;
 	UPROPERTY(EditInstanceOnly, Category = "AIFlowNode", meta=(DisplayName = "アクション後待機時間"))
@@ -91,7 +94,7 @@ private:
 
 #if WITH_EDITORONLY_DATA
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Display, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadOnly, Category = Display, meta = (AllowPrivateAccess = "true"))
 	class UBillboardComponent* SpriteComponent = nullptr;
 #endif
 };

@@ -7,6 +7,7 @@
  */
 #include "AI/AIFlow/CSKit_AIFlowComponent.h"
 
+#include "CSKit_Config.h"
 #include "AI/CSKit_AIController.h"
 #include "CSKit_Subsystem.h"
 #include "AI/AIFlow/CSKit_AIFlow.h"
@@ -62,6 +63,7 @@ void UCSKit_AIFlowComponent::SetupAIFlowNodeIndex()
 		return;
 	}
 
+	mbFinished = false;
 	//とりあえず近いやつで
 	const TArray<FCSKit_AIFlowNodeData>& NodeDataList = AIFlow->GetNodeDataList();
 	const FVector BasePos = OwnerPawn->GetActorLocation();
@@ -87,6 +89,7 @@ void UCSKit_AIFlowComponent::StepNextAIFlowNodeIndex()
 		|| TargetNodeData->mLinkIndexList.Num() == 0)
 	{
 		mNextIndex = INDEX_NONE;
+		mbFinished = true;
 		return;
 	}
 
@@ -158,6 +161,19 @@ UBehaviorTree* UCSKit_AIFlowComponent::GetNextNodeAction()
 		return nullptr;
 	}
 	return AIFlowActionTableRow->mBehaviorTree.LoadSynchronous();
+}
+
+/* ------------------------------------------------------------
+  !
+------------------------------------------------------------ */
+const FCSKit_AIFlowActionTableRow* UCSKit_AIFlowComponent::GetAIFlowActionTableRow(const FName& InActionName) const
+{
+	const UCSKit_Config* CSKitConfig = GetDefault<UCSKit_Config>();
+	if (UDataTable* DataTable = Cast<UDataTable>(CSKitConfig->mAIFlowNodeActionDataTablePath.LoadSynchronous()))
+	{
+		return DataTable->FindRow<FCSKit_AIFlowActionTableRow>(InActionName, nullptr);
+	}
+	return nullptr;
 }
 
 #if USE_CSKIT_DEBUG

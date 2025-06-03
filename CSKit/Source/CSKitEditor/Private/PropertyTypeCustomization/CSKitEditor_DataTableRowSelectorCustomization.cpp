@@ -9,6 +9,7 @@
 
 #include "Widgets/Input/SNumericEntryBox.h"
 #include "CSKit_DataTableRowSelector.h"
+#include "AssetRegistry/AssetRegistryModule.h"
 
 #define LOCTEXT_NAMESPACE "FPropertyCustomizeAssistEditor"
 
@@ -125,6 +126,7 @@ bool FCSKitEditor_DataTableRowSelectorCustomization::AppendRowNameListByStruct(T
 		mDisplayName = DataTableStruct->GetName();
 	}
 
+#if 0//ロード済みのDataTableしか認識できない
 	for (TObjectIterator<UDataTable> It; It; ++It)
 	{
 		const UDataTable* DataTableAsset = *It;
@@ -140,6 +142,40 @@ bool FCSKitEditor_DataTableRowSelectorCustomization::AppendRowNameListByStruct(T
 			}
 		}
 	}
+#else
+	FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
+	IAssetRegistry& AssetRegistry = AssetRegistryModule.Get();
+
+	// 検索用のフィルタを作成
+	FARFilter Filter;
+	Filter.ClassNames.Add(UDataTable::StaticClass()->GetFName());
+	Filter.bRecursivePaths = true;
+	Filter.PackagePaths.Add("/Game"); // ここを "/Game" にすることで、プロジェクト内のアセットに限定
+
+	// 結果格納用
+	TArray<FAssetData> OutAssetData;
+	AssetRegistry.GetAssets(Filter, OutAssetData);
+
+	// 検出されたDataTableをログ出力
+	for (const FAssetData& AssetData : OutAssetData)
+	{
+		//UE_LOG(LogTemp, Log, TEXT("Found DataTable: %s"), *AssetData.AssetName.ToString());
+
+		// 必要に応じてロードする
+		UDataTable* DataTableAsset = Cast<UDataTable>(AssetData.GetAsset());
+		if (DataTableAsset == nullptr)
+		{
+			continue;
+		}
+		if (DataTableAsset->RowStruct->IsChildOf(DataTableStruct))
+		{
+			for (const FName& RowName : DataTableAsset->GetRowNames())
+			{
+				OutList.Add(RowName.ToString());
+			}
+		}
+	}
+#endif
 	return OutList.Num() > 0;
 }
 
