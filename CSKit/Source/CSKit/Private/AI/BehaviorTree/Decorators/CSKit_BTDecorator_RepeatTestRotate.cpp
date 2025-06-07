@@ -24,9 +24,9 @@ UCSKit_BTDecorator_RepeatTestRotate::UCSKit_BTDecorator_RepeatTestRotate(const F
 	mBBKey_OverrideBorderDiffAngle.AddFloatFilter(this, GET_MEMBER_NAME_CHECKED(UCSKit_BTDecorator_RepeatTestRotate, mBBKey_OverrideBorderDiffAngle));
 }
 
-/* ------------------------------------------------------------
-   !FBlackboardKeySelectorの初期化のために
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_BTDecorator_RepeatTestRotate::InitializeFromAsset(UBehaviorTree& Asset)
 {
 	Super::InitializeFromAsset(Asset);

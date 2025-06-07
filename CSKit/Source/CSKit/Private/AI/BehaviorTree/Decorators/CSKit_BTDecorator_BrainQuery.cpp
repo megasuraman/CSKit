@@ -32,9 +32,9 @@ UCSKit_BTDecorator_BrainQuery::UCSKit_BTDecorator_BrainQuery(const FObjectInitia
 #endif
 }
 
-/* ------------------------------------------------------------
-   !FBlackboardKeySelectorの初期化のために
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_BTDecorator_BrainQuery::InitializeFromAsset(UBehaviorTree& Asset)
 {
 	Super::InitializeFromAsset(Asset);

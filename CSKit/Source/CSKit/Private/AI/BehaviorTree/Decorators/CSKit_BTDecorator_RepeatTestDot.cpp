@@ -24,9 +24,9 @@ UCSKit_BTDecorator_RepeatTestDot::UCSKit_BTDecorator_RepeatTestDot(const FObject
 	mBBKey_OverrideBorderDot.AddFloatFilter(this, GET_MEMBER_NAME_CHECKED(UCSKit_BTDecorator_RepeatTestDot, mBBKey_OverrideBorderDot));
 }
 
-/* ------------------------------------------------------------
-   !FBlackboardKeySelectorの初期化のために
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_BTDecorator_RepeatTestDot::InitializeFromAsset(UBehaviorTree& Asset)
 {
 	Super::InitializeFromAsset(Asset);

@@ -20,9 +20,9 @@ UCSKit_BTDecorator_RepeatTestExperience::UCSKit_BTDecorator_RepeatTestExperience
 	mTextOperation = EArithmeticKeyOperation::Less;
 }
 
-/* ------------------------------------------------------------
-   !FBlackboardKeySelectorの初期化のために
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_BTDecorator_RepeatTestExperience::InitializeFromAsset(UBehaviorTree& Asset)
 {
 	Super::InitializeFromAsset(Asset);

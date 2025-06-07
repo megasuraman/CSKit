@@ -17,9 +17,9 @@ UCSKit_BTDecorator_RepeatTestWorry::UCSKit_BTDecorator_RepeatTestWorry(const FOb
 	NodeName = "CSKit_Worry";
 }
 
-/* ------------------------------------------------------------
-   !FBlackboardKeySelectorの初期化のために
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_BTDecorator_RepeatTestWorry::InitializeFromAsset(UBehaviorTree& Asset)
 {
 	Super::InitializeFromAsset(Asset);

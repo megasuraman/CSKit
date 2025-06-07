@@ -163,9 +163,9 @@ UBehaviorTree* UCSKit_AIFlowComponent::GetNextNodeAction()
 	return AIFlowActionTableRow->mBehaviorTree.LoadSynchronous();
 }
 
-/* ------------------------------------------------------------
-  !
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 const FCSKit_AIFlowActionTableRow* UCSKit_AIFlowComponent::GetAIFlowActionTableRow(const FName& InActionName) const
 {
 	const UCSKit_Config* CSKitConfig = GetDefault<UCSKit_Config>();

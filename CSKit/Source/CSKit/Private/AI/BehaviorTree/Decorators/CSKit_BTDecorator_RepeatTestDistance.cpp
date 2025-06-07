@@ -25,9 +25,9 @@ UCSKit_BTDecorator_RepeatTestDistance::UCSKit_BTDecorator_RepeatTestDistance(con
 	mBBKey_OverrideBorderDistance.AddFloatFilter(this, GET_MEMBER_NAME_CHECKED(UCSKit_BTDecorator_RepeatTestDistance, mBBKey_OverrideBorderDistance));
 }
 
-/* ------------------------------------------------------------
-   !FBlackboardKeySelectorの初期化のために
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_BTDecorator_RepeatTestDistance::InitializeFromAsset(UBehaviorTree& Asset)
 {
 	Super::InitializeFromAsset(Asset);

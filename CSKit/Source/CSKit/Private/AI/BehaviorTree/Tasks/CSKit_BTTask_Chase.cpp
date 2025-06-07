@@ -32,9 +32,9 @@ UCSKit_BTTask_Chase::UCSKit_BTTask_Chase(const FObjectInitializer& ObjectInitial
 	mBBKey_TargetPredictMovePosSec.AddFloatFilter(this, GET_MEMBER_NAME_CHECKED(UCSKit_BTTask_Chase, mBBKey_TargetPredictMovePosSec));
 }
 
-/* ------------------------------------------------------------
-   !FBlackboardKeySelectorの初期化のために
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_BTTask_Chase::InitializeFromAsset(UBehaviorTree& Asset)
 {
 	Super::InitializeFromAsset(Asset);

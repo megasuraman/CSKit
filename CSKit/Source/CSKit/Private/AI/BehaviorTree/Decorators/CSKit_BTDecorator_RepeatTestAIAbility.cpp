@@ -17,9 +17,9 @@ UCSKit_BTDecorator_RepeatTestAIAbility::UCSKit_BTDecorator_RepeatTestAIAbility(c
 	NodeName = "CSKit_TargetAIAbility";
 }
 
-/* ------------------------------------------------------------
-   !FBlackboardKeySelectorの初期化のために
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_BTDecorator_RepeatTestAIAbility::InitializeFromAsset(UBehaviorTree& Asset)
 {
 	Super::InitializeFromAsset(Asset);

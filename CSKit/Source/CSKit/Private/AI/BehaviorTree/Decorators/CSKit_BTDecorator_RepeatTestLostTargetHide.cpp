@@ -21,9 +21,9 @@ UCSKit_BTDecorator_RepeatTestLostTargetHide::UCSKit_BTDecorator_RepeatTestLostTa
 	mBBKey_Target.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UCSKit_BTDecorator_RepeatTestLostTargetHide, mBBKey_Target), AActor::StaticClass());
 }
 
-/* ------------------------------------------------------------
-   !FBlackboardKeySelectorの初期化のために
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_BTDecorator_RepeatTestLostTargetHide::InitializeFromAsset(UBehaviorTree& Asset)
 {
 	Super::InitializeFromAsset(Asset);

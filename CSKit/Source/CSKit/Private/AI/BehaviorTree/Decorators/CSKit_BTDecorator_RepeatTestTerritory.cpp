@@ -22,9 +22,9 @@ UCSKit_BTDecorator_RepeatTestTerritory::UCSKit_BTDecorator_RepeatTestTerritory(c
 	mBBKey_Target.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UCSKit_BTDecorator_RepeatTestTerritory, mBBKey_Target), AActor::StaticClass());
 }
 
-/* ------------------------------------------------------------
-   !FBlackboardKeySelectorの初期化のために
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 void UCSKit_BTDecorator_RepeatTestTerritory::InitializeFromAsset(UBehaviorTree& Asset)
 {
 	Super::InitializeFromAsset(Asset);
