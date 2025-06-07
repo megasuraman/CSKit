@@ -7,6 +7,7 @@
  */
 #include "AI/AIFlow/CSKit_AIFlowNode.h"
 
+#include "CSKit_Config.h"
 #include "CSKit_SceneComponent.h"
 #include "AI/AIFlow/CSKit_AIFlow.h"
 #include "AI/AIFlow/CSKit_AIFlowDataTable.h"
@@ -26,10 +27,14 @@ ACSKit_AIFlowNode::ACSKit_AIFlowNode(const FObjectInitializer& ObjectInitializer
 	const auto ChangedDelegate = FCSKit_OnAttachedDelegate::CreateUObject(this, &ACSKit_AIFlowNode::EditorOnAttached);
 	CSKitSceneComponent->EditorSetOnAttachedDelegate(ChangedDelegate);
 
+#if 0
 	mActionRowSelector.mDataTableStruct = FCSKit_AIFlowActionTableRow::StaticStruct();
-	// const UCSKit_Config* CSKitConfig = GetDefault<UCSKit_Config>();
-	// if (UDataTable* DataTable = Cast<UDataTable>(CSKitConfig->mAIFlowNodeActionDataTablePath.LoadSynchronous()))
-	// {
+#else
+	if (const UCSKit_Config* CSKitConfig = GetDefault<UCSKit_Config>())
+	{
+		mActionRowSelector.mDataTablePath = CSKitConfig->mAIFlowNodeActionDataTablePath.GetLongPackageName();
+	}
+#endif
 	mActionRowSelector.mDisplayName = FString(TEXT("アクション"));
 #endif
 	

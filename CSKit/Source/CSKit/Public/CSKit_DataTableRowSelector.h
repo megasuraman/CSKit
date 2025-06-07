@@ -22,10 +22,13 @@ public:
 	FName mRowName;
 
 #if WITH_EDITORONLY_DATA
+	//例："/Game/CSKit_Sample/DT_Sample.DT_Sample"
 	UPROPERTY(EditAnywhere, Category = "CSKit_DataTableRowSelector")
 	FString mDataTablePath;
+	//Game以下にあるUDataTableの全検索のために全ロードされちゃうので注意
 	UPROPERTY(EditAnywhere, Category = "CSKit_DataTableRowSelector")
 	UStruct* mDataTableStruct = nullptr;
+	//表示名(metaのDisplayNameがうまく参照できないので)
 	UPROPERTY(EditAnywhere, Category = "CSKit_DataTableRowSelector")
 	FString mDisplayName;
 #endif
