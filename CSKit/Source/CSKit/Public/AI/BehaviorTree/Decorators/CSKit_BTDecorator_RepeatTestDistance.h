@@ -8,7 +8,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BehaviorTree/BTDecorator.h"
 #if ENGINE_MAJOR_VERSION == 5
 #include "BehaviorTree/Blackboard/BlackboardKeyEnums.h"
 #else
@@ -24,6 +23,7 @@ enum class ECSKit_BTDecoratorDistanceTargetKind : uint8
 	Owner,
 	HomePos,
 	NoticeTarget,
+	Blackboard,
 };
 
 UCLASS(DisplayName = "CSKit Repeat Test Distance")
@@ -38,11 +38,15 @@ public:
 
 protected:
 	virtual bool CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const override;
-	static FVector GetTargetPos(const ECSKit_BTDecoratorDistanceTargetKind InKind, const UBehaviorTreeComponent& OwnerComp);
+	static FVector GetTargetPos(const ECSKit_BTDecoratorDistanceTargetKind InKind, const UBehaviorTreeComponent& OwnerComp, const FBlackboardKeySelector& InBBKey);
 
 protected:
 	UPROPERTY(VisibleAnywhere, Category = "Condition", meta = (DisplayName = "上書き判定距離", DisplayPriority = 2, EditCondition = "mbOverrideBorderDistance"))
 	FBlackboardKeySelector mBBKey_OverrideBorderDistance;
+	UPROPERTY(VisibleAnywhere, Category = "Condition", meta = (DisplayName = "判定対象A", DisplayPriority = 2, EditCondition = "mTargetA == ECSKit_BTDecoratorDistanceTargetKind::Blackboard"))
+	FBlackboardKeySelector mBBKey_TargetA;
+	UPROPERTY(VisibleAnywhere, Category = "Condition", meta = (DisplayName = "判定対象B", DisplayPriority = 2, EditCondition = "mTargetB == ECSKit_BTDecoratorDistanceTargetKind::Blackboard"))
+	FBlackboardKeySelector mBBKey_TargetB;
 	UPROPERTY(EditAnywhere, Category = "Condition", meta = (DisplayName = "判定距離", DisplayPriority = 2))
 	float mBorderDistance = 100.f;
 	UPROPERTY(EditAnywhere, Category = "Condition", meta = (DisplayName = "判定距離加算", DisplayPriority = 2))
