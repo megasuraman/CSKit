@@ -21,6 +21,7 @@
 #include "NavigationSystem.h"
 #include "AI/AIFlow/CSKit_AIFlowComponent.h"
 #include "AI/Blackboard/CSKit_BBInitDataTable.h"
+#include "AI/Community/CSKit_CommunityNodeBase.h"
 #include "AI/Notice/CSKit_NoticeComponent.h"
 #include "AI/Recognition/CSKit_RecognitionComponent.h"
 #include "AI/Territory/CSKit_TerritoryComponent.h"
@@ -882,6 +883,48 @@ void ACSKit_AIController::SetHomePosRot()
 	{
 		mHomePos = OwnerPawn->GetActorLocation();
 		mHomeRot = OwnerPawn->GetActorRotation();
+	}
+}
+
+/**
+ * @brief CommunityMemberに対してRecognitionのMessage送る
+ */
+void ACSKit_AIController::SendMessageRecognitionToCommunityMember(AActor* InTarget) const
+{
+	if(InTarget == nullptr)
+	{
+		return;
+	}
+	UCSKit_CommunityComponent* CommunityComponent = GetCSKitCommunity();
+	if (CommunityComponent == nullptr)
+	{
+		return;
+	}
+	UCSKit_CommunityNodeBase* CommunityNode = CommunityComponent->GetEntryNode();
+	if(CommunityNode == nullptr)
+	{
+		return;
+	}
+
+	TArray<ACSKit_AIController*> AIControllerList;
+	const TArray<TWeakObjectPtr<UCSKit_CommunityComponent>>& MemberList = CommunityNode->GetMemberList();
+	for(auto& WeakPtr : MemberList)
+	{
+		UCSKit_CommunityComponent* MemberComponent = WeakPtr.Get();
+		if(MemberComponent == nullptr
+			|| MemberComponent == CommunityComponent)
+		{
+			continue;
+		}
+		if(ACSKit_AIController* AIController = Cast<ACSKit_AIController>(MemberComponent->GetOwner()))
+		{
+			AIControllerList.Add(AIController);
+		}
+	}
+	
+	if(UCSKit_RecognitionComponent* RecognitionComponent = GetCSKitRecognition())
+	{
+		RecognitionComponent->SendMessage(InTarget, AIControllerList);
 	}
 }
 

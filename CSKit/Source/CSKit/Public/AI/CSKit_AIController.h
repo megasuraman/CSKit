@@ -123,6 +123,7 @@ protected:
 	void AttachTerritoryComponent(const FName& InUserName);
 	void DetachTerritoryComponent();
 	virtual void SetHomePosRot();
+	void SendMessageRecognitionToCommunityMember(AActor* InTarget) const;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = CSKit)
