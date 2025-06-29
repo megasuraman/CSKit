@@ -70,6 +70,7 @@ public:
 		const FVector& InExtent = FVector(50.f, 50.f, 100.f)
 	);
 
+	//簡易的にスコープ内の処理時間計測
 	struct CSKITDEBUG_API LogScopeTime
 	{
 		LogScopeTime() {}
@@ -79,4 +80,16 @@ public:
 		FString mTitle;
 		double mBeginTime = 0;
 	};
+	
+	struct CSKITDEBUG_API FAssetDependency
+	{
+		FName mAssetPathName;//参照アセットパス
+		TArray<FName> mRoot;//参照経路
+		bool operator==(const FAssetDependency& InTarget) const
+		{
+			return mAssetPathName == InTarget.mAssetPathName;
+		}
+	};
+	// 指定Objectが依存しているObjectを全て収集
+	static void CollectAssetDependency(TArray<FAssetDependency>& OutList, const UObject* InObject);
 };

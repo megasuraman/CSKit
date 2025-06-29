@@ -9,6 +9,7 @@
 
 #include "EnvironmentQuery/EnvQueryManager.h"
 #include "NavigationSystem.h"
+#include "AssetRegistry/AssetRegistryModule.h"
 #include "Engine/DebugCameraController.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -100,9 +101,10 @@ bool	UCSKitDebug_Utility::IsNeedStopDebugDraw(const UWorld* InWorld)
 	return false;
 }
 
-/* ------------------------------------------------------------
-   !Actorが所属するレベル名(サブレベル配置だったらサブレベル名)
------------------------------------------------------------- */
+/**
+ * @brief	Actorが所属するレベル名を取得
+ *			(サブレベル配置だったらサブレベル名)
+ */
 FString UCSKitDebug_Utility::GetActorLevelName(const AActor* InActor)
 {
 	if (InActor == nullptr)
@@ -139,7 +141,6 @@ FString UCSKitDebug_Utility::GetActorLevelNameInGame(const AActor* InActor)
 	}
 	return FString();
 }
-
 FString UCSKitDebug_Utility::GetActorLevelNameInEditor(const AActor* InActor)
 {
 	if (InActor == nullptr)
@@ -148,7 +149,6 @@ FString UCSKitDebug_Utility::GetActorLevelNameInEditor(const AActor* InActor)
 	}
 	return GetLevelName(InActor->GetLevel());
 }
-
 FString UCSKitDebug_Utility::GetLevelName(const ULevel* InLevel)
 {
 	if (InLevel == nullptr)
@@ -169,9 +169,9 @@ FString UCSKitDebug_Utility::GetLevelName(const ULevel* InLevel)
 	return LevelName;
 }
 
-/* ------------------------------------------------------------
-   !操作中のPlayerController
------------------------------------------------------------- */
+/**
+ * @brief	操作中のPlayerController
+ */
 APlayerController* UCSKitDebug_Utility::FindMainPlayerController(const UWorld* InWorld)
 {
 	for (FConstPlayerControllerIterator It = InWorld->GetPlayerControllerIterator(); It; ++It)
@@ -190,9 +190,9 @@ APlayerController* UCSKitDebug_Utility::FindMainPlayerController(const UWorld* I
 	return nullptr;
 }
 
-/* ------------------------------------------------------------
-   !操作中のPlayerControllerに応じたデバッグ用座標情報
------------------------------------------------------------- */
+/**
+ * @brief	操作中のPlayerControllerに応じたデバッグ用座標情報
+ */
 bool UCSKitDebug_Utility::CalcLocalPlayerDebugPosition(FVector& OutPos, FRotator& OutRot, const UWorld* InWorld)
 {
 	const APlayerController* PlayerController = FindMainPlayerController(InWorld);
@@ -235,9 +235,9 @@ bool UCSKitDebug_Utility::CalcLocalPlayerDebugPosition(FVector& OutPos, FRotator
 	return false;
 }
 
-/* ------------------------------------------------------------
-   !コリジョンに沿ってるかチェック
------------------------------------------------------------- */
+/**
+ * @brief	地面や天井のコリジョンに問題ないかチェック
+ */
 FString UCSKitDebug_Utility::CheckFitCollision(const UWorld* InWorld, const FVector& InPos, const FVector& InCheckNV, const ECollisionChannel InCollisionChannel, const float InCheckHeightSpace, const float InSafeDiffHeight, const float InSafeFloorAngle)
 {
 	const FVector OutsidePos = InPos + InCheckNV * InCheckHeightSpace;
@@ -285,9 +285,9 @@ FString UCSKitDebug_Utility::CheckFitCollision(const UWorld* InWorld, const FVec
 	return FString();
 }
 
-/* ------------------------------------------------------------
-   !地面チェック
------------------------------------------------------------- */
+/**
+ * @brief	地面コリジョンにフィットしてるかチェック
+ */
 FString UCSKitDebug_Utility::CheckFitGround(
 	const UWorld* InWorld,
 	const FVector& InPos,
@@ -341,9 +341,9 @@ FString UCSKitDebug_Utility::CheckFitGround(
 	return FString();
 }
 
-/* ------------------------------------------------------------
-   !壁チェック
------------------------------------------------------------- */
+/**
+ * @brief	壁に触れてるか
+ */
 FString UCSKitDebug_Utility::CheckTouchWall(
 	const UWorld* InWorld,
 	const FVector& InPos,
@@ -373,6 +373,9 @@ FString UCSKitDebug_Utility::CheckTouchWall(
 	return FString();
 }
 
+/**
+ * @brief	Navmeshに触れてるか
+ */
 bool UCSKitDebug_Utility::IsTouchNavmesh(
 	const UWorld* InWorld,
 	const FVector& InPos,
@@ -395,13 +398,72 @@ bool UCSKitDebug_Utility::IsTouchNavmesh(
 	return NavData->ProjectPoint(InPos, HitPos, InExtent);
 }
 
+/**
+ * @brief	この構造体の宣言するだけで簡易的にスコープ内の処理時間を計測できる
+ */
 UCSKitDebug_Utility::LogScopeTime::LogScopeTime(const FString& InTitle)
 	:mTitle(InTitle)
 {
 	mBeginTime = FPlatformTime::Seconds();
 }
-
 UCSKitDebug_Utility::LogScopeTime::~LogScopeTime()
 {
 	UE_LOG(LogCSKitDebug_ScopeTime, Log, TEXT("%s [%.5lfs]"), *mTitle, FPlatformTime::Seconds() - mBeginTime);
+}
+
+/**
+ * @brief	指定Objectが依存しているObjectを全て収集
+ */
+void UCSKitDebug_Utility::CollectAssetDependency(TArray<FAssetDependency>& OutList, const UObject* InObject)
+{
+	if(InObject == nullptr)
+	{
+		return;
+	}
+	const UPackage* CurrentPackage = InObject->GetPackage();
+	if(CurrentPackage == nullptr)
+	{
+		return;
+	}
+	
+	FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
+	
+	TArray<FAssetDependency> NeedCheckDependencyList;
+	const FName RootObjectName = CurrentPackage->GetFName();
+
+	FAssetDependency RootData;
+	RootData.mAssetPathName = RootObjectName;
+	NeedCheckDependencyList.Add(RootData);
+	
+	while (NeedCheckDependencyList.Num() > 0)
+	{
+		FAssetDependency TargetDataCopy = NeedCheckDependencyList[0];
+		const FName TargetName = TargetDataCopy.mAssetPathName;
+		TArray<FName> DependencyNameList;
+		constexpr UE::AssetRegistry::EDependencyCategory DependencyCategory = UE::AssetRegistry::EDependencyCategory::Package;
+		const UE::AssetRegistry::FDependencyQuery DependencyQuery( UE::AssetRegistry::EDependencyQuery::Game );
+		AssetRegistryModule.Get().GetDependencies(TargetName, DependencyNameList, DependencyCategory, DependencyQuery);
+		
+		NeedCheckDependencyList.RemoveAt(0);
+		for(const FName& Name : DependencyNameList)
+		{
+			FAssetDependency TempData;
+			TempData.mAssetPathName = Name;
+			if(OutList.Find(TempData) == INDEX_NONE)
+			{
+				FAssetDependency ChildData;
+				ChildData.mAssetPathName = Name;
+				ChildData.mRoot = TargetDataCopy.mRoot;
+				ChildData.mRoot.Add(TargetName);
+				NeedCheckDependencyList.AddUnique(ChildData);
+			}
+		}
+
+		OutList.AddUnique(TargetDataCopy);
+	}
+
+	if(OutList.Num() > 0)
+	{//先頭はInObjectなのでいらない
+		OutList.RemoveAt(0);
+	}
 }
