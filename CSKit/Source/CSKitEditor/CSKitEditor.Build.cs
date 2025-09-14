@@ -44,6 +44,7 @@ public class CSKitEditor : ModuleRules
                 "UMG",
                 "Blutility",
 				"EditorWidgets",
+				"MessageLog",
 				"CSKit",
                 "CSKitDebug",
 				// ... add private dependencies that you statically link with here ...	

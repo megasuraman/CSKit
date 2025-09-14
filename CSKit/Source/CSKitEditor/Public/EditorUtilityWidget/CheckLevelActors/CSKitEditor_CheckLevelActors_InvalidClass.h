@@ -36,6 +36,7 @@ protected:
 
 	const FCSKitEditor_CheckLevelActors_ClassList* FindPossibleToPlaceActorClassList(const FString& InLevelName) const;
 
+	//Key:Level名(*のワイルドカードあり), Value:配置OKなクラス
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CheckLevelActors_InvalidClass")
 	TMap<FString, FCSKitEditor_CheckLevelActors_ClassList> mPossibleToPlaceActorClassMap;
 };

@@ -12,6 +12,7 @@
 #include "EditorUtilityWidget/CheckLevelActors/CSKitEditor_CheckLevelActors_InvalidClass.h"
 #include "CSKitDebug_Utility.h"
 #include "Misc/FileHelper.h"
+#include "Misc/UObjectToken.h"
 
 /**
  * @brief	配置Actorのクラス情報をレベル別に格納
@@ -58,6 +59,7 @@ bool UCSKitEditor_EUW_CheckLevelActors::CheckError()
 void UCSKitEditor_EUW_CheckLevelActors::PostCheckError(const FCSKitEditor_CheckLevelActors_ErrorData& InErrorData)
 {
 	OutputFileResultError(InErrorData);
+	RequestMessageLog(InErrorData);
 }
 
 /**
@@ -90,4 +92,33 @@ void UCSKitEditor_EUW_CheckLevelActors::OutputFileResultError(
 	FString FilePath = FPaths::ConvertRelativePathToFull(FPaths::ProjectSavedDir());
 	FilePath += FString::Printf(TEXT("/CSKit/CheckLevelActorsResult.txt"));
 	FFileHelper::SaveStringToFile(OutputString, *FilePath, FFileHelper::EEncodingOptions::ForceUTF8);
+}
+
+/**
+ * @brief	エラーをMessageLogで出力
+ */
+void UCSKitEditor_EUW_CheckLevelActors::RequestMessageLog(
+	const FCSKitEditor_CheckLevelActors_ErrorData& InErrorData) const
+{
+	bool bWishOpenMessageLog = false;
+	for (const FCSKitEditor_CheckLevelActors_ErrorDataNode& Node : InErrorData.mList)
+	{
+		const AActor* TargetActor = Node.mActor.Get();
+		if (TargetActor == nullptr)
+		{
+			continue;
+		}
+
+		const FString ErrorString = FString::Printf(TEXT("%s [Class:%s]"), *Node.mErrorString, *Node.mClassName);
+		FMessageLog ErrorMessage("CSKit");
+		ErrorMessage.Error()
+			->AddToken(FUObjectToken::Create(TargetActor))
+			->AddToken(FTextToken::Create(FText::FromString(ErrorString)));
+		bWishOpenMessageLog = true;
+	}
+
+	if (bWishOpenMessageLog)
+	{
+		FMessageLog("CSKit").Open();
+	}
 }

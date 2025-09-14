@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "CSKitEditor.h"
+
+#include "MessageLogModule.h"
 #include "PropertyTypeCustomization/CSKitEditor_DataTableRowSelectorCustomization.h"
 #include "PropertyTypeCustomization/CSKitEditor_BrainQueryTestSelectorCustomization.h"
 
@@ -24,6 +26,13 @@ void FCSKitEditorModule::StartupModule()
 
 		PropertyEditorModule.NotifyCustomizationModuleChanged();
 	}
+	
+	// MessageLogのカテゴリ登録
+	FMessageLogModule& MessageLogModule = FModuleManager::LoadModuleChecked<FMessageLogModule>("MessageLog");
+	MessageLogModule.RegisterLogListing(
+		"CSKit",
+		NSLOCTEXT("CSKit", "CSKit", "CSKit")
+	);
 }
 
 void FCSKitEditorModule::ShutdownModule()
