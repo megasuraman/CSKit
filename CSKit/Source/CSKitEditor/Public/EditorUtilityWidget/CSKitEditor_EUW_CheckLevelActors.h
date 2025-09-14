@@ -30,6 +30,7 @@ protected:
 	virtual void PostCheckError(const FCSKitEditor_CheckLevelActors_ErrorData& InErrorData);
 	virtual void OutputFileResultError(const FCSKitEditor_CheckLevelActors_ErrorData& InErrorData);
 	virtual void RequestMessageLog(const FCSKitEditor_CheckLevelActors_ErrorData& InErrorData) const;
+	virtual void RequestNotification(const FCSKitEditor_CheckLevelActors_ErrorData& InErrorData) const;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "CheckLevelActors", meta = (DisplayName = "配置可能Actorチェック", DisplayPriority=1))

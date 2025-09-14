@@ -11,8 +11,10 @@
 #include "EditorUtilityWidget/CheckLevelActors/CSKitEditor_CheckLevelActors_ErrorData.h"
 #include "EditorUtilityWidget/CheckLevelActors/CSKitEditor_CheckLevelActors_InvalidClass.h"
 #include "CSKitDebug_Utility.h"
+#include "Framework/Notifications/NotificationManager.h"
 #include "Misc/FileHelper.h"
 #include "Misc/UObjectToken.h"
+#include "Widgets/Notifications/SNotificationList.h"
 
 /**
  * @brief	配置Actorのクラス情報をレベル別に格納
@@ -60,6 +62,7 @@ void UCSKitEditor_EUW_CheckLevelActors::PostCheckError(const FCSKitEditor_CheckL
 {
 	OutputFileResultError(InErrorData);
 	RequestMessageLog(InErrorData);
+	RequestNotification(InErrorData);
 }
 
 /**
@@ -120,5 +123,40 @@ void UCSKitEditor_EUW_CheckLevelActors::RequestMessageLog(
 	if (bWishOpenMessageLog)
 	{
 		FMessageLog("CSKit").Open();
+	}
+}
+
+/**
+ * @brief	エラー結果を通知ウィンドウでも出す
+ */
+void UCSKitEditor_EUW_CheckLevelActors::RequestNotification(
+	const FCSKitEditor_CheckLevelActors_ErrorData& InErrorData) const
+{
+	const bool bOwnError = InErrorData.mList.Num() > 0;
+	FString NotificationString;
+	if (bOwnError)
+	{
+		NotificationString = FString::Printf(TEXT("CheckLevelActors Error(%d)"), InErrorData.mList.Num());
+	}
+	else
+	{
+		NotificationString = FString::Printf(TEXT("CheckLevelActors NoError"));
+	}
+
+	FNotificationInfo Info(FText::FromString(NotificationString));
+	Info.bFireAndForget = true;
+	Info.FadeOutDuration = 1.0f;
+	Info.ExpireDuration = 2.0f;
+	TSharedPtr<SNotificationItem> Notification = FSlateNotificationManager::Get().AddNotification(Info);
+	if (Notification.IsValid())
+	{
+		if (bOwnError)
+		{
+			Notification->SetCompletionState(SNotificationItem::CS_Fail);
+		}
+		else
+		{
+			Notification->SetCompletionState(SNotificationItem::CS_Success);
+		}
 	}
 }
