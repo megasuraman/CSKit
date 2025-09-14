@@ -32,7 +32,7 @@ struct CSKITEDITOR_API FCSKitEditor_CheckLevelActors_InvalidClass : public FCSKi
 	virtual ~FCSKitEditor_CheckLevelActors_InvalidClass() override {}
 
 protected:
-	virtual bool CheckErrorActor(FCSKitEditor_CheckLevelActors_ErrorDataList& OutError, const ULevel* InLevel, const AActor* InActor) const override;
+	virtual bool CheckErrorActor(FCSKitEditor_CheckLevelActors_ErrorData& OutError, const ULevel* InLevel, const AActor* InActor) const override;
 
 	const FCSKitEditor_CheckLevelActors_ClassList* FindPossibleToPlaceActorClassList(const FString& InLevelName) const;
 

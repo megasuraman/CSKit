@@ -18,7 +18,7 @@ void FCSKitDebug_SaveData::Save()
 	}
 
 	FString FilePath = FPaths::ConvertRelativePathToFull(FPaths::ProjectSavedDir());
-	FilePath += FString(TEXT("CSKitDebug/SaveData.txt"));
+	FilePath += FString(TEXT("CSKit/SaveData.txt"));
 	FFileHelper::SaveStringToFile(ToJson(), *FilePath, FFileHelper::EEncodingOptions::ForceUTF8);
 }
 
@@ -29,7 +29,7 @@ void FCSKitDebug_SaveData::Load()
 		return;
 	}
 	FString FilePath = FPaths::ConvertRelativePathToFull(FPaths::ProjectSavedDir());
-	FilePath += FString(TEXT("CSKitDebug/SaveData.txt"));
+	FilePath += FString(TEXT("CSKit/SaveData.txt"));
 	
 	FString JsonString;
 	FFileHelper::LoadFileToString(JsonString, *FilePath);

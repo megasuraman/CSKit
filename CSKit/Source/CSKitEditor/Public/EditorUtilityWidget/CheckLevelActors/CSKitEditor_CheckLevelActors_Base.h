@@ -20,7 +20,7 @@ struct CSKITEDITOR_API FCSKitEditor_CheckLevelActors_Base
 	FCSKitEditor_CheckLevelActors_Base(){}
 	virtual ~FCSKitEditor_CheckLevelActors_Base(){}
 	
-	virtual bool CheckError(FCSKitEditor_CheckLevelActors_ErrorDataList& OutError, const UWorld* InWorld) const;
+	virtual bool CheckError(FCSKitEditor_CheckLevelActors_ErrorData& OutError, const UWorld* InWorld) const;
 
 protected:
 	//チェック対象から除外するLevelかどうか
@@ -28,5 +28,5 @@ protected:
 	//チェック対象から除外するActorかどうか
 	virtual bool IsIgnoreActor(const AActor* InActor) const;
 	//指定のActorのエラーをチェック
-	virtual bool CheckErrorActor(FCSKitEditor_CheckLevelActors_ErrorDataList& OutError, const ULevel* InLevel, const AActor* InActor) const{return false;}
+	virtual bool CheckErrorActor(FCSKitEditor_CheckLevelActors_ErrorData& OutError, const ULevel* InLevel, const AActor* InActor) const{return false;}
 };

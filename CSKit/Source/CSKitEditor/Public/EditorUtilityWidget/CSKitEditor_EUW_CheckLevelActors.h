@@ -27,7 +27,11 @@ public:
 	bool CheckError();
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CheckLevelActors", meta = (DisplayName = "配置可能Actorチェック", DisplayPriority=1))
+	virtual void PostCheckError(const FCSKitEditor_CheckLevelActors_ErrorData& InErrorData);
+	virtual void OutputFileResultError(const FCSKitEditor_CheckLevelActors_ErrorData& InErrorData);
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "CheckLevelActors", meta = (DisplayName = "配置可能Actorチェック", DisplayPriority=1))
 	FCSKitEditor_CheckLevelActors_InvalidClass mCheckInvalidClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LevelActorsClass", meta = (DisplayName = "配置ActorのClass収集", DisplayPriority=1))
 	TMap<FString, FCSKitEditor_CheckLevelActors_ClassList> mLevelActorsClassList;

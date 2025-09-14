@@ -161,6 +161,6 @@ void UCSKitEditor_EUW_CheckDependency::OutputResultFile() const
 	const FString ResultString = GetDependencyInfo();
 
 	FString FilePath = FPaths::ConvertRelativePathToFull(FPaths::ProjectSavedDir());
-	FilePath += FString::Printf(TEXT("/CSKitEditor/DependencyResult.txt"));
+	FilePath += FString::Printf(TEXT("/CSKit/DependencyResult.txt"));
 	FFileHelper::SaveStringToFile(ResultString, *FilePath, FFileHelper::EEncodingOptions::ForceUTF8);
 }

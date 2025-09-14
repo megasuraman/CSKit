@@ -13,7 +13,7 @@
  * @brief	エラーチェック
  */
 bool FCSKitEditor_CheckLevelActors_InvalidClass::CheckErrorActor(
-	FCSKitEditor_CheckLevelActors_ErrorDataList& OutError,
+	FCSKitEditor_CheckLevelActors_ErrorData& OutError,
 	const ULevel* InLevel, 
 	const AActor* InActor
 	) const
@@ -39,7 +39,7 @@ bool FCSKitEditor_CheckLevelActors_InvalidClass::CheckErrorActor(
 		return false;
 	}
 
-	FCSKitEditor_CheckLevelActors_ErrorData ErrorData(*InActor);
+	FCSKitEditor_CheckLevelActors_ErrorDataNode ErrorData(*InActor);
 	ErrorData.mErrorString = FString(TEXT("想定外のActorが配置されてる"));
 	OutError.mList.AddUnique(ErrorData);
 	return true;

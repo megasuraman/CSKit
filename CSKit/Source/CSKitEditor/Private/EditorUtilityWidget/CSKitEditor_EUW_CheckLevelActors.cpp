@@ -11,6 +11,7 @@
 #include "EditorUtilityWidget/CheckLevelActors/CSKitEditor_CheckLevelActors_ErrorData.h"
 #include "EditorUtilityWidget/CheckLevelActors/CSKitEditor_CheckLevelActors_InvalidClass.h"
 #include "CSKitDebug_Utility.h"
+#include "Misc/FileHelper.h"
 
 /**
  * @brief	配置Actorのクラス情報をレベル別に格納
@@ -43,7 +44,50 @@ void UCSKitEditor_EUW_CheckLevelActors::CollectLevelActorsClass()
  */
 bool UCSKitEditor_EUW_CheckLevelActors::CheckError()
 {
-	FCSKitEditor_CheckLevelActors_ErrorDataList ErrorData;
+	FCSKitEditor_CheckLevelActors_ErrorData ErrorData;
 	mCheckInvalidClass.CheckError(ErrorData, GetWorld());
+
+	PostCheckError(ErrorData);
+	
 	return ErrorData.mList.Num() > 0;
+}
+
+/**
+ * @brief	エラーチェック後処理
+ */
+void UCSKitEditor_EUW_CheckLevelActors::PostCheckError(const FCSKitEditor_CheckLevelActors_ErrorData& InErrorData)
+{
+	OutputFileResultError(InErrorData);
+}
+
+/**
+ * @brief	エラーチェック結果をFileに出力
+ */
+void UCSKitEditor_EUW_CheckLevelActors::OutputFileResultError(
+	const FCSKitEditor_CheckLevelActors_ErrorData& InErrorData)
+{
+	TMap<FString, TArray<FString>> ErrorLevelMap;
+	for (const FCSKitEditor_CheckLevelActors_ErrorDataNode& Node : InErrorData.mList)
+	{
+		TArray<FString>& ErrorStringList = ErrorLevelMap.FindOrAdd(Node.mLevelName);
+		const FString OutputErrorString = FString::Printf(TEXT("%s [Label:%s] [Class:%s]"),
+			*Node.mErrorString,
+			*Node.mLabelName,
+			*Node.mClassName);
+		ErrorStringList.Add(OutputErrorString);
+	}
+	
+	FString OutputString;
+	for (const auto& MapElement : ErrorLevelMap)
+	{
+		OutputString += FString::Printf(TEXT("%s\n"), *MapElement.Key);
+		for (const FString& ErrorString : MapElement.Value)
+		{
+			OutputString += FString::Printf(TEXT("   %s\n"), *ErrorString);
+		}
+	}
+	
+	FString FilePath = FPaths::ConvertRelativePathToFull(FPaths::ProjectSavedDir());
+	FilePath += FString::Printf(TEXT("/CSKit/CheckLevelActorsResult.txt"));
+	FFileHelper::SaveStringToFile(OutputString, *FilePath, FFileHelper::EEncodingOptions::ForceUTF8);
 }

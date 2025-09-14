@@ -63,6 +63,6 @@ FString FCSKitDebug_DebugMenuSaveData::GetValueString(const FString& InPath) con
 FString FCSKitDebug_DebugMenuSaveData::GetSaveFilePath()
 {
 	FString FilePath = FPaths::ConvertRelativePathToFull(FPaths::ProjectSavedDir());
-	FilePath += FString(TEXT("CSKitDebug/DebugMenu/SaveData.json"));
+	FilePath += FString(TEXT("CSKit/DebugMenu/SaveData.json"));
 	return FilePath;
 }

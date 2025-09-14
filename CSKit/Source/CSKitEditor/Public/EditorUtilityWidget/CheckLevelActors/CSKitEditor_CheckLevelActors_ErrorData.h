@@ -11,7 +11,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 
-struct CSKITEDITOR_API FCSKitEditor_CheckLevelActors_ErrorData
+struct CSKITEDITOR_API FCSKitEditor_CheckLevelActors_ErrorDataNode
 {
 	TWeakObjectPtr<const AActor> mActor;
 	FString mLevelName;
@@ -19,7 +19,7 @@ struct CSKITEDITOR_API FCSKitEditor_CheckLevelActors_ErrorData
 	FString mClassName;
 	FString mErrorString;
 
-	bool operator ==(const FCSKitEditor_CheckLevelActors_ErrorData& InData) const
+	bool operator ==(const FCSKitEditor_CheckLevelActors_ErrorDataNode& InData) const
 	{
 		if(mLevelName == InData.mLevelName
 			&& mLabelName == InData.mLabelName
@@ -29,11 +29,11 @@ struct CSKITEDITOR_API FCSKitEditor_CheckLevelActors_ErrorData
 		}
 		return false;
 	}
-	FCSKitEditor_CheckLevelActors_ErrorData(){}
-	FCSKitEditor_CheckLevelActors_ErrorData(const AActor& InActor);
+	FCSKitEditor_CheckLevelActors_ErrorDataNode(){}
+	FCSKitEditor_CheckLevelActors_ErrorDataNode(const AActor& InActor);
 };
 
-struct CSKITEDITOR_API FCSKitEditor_CheckLevelActors_ErrorDataList
+struct CSKITEDITOR_API FCSKitEditor_CheckLevelActors_ErrorData
 {
-	TArray<FCSKitEditor_CheckLevelActors_ErrorData> mList;
+	TArray<FCSKitEditor_CheckLevelActors_ErrorDataNode> mList;
 };

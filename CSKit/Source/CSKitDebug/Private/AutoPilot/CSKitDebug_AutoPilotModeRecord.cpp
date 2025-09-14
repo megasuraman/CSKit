@@ -118,7 +118,7 @@ void UCSKitDebug_AutoPilotModeRecord::RequestIdle()
 FString	UCSKitDebug_AutoPilotModeRecord::GetFilePath() const
 {
 	FString SavedPath = FPaths::ProjectSavedDir();
-	SavedPath += "CSKitDebug/AutoPilot/" + mFileName + ".json";
+	SavedPath += "CSKit/AutoPilot/" + mFileName + ".json";
 	return SavedPath;
 }
 

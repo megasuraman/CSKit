@@ -10,7 +10,7 @@
 #include "EditorUtilityWidget/CheckLevelActors/CSKitEditor_CheckLevelActors_ErrorData.h"
 #include "CSKitDebug_Utility.h"
 
-FCSKitEditor_CheckLevelActors_ErrorData::FCSKitEditor_CheckLevelActors_ErrorData(const AActor& InActor)
+FCSKitEditor_CheckLevelActors_ErrorDataNode::FCSKitEditor_CheckLevelActors_ErrorDataNode(const AActor& InActor)
 {
 	mActor = &InActor;
 	mLevelName = UCSKitDebug_Utility::GetActorLevelName(&InActor);
