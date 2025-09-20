@@ -23,13 +23,10 @@ struct CSKITEDITOR_API FCSKitEditor_CheckLevelActors_ClassList
 };
 
 //許可してない配置Actorがないかチェック
-USTRUCT(BlueprintType)
-struct CSKITEDITOR_API FCSKitEditor_CheckLevelActors_InvalidClass : public FCSKitEditor_CheckLevelActors_Base
+UCLASS(BlueprintType)
+class CSKITEDITOR_API UCSKitEditor_CheckLevelActors_InvalidClass : public UCSKitEditor_CheckLevelActors_Base
 {
 	GENERATED_BODY()
-
-	FCSKitEditor_CheckLevelActors_InvalidClass(){}
-	virtual ~FCSKitEditor_CheckLevelActors_InvalidClass() override {}
 
 protected:
 	virtual bool CheckErrorActor(FCSKitEditor_CheckLevelActors_ErrorData& OutError, const ULevel* InLevel, const AActor* InActor) const override;

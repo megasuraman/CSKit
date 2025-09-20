@@ -12,13 +12,13 @@
 #include "EditorUtilityWidget/CheckLevelActors/CSKitEditor_CheckLevelActors_ErrorData.h"
 #include "CSKitEditor_CheckLevelActors_Base.generated.h"
 
-USTRUCT(BlueprintType)
-struct CSKITEDITOR_API FCSKitEditor_CheckLevelActors_Base
+UCLASS(BlueprintType, EditInlineNew, Abstract)
+class CSKITEDITOR_API UCSKitEditor_CheckLevelActors_Base : public UObject
 {
 	GENERATED_BODY()
 
-	FCSKitEditor_CheckLevelActors_Base(){}
-	virtual ~FCSKitEditor_CheckLevelActors_Base(){}
+public:
+	UCSKitEditor_CheckLevelActors_Base(){}
 	
 	virtual bool CheckError(FCSKitEditor_CheckLevelActors_ErrorData& OutError, const UWorld* InWorld) const;
 

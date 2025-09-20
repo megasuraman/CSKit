@@ -13,7 +13,7 @@
 /**
  * @brief	エラーチェック
  */
-bool FCSKitEditor_CheckLevelActors_Base::CheckError(FCSKitEditor_CheckLevelActors_ErrorData& OutError, const UWorld* InWorld) const
+bool UCSKitEditor_CheckLevelActors_Base::CheckError(FCSKitEditor_CheckLevelActors_ErrorData& OutError, const UWorld* InWorld) const
 {
 	bool bAddError = false;
 	const TArray<ULevel*>& Levels = InWorld->GetLevels();
@@ -38,7 +38,7 @@ bool FCSKitEditor_CheckLevelActors_Base::CheckError(FCSKitEditor_CheckLevelActor
 /**
  * @brief	チェック対象から除外するActorかどうか
  */
-bool FCSKitEditor_CheckLevelActors_Base::IsIgnoreActor(const AActor* InActor) const
+bool UCSKitEditor_CheckLevelActors_Base::IsIgnoreActor(const AActor* InActor) const
 {
 	if (InActor == nullptr
 		|| InActor->IsA(AWorldSettings::StaticClass())

@@ -467,3 +467,60 @@ void UCSKitDebug_Utility::CollectAssetDependency(TArray<FAssetDependency>& OutLi
 		OutList.RemoveAt(0);
 	}
 }
+
+/**
+ * @brief	指定Objectを参照しているObjectを全て収集
+ */
+void UCSKitDebug_Utility::CollectAssetReferencer(TArray<FAssetDependency>& OutList, const UObject* InObject)
+{
+	if(InObject == nullptr)
+	{
+		return;
+	}
+	const UPackage* CurrentPackage = InObject->GetPackage();
+	if(CurrentPackage == nullptr)
+	{
+		return;
+	}
+	
+	FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
+	
+	TArray<FAssetDependency> NeedCheckDependencyList;
+	const FName RootObjectName = CurrentPackage->GetFName();
+
+	FAssetDependency RootData;
+	RootData.mAssetPathName = RootObjectName;
+	NeedCheckDependencyList.Add(RootData);
+	
+	while (NeedCheckDependencyList.Num() > 0)
+	{
+		FAssetDependency TargetDataCopy = NeedCheckDependencyList[0];
+		const FName TargetName = TargetDataCopy.mAssetPathName;
+		TArray<FName> DependencyNameList;
+		constexpr UE::AssetRegistry::EDependencyCategory DependencyCategory = UE::AssetRegistry::EDependencyCategory::Package;
+		const UE::AssetRegistry::FDependencyQuery DependencyQuery( UE::AssetRegistry::EDependencyQuery::Game );
+		AssetRegistryModule.Get().GetReferencers(TargetName, DependencyNameList, DependencyCategory, DependencyQuery);
+		
+		NeedCheckDependencyList.RemoveAt(0);
+		for(const FName& Name : DependencyNameList)
+		{
+			FAssetDependency TempData;
+			TempData.mAssetPathName = Name;
+			if(OutList.Find(TempData) == INDEX_NONE)
+			{
+				FAssetDependency ChildData;
+				ChildData.mAssetPathName = Name;
+				ChildData.mRoot = TargetDataCopy.mRoot;
+				ChildData.mRoot.Add(TargetName);
+				NeedCheckDependencyList.AddUnique(ChildData);
+			}
+		}
+
+		OutList.AddUnique(TargetDataCopy);
+	}
+
+	if(OutList.Num() > 0)
+	{//先頭はInObjectなのでいらない
+		OutList.RemoveAt(0);
+	}
+}

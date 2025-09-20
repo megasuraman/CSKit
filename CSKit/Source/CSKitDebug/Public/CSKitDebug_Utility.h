@@ -92,4 +92,6 @@ public:
 	};
 	// 指定Objectが依存しているObjectを全て収集
 	static void CollectAssetDependency(TArray<FAssetDependency>& OutList, const UObject* InObject);
+	// 指定Objectが参照しているObjectを全て収集
+	static void CollectAssetReferencer(TArray<FAssetDependency>& OutList, const UObject* InObject);
 };

@@ -12,7 +12,7 @@
 /**
  * @brief	エラーチェック
  */
-bool FCSKitEditor_CheckLevelActors_InvalidClass::CheckErrorActor(
+bool UCSKitEditor_CheckLevelActors_InvalidClass::CheckErrorActor(
 	FCSKitEditor_CheckLevelActors_ErrorData& OutError,
 	const ULevel* InLevel, 
 	const AActor* InActor
@@ -48,7 +48,7 @@ bool FCSKitEditor_CheckLevelActors_InvalidClass::CheckErrorActor(
 /**
  * @brief	エラーチェック
  */
-const FCSKitEditor_CheckLevelActors_ClassList* FCSKitEditor_CheckLevelActors_InvalidClass::FindPossibleToPlaceActorClassList(const FString& InLevelName) const
+const FCSKitEditor_CheckLevelActors_ClassList* UCSKitEditor_CheckLevelActors_InvalidClass::FindPossibleToPlaceActorClassList(const FString& InLevelName) const
 {
 	const FCSKitEditor_CheckLevelActors_ClassList* ActorClassList = nullptr;
 	for (const auto& MapElement : mPossibleToPlaceActorClassMap)
