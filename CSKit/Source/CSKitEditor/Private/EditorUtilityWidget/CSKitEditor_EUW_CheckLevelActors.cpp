@@ -49,7 +49,7 @@ bool UCSKitEditor_EUW_CheckLevelActors::CheckError()
 {
 	FCSKitEditor_CheckLevelActors_ErrorData ErrorData;
 	//mCheckInvalidClass->CheckError(ErrorData, GetWorld());
-	for (const UCSKitEditor_CheckLevelActors_Base* CheckLevelActors : mCheckLevelActorsClassList)
+	for (UCSKitEditor_CheckLevelActors_Base* CheckLevelActors : mCheckLevelActorsClassList)
 	{
 		CheckLevelActors->CheckError(ErrorData, GetWorld());
 	}

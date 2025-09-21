@@ -29,7 +29,7 @@ class CSKITEDITOR_API UCSKitEditor_CheckLevelActors_InvalidClass : public UCSKit
 	GENERATED_BODY()
 
 protected:
-	virtual bool CheckErrorActor(FCSKitEditor_CheckLevelActors_ErrorData& OutError, const ULevel* InLevel, const AActor* InActor) const override;
+	virtual bool CheckErrorActor(FCSKitEditor_CheckLevelActors_ErrorData& OutError, const ULevel* InLevel, const AActor* InActor) override;
 
 	const FCSKitEditor_CheckLevelActors_ClassList* FindPossibleToPlaceActorClassList(const FString& InLevelName) const;
 

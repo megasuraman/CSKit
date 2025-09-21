@@ -13,7 +13,7 @@
 /**
  * @brief	エラーチェック
  */
-bool UCSKitEditor_CheckLevelActors_Base::CheckError(FCSKitEditor_CheckLevelActors_ErrorData& OutError, const UWorld* InWorld) const
+bool UCSKitEditor_CheckLevelActors_Base::CheckError(FCSKitEditor_CheckLevelActors_ErrorData& OutError, const UWorld* InWorld)
 {
 	bool bAddError = false;
 	const TArray<ULevel*>& Levels = InWorld->GetLevels();

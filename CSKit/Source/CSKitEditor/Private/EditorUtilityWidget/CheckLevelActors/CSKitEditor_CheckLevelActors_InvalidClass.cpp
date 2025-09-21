@@ -16,7 +16,7 @@ bool UCSKitEditor_CheckLevelActors_InvalidClass::CheckErrorActor(
 	FCSKitEditor_CheckLevelActors_ErrorData& OutError,
 	const ULevel* InLevel, 
 	const AActor* InActor
-	) const
+	)
 {
 	const FString LevelName = UCSKitDebug_Utility::GetLevelName(InLevel);
 	const FCSKitEditor_CheckLevelActors_ClassList* ActorClassList = FindPossibleToPlaceActorClassList(LevelName);
