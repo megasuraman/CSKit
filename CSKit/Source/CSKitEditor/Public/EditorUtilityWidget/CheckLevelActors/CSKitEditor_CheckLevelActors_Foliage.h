@@ -17,11 +17,11 @@ struct CSKITEDITOR_API FCSKitEditor_FoliageInstanceErrorNode
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FoliageInstanceDataError", meta = (DisplayName = "座標", DisplayPriority = 3))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FoliageInstanceError", meta = (DisplayName = "座標", DisplayPriority = 3))
 	FVector mPos = FVector::ZeroVector;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FoliageInstanceDataError", meta = (DisplayName = "エラー内容", DisplayPriority = 1))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FoliageInstanceError", meta = (DisplayName = "エラー内容", DisplayPriority = 1))
 	FString mErrorString;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FoliageInstanceDataError", meta = (DisplayName = "InstancesのIndex", DisplayPriority = 2))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FoliageInstanceError", meta = (DisplayName = "InstancesのIndex", DisplayPriority = 2))
 	int32 mIndex = INDEX_NONE;
 };
 USTRUCT(BlueprintType)
@@ -29,7 +29,7 @@ struct CSKITEDITOR_API FCSKitEditor_FoliageInstanceError
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FoliageInstanceDataError", meta = (DisplayName = "エラーリスト", DisplayPriority = 2))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FoliageInstanceError", meta = (DisplayName = "エラーリスト", DisplayPriority = 2))
 	TArray<FCSKitEditor_FoliageInstanceErrorNode> mErrorNodeList;
 };
 USTRUCT(BlueprintType)
@@ -38,7 +38,7 @@ struct CSKITEDITOR_API FCSKitEditor_FoliageInstanceErrorResult
 	GENERATED_BODY()
 
 	//Key:Component名, Value:エラー情報
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FoliageInstanceDataError", meta = (DisplayName = "エラー", DisplayPriority = 2))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FoliageInstanceError", meta = (DisplayName = "エラー", DisplayPriority = 2))
 	TMap<FString,FCSKitEditor_FoliageInstanceError> mErrorMap;
 };
 
