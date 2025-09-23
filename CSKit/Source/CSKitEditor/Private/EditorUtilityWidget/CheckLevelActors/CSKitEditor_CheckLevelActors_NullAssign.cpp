@@ -8,6 +8,7 @@
 
 #include "EditorUtilityWidget/CheckLevelActors/CSKitEditor_CheckLevelActors_NullAssign.h"
 
+#include "Components/BrushComponent.h"
 #include "Engine/DecalActor.h"
 #include "Engine/LODActor.h"
 
@@ -44,22 +45,36 @@ bool UCSKitEditor_CheckLevelActors_NullAssign::CheckErrorActor(
 	TArray<FString> ErrorComponentList;
 	for (const UActorComponent* ActorComponent : InActor->GetComponents())
 	{
-		const UStaticMeshComponent* StaticMeshComponent = Cast<UStaticMeshComponent>(ActorComponent);
-		if (StaticMeshComponent == nullptr)
+		if (const UStaticMeshComponent* StaticMeshComponent = Cast<UStaticMeshComponent>(ActorComponent))
 		{
-			continue;
+			if(StaticMeshComponent->IsA(UInstancedStaticMeshComponent::StaticClass()))
+			{
+				continue;
+			}
+			if(StaticMeshComponent->GetStaticMesh() == nullptr)
+			{
+				FCSKitEditor_CheckLevelActors_ErrorDataNode ErrorData(*InActor);
+				ErrorData.mErrorString = FString::Printf(TEXT("%s にStaticMeshがアサインされてない"), *StaticMeshComponent->GetName());
+				OutError.mList.AddUnique(ErrorData);
+				bHitError = true;
+				continue;
+			}
 		}
-		if(StaticMeshComponent->IsA(UInstancedStaticMeshComponent::StaticClass()))
+		else if (const UBrushComponent* BrushComponent = Cast<UBrushComponent>(ActorComponent))
 		{
-			continue;
-		}
-		if(StaticMeshComponent->GetStaticMesh() == nullptr)
-		{
-			FCSKitEditor_CheckLevelActors_ErrorDataNode ErrorData(*InActor);
-			ErrorData.mErrorString = FString::Printf(TEXT("%s にStaticMeshがアサインされてない"), *StaticMeshComponent->GetName());
-			OutError.mList.AddUnique(ErrorData);
-			bHitError = true;
-			continue;
+			if(BrushComponent->GetCollisionProfileName() == UCollisionProfile::NoCollision_ProfileName
+				|| !BrushComponent->CanEverAffectNavigation())
+			{
+				continue;
+			}
+			if(BrushComponent->BrushBodySetup == nullptr)
+			{
+				FCSKitEditor_CheckLevelActors_ErrorDataNode ErrorData(*InActor);
+				ErrorData.mErrorString = FString::Printf(TEXT("コリジョン設定あるのに %s にBrushがアサインされてない"), *StaticMeshComponent->GetName());
+				OutError.mList.AddUnique(ErrorData);
+				bHitError = true;
+				break;
+			}
 		}
 	}
 	return bHitError;
