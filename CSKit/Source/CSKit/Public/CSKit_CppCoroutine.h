@@ -9,14 +9,13 @@
 
 #include "CoreMinimal.h"
 
-class CSKIT_API CSKit_CppCoroutine
+class CSKit_CppCoroutine
 {
 public:
 	static constexpr uint32 msStartLineNumber = 0;
 	static constexpr uint32 msBreakLineNumber = UINT32_MAX;
 
-	CSKit_CppCoroutine();
-	~CSKit_CppCoroutine();
+	CSKit_CppCoroutine(){}
 
 	void	Reset() { SetLine(msStartLineNumber); }
 

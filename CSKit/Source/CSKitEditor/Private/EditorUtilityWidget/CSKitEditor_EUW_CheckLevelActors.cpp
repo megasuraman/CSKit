@@ -43,26 +43,32 @@ void UCSKitEditor_EUW_CheckLevelActors::CollectLevelActorsClass()
 }
 
 /**
- * @brief	エラーチェック
+ * @brief	開いてるレベルに対してエラーをチェック
  */
-bool UCSKitEditor_EUW_CheckLevelActors::CheckError()
+bool UCSKitEditor_EUW_CheckLevelActors::CheckError_CurrentLevel()
 {
 	FCSKitEditor_CheckLevelActors_ErrorData ErrorData;
-	//mCheckInvalidClass->CheckError(ErrorData, GetWorld());
-	for (UCSKitEditor_CheckLevelActors_Base* CheckLevelActors : mCheckLevelActorsClassList)
-	{
-		CheckLevelActors->CheckError(ErrorData, GetWorld());
-	}
-
-	PostCheckError(ErrorData);
+	CollectError(ErrorData);
+	OutputCollectError(ErrorData);
 	
 	return ErrorData.mList.Num() > 0;
 }
 
 /**
- * @brief	エラーチェック後処理
+ * @brief	開いてるレベルに対してエラーを収集
  */
-void UCSKitEditor_EUW_CheckLevelActors::PostCheckError(const FCSKitEditor_CheckLevelActors_ErrorData& InErrorData)
+void UCSKitEditor_EUW_CheckLevelActors::CollectError(FCSKitEditor_CheckLevelActors_ErrorData& OutErrorData)
+{
+	for (UCSKitEditor_CheckLevelActors_Base* CheckLevelActors : mCheckLevelActorsClassList)
+	{
+		CheckLevelActors->CheckError(OutErrorData, GetWorld());
+	}
+}
+
+/**
+ * @brief	エラー情報を出力
+ */
+void UCSKitEditor_EUW_CheckLevelActors::OutputCollectError(const FCSKitEditor_CheckLevelActors_ErrorData& InErrorData)
 {
 	OutputFileResultError(InErrorData);
 	RequestMessageLog(InErrorData);
@@ -163,4 +169,31 @@ void UCSKitEditor_EUW_CheckLevelActors::RequestNotification(
 			Notification->SetCompletionState(SNotificationItem::CS_Success);
 		}
 	}
+}
+
+/**
+ * @brief	自動実行開始時処理
+ */
+void UCSKitEditor_EUW_CheckLevelActors::AutoRun_OnBegin()
+{
+	mAutoRun_CollectErrorMap.Clear();
+	mAutoRunDataTableRowIndex = 0;
+}
+
+/**
+ * @brief	自動実行時のSubLevelロード後の処理
+ *			trueを返す間継続
+ */
+bool UCSKitEditor_EUW_CheckLevelActors::AutoRun_ExecPostLoadSubLevel()
+{
+	CollectError(mAutoRun_CollectErrorMap);
+	return true;
+}
+
+/**
+ * @brief	自動実行終了時処理
+ */
+void UCSKitEditor_EUW_CheckLevelActors::AutoRun_OnEnd()
+{
+	OutputCollectError(mAutoRun_CollectErrorMap);
 }

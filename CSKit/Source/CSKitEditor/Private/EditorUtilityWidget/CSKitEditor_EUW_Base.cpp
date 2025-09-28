@@ -2,6 +2,7 @@
 #include "EditorUtilityWidget/CSKitEditor_EUW_Base.h"
 
 
+#include "CSKit_SubLevelPresetTableRow.h"
 #include "Debug/DebugDrawService.h"
 #include "LevelEditor.h"
 #include "Editor/UnrealEdEngine.h"
@@ -12,12 +13,14 @@
 #include "UnrealEdGlobals.h"
 #include "SLevelViewport.h"
 #include "SourceControlOperations.h"
+#include "Engine/LevelStreamingDynamic.h"
 
 
 void UCSKitEditor_EUW_Base::NativeDestruct()
 {
 	Super::NativeDestruct();
 	SetActiveDraw(false);
+	EndAutoRunTickObject();
 }
 
 /**
@@ -348,6 +351,21 @@ bool UCSKitEditor_EUW_Base::SaveLevel(ULevel* InLevel)
 }
 
 /**
+ * @brief	AutoRun開始
+ */
+void UCSKitEditor_EUW_Base::BeginAutoRun()
+{
+	BeginAutoRunTickObject(FCSKitEditor_EUW_TickEvent::CreateUObject(this, &UCSKitEditor_EUW_Base::UpdateAutoRun));
+}
+/**
+ * @brief	AutoRun開始
+ */
+void UCSKitEditor_EUW_Base::EndAutoRun()
+{
+	EndAutoRunTickObject();
+}
+
+/**
  * @brief	NativeTick呼べないのでDrawを利用したTick
  *			レベル操作等は危険
  */
@@ -405,4 +423,172 @@ int64 UCSKitEditor_EUW_Base::GetFileTimeStampSecond(const FString& InAssetFullPa
 #else
 	return 0;
 #endif
+}
+
+/**
+ * @brief	自動実行用のTickObject開始
+ */
+void UCSKitEditor_EUW_Base::BeginAutoRunTickObject(const FCSKitEditor_EUW_TickEvent& InDelegate)
+{
+	if (mAutoRunTickObject == nullptr)
+	{
+		mAutoRunTickObject = NewObject<UCSKitEditor_EUW_TickObjectBase>(GetWorld_Editor());
+	}
+
+	if (mAutoRunTickObject != nullptr)
+	{
+		mAutoRunTickObject->SetActive(true);
+		mAutoRunTickObject->SetTickDelegate(InDelegate);
+		AutoRun_OnBegin();
+	}
+}
+
+/**
+ * @brief	自動実行用のTickObject終了
+ */
+void UCSKitEditor_EUW_Base::EndAutoRunTickObject()
+{
+	if (mAutoRunTickObject != nullptr)
+	{
+		AutoRun_OnEnd();
+		mAutoRunTickObject->SetActive(false);
+		mAutoRunTickObject = nullptr;
+	}
+}
+
+/**
+ * @brief	自動実行更新
+ */
+void UCSKitEditor_EUW_Base::UpdateAutoRun(const float InDeltaTime)
+{
+	const ECSKit_CCResult CCResult = UpdateAutoRunCC(mCCAutoRun, GetWorld_Editor()->DeltaTimeSeconds);
+	if(CCResult == ECSKit_CCResult::Finish)
+	{
+		EndAutoRunTickObject();
+	}
+}
+
+/**
+ * @brief	自動実行のCoroutine
+ */
+CC_FUNC( UCSKitEditor_EUW_Base::UpdateAutoRunCC )
+{
+	const UDataTable* DataTable = mSubLevelPresetDataTable.LoadSynchronous();
+	if(DataTable == nullptr)
+	{
+		return ECSKit_CCResult::Finish;
+	}
+	const TArray<FName> RowNames = DataTable->GetRowNames();
+	if(mAutoRunDataTableRowIndex >= RowNames.Num())
+	{
+		return ECSKit_CCResult::Finish;
+	}
+	const FName TargetUnitName = RowNames[mAutoRunDataTableRowIndex];
+	const FCSKit_SubLevelPresetTableRow* TableRaw = DataTable->FindRow<FCSKit_SubLevelPresetTableRow>(TargetUnitName, TEXT(""));
+	if(TableRaw == nullptr)
+	{
+		return ECSKit_CCResult::Finish;
+	}
+	
+	CC_BEGIN();
+	{
+		if(!TableRaw->mbEditorEUWAutoRunTarget)
+		{
+			++mAutoRunDataTableRowIndex;
+			CC_RESTART();
+		}
+
+		//対象のSubLevelロード
+		CC_SLEEP_SEC( 1.f );
+		RequestLoadSubLevel(*TableRaw);
+
+		//SubLevelロード待ち
+		CC_YIELD();
+		CC_WAIT(!IsAllLoadedLevelStreaming());
+		CC_SLEEP_SEC( 5.f );
+
+		CC_WAIT(!AutoRun_ExecPostLoadSubLevel());
+		CC_SLEEP_SEC( 1.f );
+
+		ClearAllSubLevel();
+		++mAutoRunDataTableRowIndex;
+		CC_RESTART();
+	}
+	CC_END();
+
+	return ECSKit_CCResult::Yield;
+}
+
+/**
+ * @brief	SubLevelPresetをSubLevelとして追加
+ */
+bool UCSKitEditor_EUW_Base::RequestLoadSubLevel(const FCSKit_SubLevelPresetTableRow& InSubLevelPreset)
+{
+	mRequestLevelStreamingList.Empty();
+	for(const TSoftObjectPtr<class UWorld>& ObjectPtr : InSubLevelPreset.mNeedLevelList)
+	{
+		const FString PackageName = ObjectPtr.GetLongPackageName();
+		if(PackageName.IsEmpty())
+		{
+			continue;
+		}
+		if(ULevelStreaming* LevelStreaming = EditorLevelUtils::AddLevelToWorld(GetWorld(), *PackageName, ULevelStreamingDynamic::StaticClass()))
+		{
+			mRequestLevelStreamingList.Add(LevelStreaming);
+		}
+	}
+	for(const TSoftObjectPtr<class UWorld>& ObjectPtr : InSubLevelPreset.mOptionLevelList)
+	{
+		const FString PackageName = ObjectPtr.GetLongPackageName();
+		if(PackageName.IsEmpty())
+		{
+			continue;
+		}
+		if(ULevelStreaming* LevelStreaming = EditorLevelUtils::AddLevelToWorld(GetWorld(), *PackageName, ULevelStreamingDynamic::StaticClass()))
+		{
+			mRequestLevelStreamingList.Add(LevelStreaming);
+		}
+	}
+	return mRequestLevelStreamingList.Num() > 0;
+}
+
+/**
+ * @brief	SubLevelのロード終わったかどうか
+ */
+bool UCSKitEditor_EUW_Base::IsAllLoadedLevelStreaming() const
+{
+	for(const auto& WeakPtr : mRequestLevelStreamingList)
+	{
+		if(const ULevelStreaming* LevelStreaming = WeakPtr.Get())
+		{
+			if(!LevelStreaming->IsLevelLoaded())
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+/**
+ * @brief	自動実行開始時処理
+ */
+void UCSKitEditor_EUW_Base::AutoRun_OnBegin()
+{
+}
+
+/**
+ * @brief	自動実行時のSubLevelロード後の処理
+ *			trueを返す間継続
+ */
+bool UCSKitEditor_EUW_Base::AutoRun_ExecPostLoadSubLevel()
+{
+	return false;
+}
+
+/**
+ * @brief	自動実行終了時処理
+ */
+void UCSKitEditor_EUW_Base::AutoRun_OnEnd()
+{
 }

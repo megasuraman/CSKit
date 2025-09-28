@@ -131,7 +131,7 @@ void UCSKit_Subsystem::Tick(float DeltaTime)
 }
 TStatId UCSKit_Subsystem::GetStatId() const
 {
-	RETURN_QUICK_DECLARE_CYCLE_STAT(UEagAICommunitySystem, STATGROUP_Tickables);
+	RETURN_QUICK_DECLARE_CYCLE_STAT(UCSKit_Subsystem, STATGROUP_Tickables);
 }
 
 /* ------------------------------------------------------------

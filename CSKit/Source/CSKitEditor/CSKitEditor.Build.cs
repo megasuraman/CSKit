@@ -46,8 +46,9 @@ public class CSKitEditor : ModuleRules
 				"EditorWidgets",
 				"MessageLog",
 				"Foliage",
+				"NavigationSystem",
 				"CSKit",
-                "CSKitDebug",
+				"CSKitDebug",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

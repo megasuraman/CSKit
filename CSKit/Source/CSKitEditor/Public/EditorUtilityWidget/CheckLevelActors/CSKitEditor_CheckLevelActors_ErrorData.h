@@ -36,4 +36,6 @@ struct CSKITEDITOR_API FCSKitEditor_CheckLevelActors_ErrorDataNode
 struct CSKITEDITOR_API FCSKitEditor_CheckLevelActors_ErrorData
 {
 	TArray<FCSKitEditor_CheckLevelActors_ErrorDataNode> mList;
+
+	void Clear(){mList.Empty();}
 };

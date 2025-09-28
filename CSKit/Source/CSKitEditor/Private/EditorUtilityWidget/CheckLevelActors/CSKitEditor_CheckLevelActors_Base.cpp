@@ -8,6 +8,8 @@
 
 #include "EditorUtilityWidget/CheckLevelActors/CSKitEditor_CheckLevelActors_Base.h"
 
+#include "AbstractNavData.h"
+#include "GameFramework/DefaultPhysicsVolume.h"
 #include "GameFramework/WorldSettings.h"
 
 /**
@@ -43,6 +45,8 @@ bool UCSKitEditor_CheckLevelActors_Base::IsIgnoreActor(const AActor* InActor) co
 	if (InActor == nullptr
 		|| InActor->IsA(AWorldSettings::StaticClass())
 		|| InActor->GetClass() == ABrush::StaticClass()
+		|| InActor->IsA(AAbstractNavData::StaticClass())
+		|| InActor->IsA(ADefaultPhysicsVolume::StaticClass())
 		)
 	{
 		return true;
