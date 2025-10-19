@@ -366,6 +366,20 @@ void UCSKitEditor_EUW_Base::EndAutoRun()
 }
 
 /**
+ * @brief	SubLevelPresetDataTableのRowNameをプロパティから選べるようにする
+ */
+TArray<FName> UCSKitEditor_EUW_Base::GetSubLevelPresetSelectNameList() const
+{
+	TArray<FName> NameList;
+	NameList.Add(TEXT("None"));
+	if(const UDataTable* DataTable = mSubLevelPresetDataTable.LoadSynchronous())
+	{
+		NameList.Append(DataTable->GetRowNames());
+	}
+	return NameList;
+}
+
+/**
  * @brief	NativeTick呼べないのでDrawを利用したTick
  *			レベル操作等は危険
  */
@@ -500,7 +514,7 @@ CC_FUNC( UCSKitEditor_EUW_Base::UpdateAutoRunCC )
 
 		//対象のSubLevelロード
 		CC_SLEEP_SEC( 1.f );
-		RequestLoadSubLevel(*TableRaw);
+		AddSubLevelPreset(*TableRaw);
 
 		//SubLevelロード待ち
 		CC_YIELD();
@@ -522,8 +536,27 @@ CC_FUNC( UCSKitEditor_EUW_Base::UpdateAutoRunCC )
 /**
  * @brief	SubLevelPresetをSubLevelとして追加
  */
-bool UCSKitEditor_EUW_Base::RequestLoadSubLevel(const FCSKit_SubLevelPresetTableRow& InSubLevelPreset)
+bool UCSKitEditor_EUW_Base::AddSubLevelPreset(const FName InDataTableRowName)
 {
+	const UDataTable* DataTable = mSubLevelPresetDataTable.LoadSynchronous();
+	if(DataTable == nullptr)
+	{
+		return false;
+	}
+	const FCSKit_SubLevelPresetTableRow* TableRaw = DataTable->FindRow<FCSKit_SubLevelPresetTableRow>(InDataTableRowName, TEXT(""));
+	if(TableRaw == nullptr)
+	{
+		return false;
+	}
+	return AddSubLevelPreset(*TableRaw);
+}
+
+/**
+ * @brief	SubLevelPresetをSubLevelとして追加
+ */
+bool UCSKitEditor_EUW_Base::AddSubLevelPreset(const FCSKit_SubLevelPresetTableRow& InSubLevelPreset)
+{
+	ClearAllSubLevel();
 	mRequestLevelStreamingList.Empty();
 	for(const TSoftObjectPtr<class UWorld>& ObjectPtr : InSubLevelPreset.mNeedLevelList)
 	{

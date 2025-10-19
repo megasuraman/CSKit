@@ -47,6 +47,12 @@ protected:
 	void BeginAutoRun();
 	UFUNCTION(BlueprintCallable, Category = "CSKitEditor_EUW")
 	void EndAutoRun();
+	UFUNCTION(BlueprintCallable, Category = "CSKitEditor_EUW")
+	FName GetSubLevelPresetSelectName() const {return mSubLevelPresetSelectName;}
+	UFUNCTION(BlueprintCallable, Category = "CSKitEditor_EUW")
+	bool AddSubLevelPresetBP(FName InDataTableRowName){return AddSubLevelPreset(InDataTableRowName);}
+	UFUNCTION()
+	TArray<FName> GetSubLevelPresetSelectNameList() const;
 	
 	virtual void FakeTick();
 	virtual void OnRunGame(const UWorld& InWorld){}
@@ -57,7 +63,8 @@ protected:
 	void EndAutoRunTickObject();
 	void UpdateAutoRun(const float InDeltaTime);
 	DECL_CC_FUNC(UpdateAutoRunCC);
-	bool RequestLoadSubLevel(const FCSKit_SubLevelPresetTableRow& InSubLevelPreset);
+	bool AddSubLevelPreset(const FName InDataTableRowName);
+	bool AddSubLevelPreset(const FCSKit_SubLevelPresetTableRow& InSubLevelPreset);
 	bool IsAllLoadedLevelStreaming() const;
 	virtual void AutoRun_OnBegin();
 	virtual bool AutoRun_ExecPostLoadSubLevel();
@@ -66,8 +73,10 @@ protected:
 protected:
 	UPROPERTY()
 	UCSKitEditor_EUW_TickObjectBase* mAutoRunTickObject = nullptr;
-	UPROPERTY(EditDefaultsOnly, Category = "CSKitEditor_EUW", meta = (DisplayName = "SubLevelPresetDataTable", DisplayPriority=1))
+	UPROPERTY(EditDefaultsOnly, Category = "CSKitEditor_EUW", meta = (DisplayName = "SubLevelPreset", DisplayPriority=1))
 	TSoftObjectPtr<UDataTable> mSubLevelPresetDataTable;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SubLevelPreset", meta = (DisplayName = "SubLevelPresetSelectName", GetOptions="GetSubLevelPresetSelectNameList", DisplayPriority=1))
+	FName mSubLevelPresetSelectName;
 	
 	CSKit_CppCoroutine mCCAutoRun;
 	FDelegateHandle mDebugDrawHandle;
