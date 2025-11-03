@@ -180,7 +180,7 @@ void UCSKitDebug_ActorSelectManager::RequestSelect(const AActor* InActor)
 /**
  * @brief	自動選択するクラス
  */
-void UCSKitDebug_ActorSelectManager::RequestAutoSelect(UClass* InTargetClass)
+void UCSKitDebug_ActorSelectManager::RequestAutoSelect(const TSoftClassPtr<UObject>& InTargetClass)
 {
 	if (const UCSKitDebug_ActorSelectComponent* ActorWatcher = mAutoSelectTarget.Get())
 	{

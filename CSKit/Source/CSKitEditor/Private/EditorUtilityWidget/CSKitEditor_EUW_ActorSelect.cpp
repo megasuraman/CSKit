@@ -32,12 +32,12 @@ void UCSKitEditor_EUW_ActorSelect::PostInitProperties()
 	mBookmarkClass.Empty();
 	const FString BookmarkClassString = SaveData.GetString(FString(TEXT("EUW_ActorSelect.mBookmarkClass")));
 	TArray<FString> BookmarkClassStringList;
-	BookmarkClassString.ParseIntoArray(BookmarkClassStringList, TEXT("/"));
+	BookmarkClassString.ParseIntoArray(BookmarkClassStringList, TEXT("|"));
 	for (const FString& ClassString : BookmarkClassStringList)
 	{
-		if (TSoftObjectPtr<UObject> ClassPtr = TSoftObjectPtr<UObject>( FSoftObjectPath(ClassString)).LoadSynchronous())
+		if (TSoftClassPtr<UObject> ClassPtr = TSoftClassPtr<UObject>( FSoftObjectPath(ClassString)).LoadSynchronous())
 		{
-			mBookmarkClass.Add(ClassPtr->GetClass());
+			mBookmarkClass.Add(ClassPtr);
 		}
 	}
 }
@@ -53,7 +53,7 @@ void UCSKitEditor_EUW_ActorSelect::PostEditChangeProperty(FPropertyChangedEvent&
 	SaveData.SetBool(FString(TEXT("EUW_ActorSelect.mbActive")), mbActive);
 	SaveData.SetBool(FString(TEXT("EUW_ActorSelect.mbAutoSelect")), mbAutoSelect);
 	SaveData.SetBool(FString(TEXT("EUW_ActorSelect.mbOnlyUpdateSelectActor")), mbOnlyUpdateSelectActor);
-	if (mTargetClass != nullptr)
+	if (mTargetClass.IsValid())
 	{
 		SaveData.SetString(FString(TEXT("EUW_ActorSelect.mTargetClass")), mTargetClass->GetPathName());
 	}
@@ -62,10 +62,12 @@ void UCSKitEditor_EUW_ActorSelect::PostEditChangeProperty(FPropertyChangedEvent&
 	{
 		if (ClassPtr.IsValid())
 		{
-			BookmarkClassString += FString::Printf(TEXT("%s/"), *ClassPtr->GetPathName());
+			BookmarkClassString += FString::Printf(TEXT("%s|"), *ClassPtr->GetPathName());
 		}
 	}
 	SaveData.SetString(FString(TEXT("EUW_ActorSelect.mBookmarkClass")), BookmarkClassString);
+	
+	AssignParameterToGame();
 }
 
 /**
@@ -79,7 +81,7 @@ bool	UCSKitEditor_EUW_ActorSelect::SetupTargetObjectList()
 	const UWorld* SecondWorld = GetWorld_GameClient();
 
 	TArray<UObject*> ObjectList;
-	GetObjectsOfClass(mTargetClass->GetClass(), ObjectList);
+	GetObjectsOfClass(mTargetClass.Get(), ObjectList);
 	for (const UObject* Object : ObjectList)
 	{
 		if (Object->GetWorld() == World
@@ -182,7 +184,7 @@ void UCSKitEditor_EUW_ActorSelect::SetAutoSelect(bool bInAutoSelect)
 	}
 	mbAutoSelect = bInAutoSelect;
 
-	if (mTargetClass == nullptr)
+	if (!mTargetClass.IsValid())
 	{
 		return;
 	}
@@ -191,7 +193,7 @@ void UCSKitEditor_EUW_ActorSelect::SetAutoSelect(bool bInAutoSelect)
 	{
 		if (UCSKitDebug_ActorSelectManager* ActorSelectorManager = GetActorSelectorManager(*TargetWorld))
 		{
-			ActorSelectorManager->RequestAutoSelect(mTargetClass->GetClass());
+			ActorSelectorManager->RequestAutoSelect(mTargetClass);
 		}
 	}
 }
@@ -319,28 +321,29 @@ void UCSKitEditor_EUW_ActorSelect::LastSelectTargetWarp()
 }
 
 /**
+ * @brief	
+ */
+void UCSKitEditor_EUW_ActorSelect::FakeTick()
+{
+	Super::FakeTick();
+	
+	mTargetObjectSearchIntervelSec -= GetWorld()->GetDeltaSeconds();
+	if (mTargetObjectSearchIntervelSec > 0.f)
+	{
+		return;
+	}
+	SetupTargetObjectList();
+}
+
+/**
  * @brief	ゲーム実行開始時処理
  */
 void UCSKitEditor_EUW_ActorSelect::OnRunGame(const UWorld& InWorld)
 {
 	Super::OnRunGame(InWorld);
-	
-	UCSKitDebug_ActorSelectManager* ActorSelectorManager = GetActorSelectorManager(InWorld);
-	if (ActorSelectorManager == nullptr)
-	{
-		return;
-	}
-	if (UCSKitDebug_DebugMenuManager* DebugMenuManager = UCSKitDebug_DebugMenuManager::sGet(this))
-	{
-		DebugMenuManager->SetNodeValue_Bool(FString(TEXT("CSKitDebug/ActorSelect/Active")), true);
-	}
 
-	if (mbAutoSelect
-		&& mTargetClass != nullptr)
-	{
-		ActorSelectorManager->RequestAutoSelect(mTargetClass->GetClass());
-	}
-	ActorSelectorManager->RequestSetOnlyUpdateSelectActor(mbOnlyUpdateSelectActor);
+	AssignParameterToGame();
+	mTargetObjectSearchIntervelSec = 1.f;
 }
 
 /**
@@ -359,4 +362,37 @@ UCSKitDebug_ActorSelectManager* UCSKitEditor_EUW_ActorSelect::GetActorSelectorMa
 		return nullptr;
 	}
 	return CSKitEditorSubsystem->GetActorSelectManager();
+}
+
+/**
+ * @brief	パラメータをゲームに適用
+ */
+void UCSKitEditor_EUW_ActorSelect::AssignParameterToGame() const
+{
+	const UWorld* World = GetWorld_GameClient();
+	if(World == nullptr)
+	{
+		World = GetWorld_GameServer();
+	}
+	if (World == nullptr)
+	{
+		return;
+	}
+	
+	UCSKitDebug_ActorSelectManager* ActorSelectorManager = GetActorSelectorManager(*World);
+	if (ActorSelectorManager == nullptr)
+	{
+		return;
+	}
+	if (UCSKitDebug_DebugMenuManager* DebugMenuManager = UCSKitDebug_DebugMenuManager::sGet(World))
+	{
+		DebugMenuManager->SetNodeValue_Bool(FString(TEXT("CSKitDebug/ActorSelect/Active")), true);
+	}
+
+	if (mbAutoSelect
+		&& mTargetClass != nullptr)
+	{
+		ActorSelectorManager->RequestAutoSelect(mTargetClass);
+	}
+	ActorSelectorManager->RequestSetOnlyUpdateSelectActor(mbOnlyUpdateSelectActor);
 }

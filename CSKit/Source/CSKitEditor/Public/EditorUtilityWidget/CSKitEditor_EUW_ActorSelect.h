@@ -50,25 +50,28 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "EUW_ActorSelector")
 	void LastSelectTargetWarp();
 
+	virtual void FakeTick() override;
 	virtual void OnRunGame(const UWorld& InWorld) override;
 
 	static UCSKitDebug_ActorSelectManager* GetActorSelectorManager(const UWorld& InWorld);
+	void AssignParameterToGame() const;
 	
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EUW_ActorSelector", meta = (DisplayName = "選択対象クラス", DisplayPriority = 3))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EUW_ActorSelect", meta = (DisplayName = "選択対象クラス", DisplayPriority = 3))
 	TSoftClassPtr<UObject>	mTargetClass = nullptr;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EUW_ActorSelector", meta = (DisplayName = "クラスBookmark", DisplayPriority = 2))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EUW_ActorSelect", meta = (DisplayName = "クラスBookmark", DisplayPriority = 2))
 	TArray<TSoftClassPtr<UObject>>	mBookmarkClass;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EUW_ActorSelector", meta = (DisplayName = "対象List", DisplayPriority = 4))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EUW_ActorSelect", meta = (DisplayName = "対象List", DisplayPriority = 4))
 	TArray<TSoftObjectPtr<UObject>> mTargetObjectList;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EUW_ActorSelector", meta = (DisplayName = "選択対象", DisplayPriority = 4))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EUW_ActorSelect", meta = (DisplayName = "選択対象", DisplayPriority = 4))
 	TWeakObjectPtr<UObject> mTargetObject;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EUW_ActorSelector", meta = (DisplayName = "Active", DisplayPriority = 1))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EUW_ActorSelect", meta = (DisplayName = "Active", DisplayPriority = 1))
 	bool mbActive = false;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EUW_ActorSelector", meta = (DisplayName = "自動選択", DisplayPriority = 1))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EUW_ActorSelect", meta = (DisplayName = "自動選択", DisplayPriority = 1))
 	bool mbAutoSelect = false;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EUW_ActorSelector", meta = (DisplayName = "選択対象のみTick実行", DisplayPriority = 1))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EUW_ActorSelect", meta = (DisplayName = "選択対象のみTick実行", DisplayPriority = 1))
 	bool mbOnlyUpdateSelectActor = false;
 
 	TMap<FName, bool> mDrawFlagMap;
+	float mTargetObjectSearchIntervelSec = 0.f;
 };

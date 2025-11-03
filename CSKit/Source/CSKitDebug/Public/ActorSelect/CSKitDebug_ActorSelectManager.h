@@ -35,7 +35,7 @@ public:
 	bool	IsShowLastEQS() const { return mbShowSelectLastEQS; }
 	void	RequestSelect(const AActor* InActor);
 	void	RequestSetOnlyUpdateSelectActor(const bool bInOnlyUpdate){SetOnlyUpdateSelectActor(bInOnlyUpdate);}
-	void	RequestAutoSelect(UClass* InTargetClass);
+	void	RequestAutoSelect(const TSoftClassPtr<UObject>& InTargetClass);
 	const UCSKitDebug_ActorSelectComponent* GetLastSelectTarget() const;
 	AActor* GetLastSelectTargetActor() const;
 	void	SetLookMode(const bool bInLook);
@@ -55,7 +55,7 @@ protected:
 	void	SetOnlyUpdateSelectActor(const bool bInOnlyUpdate);
 
 private:
-	TWeakObjectPtr<UClass>	mAutoSelectTargetClass = nullptr;
+	TSoftClassPtr<UObject>	mAutoSelectTargetClass = nullptr;
 	TWeakObjectPtr<UCSKitDebug_ActorSelectComponent> mAutoSelectTarget;
 	TWeakObjectPtr<UCSKitDebug_ActorSelectComponent> mLastSelectTarget;
 	TWeakObjectPtr<ADebugCameraController>	mDebugCameraController;
