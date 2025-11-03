@@ -48,9 +48,6 @@ ACSKit_AIController::ACSKit_AIController(const FObjectInitializer& ObjectInitial
 	mCSKit_NoticeComponent = CreateDefaultSubobject<UCSKit_NoticeComponent>(TEXT("NoticeComponent"));
 	mCSKit_ExperienceComponent = CreateDefaultSubobject<UCSKit_ExperienceComponent>(TEXT("ExperienceComponent"));
 	mCSKit_BrainQueryComponent = CreateDefaultSubobject<UCSKit_BrainQueryComponent>(TEXT("BrainQueryComponent"));
-
-	FCSKitDebug_SaveData Test;
-	Test.SetBool(FString(), true);
 }
 /**
  * @brief 

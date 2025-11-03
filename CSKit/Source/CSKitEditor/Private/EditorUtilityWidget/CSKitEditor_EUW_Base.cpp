@@ -1,4 +1,10 @@
 // Copyright 2022 megasuraman
+/**
+ * @file CSKitEditor_EUW_Base.cpp
+ * @brief EditorUtilityWidgetの基底クラス
+ * @author megasuraman
+ * @date 2022/08/07
+ */
 #include "EditorUtilityWidget/CSKitEditor_EUW_Base.h"
 
 
@@ -14,6 +20,7 @@
 #include "SLevelViewport.h"
 #include "SourceControlOperations.h"
 #include "Engine/LevelStreamingDynamic.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 
 void UCSKitEditor_EUW_Base::NativeDestruct()
@@ -467,6 +474,10 @@ void UCSKitEditor_EUW_Base::EndAutoRunTickObject()
 		AutoRun_OnEnd();
 		mAutoRunTickObject->SetActive(false);
 		mAutoRunTickObject = nullptr;
+		if (mbWishQuitEditorOnEndAutoRun)
+		{
+			UKismetSystemLibrary::QuitEditor();
+		}
 	}
 }
 

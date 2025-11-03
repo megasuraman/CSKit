@@ -30,13 +30,21 @@ public:
 	void	EntryDebugSelectComponent(UCSKitDebug_ActorSelectComponent* InComponent);
 	void	ExitDebugSelectComponent(UCSKitDebug_ActorSelectComponent* InComponent);
 
+	static bool IsSelected(const AActor& InActor);
 	bool	IsShowPathFollow() const { return mbShowSelectPathFollow; }
 	bool	IsShowLastEQS() const { return mbShowSelectLastEQS; }
+	void	RequestSelect(const AActor* InActor);
+	void	RequestSetOnlyUpdateSelectActor(const bool bInOnlyUpdate){SetOnlyUpdateSelectActor(bInOnlyUpdate);}
+	void	RequestAutoSelect(UClass* InTargetClass);
+	const UCSKitDebug_ActorSelectComponent* GetLastSelectTarget() const;
+	AActor* GetLastSelectTargetActor() const;
+	void	SetLookMode(const bool bInLook);
 
 protected:
 	ADebugCameraController* GetActiveDebugCameraController() const;
 	void	CheckDebugCameraController();
 	void	CheckSelectTarget();
+	void	CheckAutoSelect();
 	void	OnSelect(const AActor* InActor);
 	static void	SetActiveTickActor(AActor* InActor, const bool bInActive);
 
@@ -47,11 +55,15 @@ protected:
 	void	SetOnlyUpdateSelectActor(const bool bInOnlyUpdate);
 
 private:
+	TWeakObjectPtr<UClass>	mAutoSelectTargetClass = nullptr;
+	TWeakObjectPtr<UCSKitDebug_ActorSelectComponent> mAutoSelectTarget;
+	TWeakObjectPtr<UCSKitDebug_ActorSelectComponent> mLastSelectTarget;
 	TWeakObjectPtr<ADebugCameraController>	mDebugCameraController;
 	TArray<TWeakObjectPtr<UCSKitDebug_ActorSelectComponent>>	mAllSelectList;
 	TArray<TWeakObjectPtr<UCSKitDebug_ActorSelectComponent>>	mSelectList;
 	bool	mbActive = false;
 	bool	mbOnlyUpdateSelectActor = false;
+	bool	mbLookMode = false;
 	bool	mbShowInfo = false;
 	bool	mbShowMark = false;
 	bool	mbShowSelectAxis = false;

@@ -1,4 +1,10 @@
 // Copyright 2022 megasuraman
+/**
+ * @file CSKitEditor_EUW_Base.h
+ * @brief EditorUtilityWidgetの基底クラス
+ * @author megasuraman
+ * @date 2022/08/07
+ */
 #pragma once
 
 #include "CoreMinimal.h"
@@ -77,6 +83,9 @@ protected:
 	TSoftObjectPtr<UDataTable> mSubLevelPresetDataTable;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SubLevelPreset", meta = (DisplayName = "SubLevelPresetSelectName", GetOptions="GetSubLevelPresetSelectNameList", DisplayPriority=1))
 	FName mSubLevelPresetSelectName;
+	//AutoRun後にエディタ終了
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CSKitEditor_EUW", meta = (DisplayPriority=1))
+	bool mbWishQuitEditorOnEndAutoRun = false;
 	
 	CSKit_CppCoroutine mCCAutoRun;
 	FDelegateHandle mDebugDrawHandle;

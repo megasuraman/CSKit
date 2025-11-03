@@ -29,6 +29,7 @@ public:
 	CSKitDebug_DebugMenuNodeBase* AddNode_Bool(const FString& InFolderPath, const FString& InDisplayName, const bool InInitValue);
 	CSKitDebug_DebugMenuNodeBase* AddNode_Button(const FString& InFolderPath, const FString& InDisplayName, const FCSKitDebug_DebugMenuNodeActionDelegate& InDelegate);
 	bool GetNodeValue_Bool(const FString& InPath) const;
+	void SetNodeValue_Bool(const FString& InPath, const bool InValue);
 	void SetNodeActionDelegate(const FString& InPath, const FCSKitDebug_DebugMenuNodeActionDelegate& InDelegate);
 	void SetMainFolder(const FString& InPath);
 	void BackMainFolder();

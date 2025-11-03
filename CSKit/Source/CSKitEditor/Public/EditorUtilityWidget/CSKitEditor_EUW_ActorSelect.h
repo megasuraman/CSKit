@@ -1,0 +1,74 @@
+// Copyright 2022 megasuraman
+/**
+ * @file CSKitEditor_EUW_Base.h
+ * @brief ActorSelector操作EUW
+ * @author megasuraman
+ * @date 2023/03/30
+ */
+#pragma once
+
+#include "CoreMinimal.h"
+#include "CSKitEditor_EUW_Base.h"
+#include "CSKitEditor_EUW_ActorSelect.generated.h"
+
+class UCSKitDebug_ActorSelectManager;
+
+UCLASS()
+class CSKITEDITOR_API UCSKitEditor_EUW_ActorSelect : public UCSKitEditor_EUW_Base
+{
+	GENERATED_BODY()
+
+public:
+	virtual void PostInitProperties() override;
+	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+
+protected:
+	UFUNCTION(BlueprintCallable, Category = "EUW_ActorSelector")
+	bool SetupTargetObjectList();
+	UFUNCTION(BlueprintCallable, Category = "EUW_ActorSelector")
+	FString GetDrawObjectName(UObject* InTarget) const;
+	UFUNCTION(BlueprintCallable, Category = "EUW_ActorSelector")
+	void Clear();
+	UFUNCTION(BlueprintCallable, Category = "EUW_ActorSelector")
+	void SelectActorSelector();
+	UFUNCTION(BlueprintCallable, Category = "EUW_ActorSelector")
+	void SetAutoSelect(bool bInAutoSelect);
+	UFUNCTION(BlueprintCallable, Category = "EUW_ActorSelector")
+	void SetOnlyUpdateSelectActor(bool bInOnlyUpdate);
+	UFUNCTION(BlueprintCallable, Category = "EUW_ActorSelector")
+	bool IsAutoSelect() const { return mbAutoSelect; }
+	UFUNCTION(BlueprintCallable, Category = "EUW_ActorSelector")
+	bool IsOnlyUpdateSelectActor() const { return mbOnlyUpdateSelectActor; }
+	//UFUNCTION(BlueprintCallable, Category = "EUW_ActorSelector")
+	//void ClearDrawFlagMap();
+	UFUNCTION(BlueprintCallable, Category = "EUW_ActorSelector")
+	bool IsDrawFlag(FName InName) const;
+	UFUNCTION(BlueprintCallable, Category = "EUW_ActorSelector")
+	const TMap<FName, bool>& GetDrawFlagMap() const { return mDrawFlagMap; }
+	UFUNCTION(BlueprintCallable, Category = "EUW_ActorSelector")
+	void SetLookMode(bool bInLook);
+	UFUNCTION(BlueprintCallable, Category = "EUW_ActorSelector")
+	void LastSelectTargetWarp();
+
+	virtual void OnRunGame(const UWorld& InWorld) override;
+
+	static UCSKitDebug_ActorSelectManager* GetActorSelectorManager(const UWorld& InWorld);
+	
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EUW_ActorSelector", meta = (DisplayName = "選択対象クラス", DisplayPriority = 3))
+	TSoftClassPtr<UObject>	mTargetClass = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EUW_ActorSelector", meta = (DisplayName = "クラスBookmark", DisplayPriority = 2))
+	TArray<TSoftClassPtr<UObject>>	mBookmarkClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EUW_ActorSelector", meta = (DisplayName = "対象List", DisplayPriority = 4))
+	TArray<TSoftObjectPtr<UObject>> mTargetObjectList;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EUW_ActorSelector", meta = (DisplayName = "選択対象", DisplayPriority = 4))
+	TWeakObjectPtr<UObject> mTargetObject;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EUW_ActorSelector", meta = (DisplayName = "Active", DisplayPriority = 1))
+	bool mbActive = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EUW_ActorSelector", meta = (DisplayName = "自動選択", DisplayPriority = 1))
+	bool mbAutoSelect = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EUW_ActorSelector", meta = (DisplayName = "選択対象のみTick実行", DisplayPriority = 1))
+	bool mbOnlyUpdateSelectActor = false;
+
+	TMap<FName, bool> mDrawFlagMap;
+};

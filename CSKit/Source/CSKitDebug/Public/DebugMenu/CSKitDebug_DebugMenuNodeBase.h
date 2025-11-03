@@ -39,6 +39,7 @@ public:
 	void SetNodeAction(const FCSKitDebug_DebugMenuNodeActionDelegate& InDelegate);
 	const FCSKitDebug_DebugMenuNodeData& GetNodeData() const{return mNodeData;}
 	void Load(const FString& InValueString, const FCSKitDebug_DebugMenuNodeActionParameter& InParameter);
+	void RequestSetValueBool(const bool InValue){SetValueBool(InValue);}
 
 protected:
 	void SetValueString(const FString& InString){mValueString = InString;}

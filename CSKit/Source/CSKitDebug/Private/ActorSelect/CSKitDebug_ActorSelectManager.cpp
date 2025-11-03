@@ -17,6 +17,8 @@
 #include "Engine/Canvas.h"
 #include "CanvasItem.h"
 #include "CSKitDebug_Subsystem.h"
+#include "CSKitDebug_Utility.h"
+#include "Kismet/GameplayStatics.h"
 
 #if USE_CSKIT_DEBUG
 
@@ -69,6 +71,7 @@ bool	UCSKitDebug_ActorSelectManager::DebugTick(float InDeltaSecond)
 	}
 	CheckDebugCameraController();
 	CheckSelectTarget();
+	CheckAutoSelect();
 
 	return true;
 }
@@ -119,6 +122,20 @@ void	UCSKitDebug_ActorSelectManager::ExitDebugSelectComponent(UCSKitDebug_ActorS
 }
 
 /**
+ * @brief	選択中かどうか
+ */
+bool UCSKitDebug_ActorSelectManager::IsSelected(const AActor& InActor)
+{
+	const UCSKitDebug_ActorSelectComponent* DebugSelectComponent = InActor.FindComponentByClass<UCSKitDebug_ActorSelectComponent>();
+	if (DebugSelectComponent == nullptr)
+	{
+		return false;
+	}
+
+	return DebugSelectComponent->IsSelect();
+}
+
+/**
  * @brief	DebugCameraController監視
  */
 void UCSKitDebug_ActorSelectManager::CheckDebugCameraController()
@@ -150,6 +167,83 @@ void UCSKitDebug_ActorSelectManager::CheckDebugCameraController()
 		}
 	}
 #endif
+}
+
+/**
+ * @brief	指定Actorに対して選択処理
+ */
+void UCSKitDebug_ActorSelectManager::RequestSelect(const AActor* InActor)
+{
+	OnSelect(InActor);
+}
+
+/**
+ * @brief	自動選択するクラス
+ */
+void UCSKitDebug_ActorSelectManager::RequestAutoSelect(UClass* InTargetClass)
+{
+	if (const UCSKitDebug_ActorSelectComponent* ActorWatcher = mAutoSelectTarget.Get())
+	{
+		RequestSelect(ActorWatcher->GetOwner());
+	}
+	mAutoSelectTargetClass = InTargetClass;
+}
+
+/**
+ * @brief	最後に選択したUCSKitDebug_ActorSelectComponent
+ */
+const UCSKitDebug_ActorSelectComponent* UCSKitDebug_ActorSelectManager::GetLastSelectTarget() const
+{
+	return mLastSelectTarget.Get();
+}
+/**
+ * @brief	最後に選択したActor
+ */
+AActor* UCSKitDebug_ActorSelectManager::GetLastSelectTargetActor() const
+{
+	if(const UCSKitDebug_ActorSelectComponent* Component = GetLastSelectTarget())
+	{
+		return Component->GetOwner();
+	}
+	return nullptr;
+}
+
+/**
+ * @brief	最後に選択したターゲットを見るカメラにする
+ */
+void UCSKitDebug_ActorSelectManager::SetLookMode(const bool bInLook)
+{
+	if(mbLookMode == bInLook)
+	{
+		return;
+	}
+
+	mbLookMode = bInLook;
+	if(mbLookMode)
+	{
+		AActor* Target = GetLastSelectTargetActor();
+		if(Target == nullptr)
+		{
+			return;
+		}
+		if (const UGameInstance* GameInstance = GetWorld()->GetGameInstance())
+		{
+			if (UCSKitDebug_Subsystem* CSKitDebugSubsystem = GameInstance->GetSubsystem<UCSKitDebug_Subsystem>())
+			{
+				CSKitDebugSubsystem->BeginGhostController(Target);
+			}
+		}
+	}
+	else
+	{
+		if (const UGameInstance* GameInstance = GetWorld()->GetGameInstance())
+		{
+			if (UCSKitDebug_Subsystem* CSKitDebugSubsystem = GameInstance->GetSubsystem<UCSKitDebug_Subsystem>())
+			{
+				CSKitDebugSubsystem->EndGhostController();
+			}
+		}
+	}
 }
 
 /**
@@ -205,6 +299,59 @@ void UCSKitDebug_ActorSelectManager::CheckSelectTarget()
 }
 
 /**
+ * @brief	指定クラスのActorで一番近いのを自動選択
+ */
+void UCSKitDebug_ActorSelectManager::CheckAutoSelect()
+{
+	if (mAutoSelectTarget.IsValid())
+	{
+		return;
+	}
+	UClass* TargetClass = mAutoSelectTargetClass.Get();
+	if (TargetClass == nullptr)
+	{
+		return;
+	}
+
+	FVector BasePos = FVector::ZeroVector;
+	if (const APlayerController* PlayerController = UCSKitDebug_Utility::FindMainPlayerController(GetWorld()))
+	{
+		if (const APlayerCameraManager* CameraManager = PlayerController->PlayerCameraManager)
+		{
+			BasePos = CameraManager->GetCameraLocation();
+		}
+	}
+
+	TArray<AActor*> ActorList;
+	UGameplayStatics::GetAllActorsOfClass(this, TargetClass, ActorList);
+	const AActor* SelectActor = nullptr;
+	float MinDistanceSq = FLT_MAX;
+	for (const AActor* TargetActor : ActorList)
+	{
+		const float DistanceSq = FVector::DistSquared(BasePos, TargetActor->GetActorLocation());
+		if (DistanceSq < MinDistanceSq)
+		{
+			MinDistanceSq = DistanceSq;
+			SelectActor = TargetActor;
+		}
+	}
+
+	if (SelectActor == nullptr)
+	{
+		return;
+	}
+
+	if (!IsSelected(*SelectActor))
+	{
+		RequestSelect(SelectActor);
+	}
+	if (UCSKitDebug_ActorSelectComponent* DebugSelectComponent = SelectActor->FindComponentByClass<UCSKitDebug_ActorSelectComponent>())
+	{
+		mAutoSelectTarget = DebugSelectComponent;
+	}
+}
+
+/**
  * @brief	対象選択時
  */
 void UCSKitDebug_ActorSelectManager::OnSelect(const AActor* InActor)
@@ -225,6 +372,7 @@ void UCSKitDebug_ActorSelectManager::OnSelect(const AActor* InActor)
 		{
 			SetActiveTickActor(Owner, true);
 		}
+		mLastSelectTarget = DebugSelectComponent;
 	}
 	else
 	{
@@ -233,6 +381,10 @@ void UCSKitDebug_ActorSelectManager::OnSelect(const AActor* InActor)
 		if (AActor* Owner = DebugSelectComponent->GetOwner())
 		{
 			SetActiveTickActor(Owner, !mbOnlyUpdateSelectActor);
+		}
+		if (DebugSelectComponent == mLastSelectTarget.Get())
+		{
+			mLastSelectTarget = nullptr;
 		}
 	}
 }

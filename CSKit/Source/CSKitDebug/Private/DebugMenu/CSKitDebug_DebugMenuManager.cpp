@@ -239,6 +239,18 @@ bool UCSKitDebug_DebugMenuManager::GetNodeValue_Bool(const FString& InPath) cons
 	return false;
 }
 
+void UCSKitDebug_DebugMenuManager::SetNodeValue_Bool(const FString& InPath, const bool InValue)
+{
+	const FString PathString = CheckPathString(InPath);
+	if (CSKitDebug_DebugMenuNodeBase** NodePtrPtr = mNodeMap.Find(PathString))
+	{
+		if (CSKitDebug_DebugMenuNodeBase* NodePtr = *NodePtrPtr)
+		{
+			NodePtr->RequestSetValueBool(InValue);
+		}
+	}
+}
+
 void UCSKitDebug_DebugMenuManager::SetNodeActionDelegate(const FString& InPath, const FCSKitDebug_DebugMenuNodeActionDelegate& InDelegate)
 {
 	if (CSKitDebug_DebugMenuNodeBase** NodePtrPtr = mNodeMap.Find(InPath))

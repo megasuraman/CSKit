@@ -76,6 +76,25 @@ void FCSKitDebug_SaveData::SetBool(const FString& InTag, bool bInValue)
 	Save();
 }
 
+void FCSKitDebug_SaveData::SetString(const FString& InTag, const FString& InValue)
+{
+	if (FCSKitDebug_SaveDataValue* SaveDataValue = mValueMap.Find(InTag))
+	{
+		ensure(SaveDataValue->GetValueType() == ECSKitDebug_SaveDataValueType::String);
+		SaveDataValue->mValueString = InValue;
+		Save();
+		return;
+	}
+
+	//新規追加
+	FCSKitDebug_SaveDataValue Value;
+	Value.mTag = InTag;
+	Value.mValueType = static_cast<int32>(ECSKitDebug_SaveDataValueType::String);
+	Value.mValueString = InValue;
+	mValueMap.Add(InTag, Value);
+	Save();
+}
+
 bool FCSKitDebug_SaveData::GetBool(const FString& InTag) const
 {
 	if (const FCSKitDebug_SaveDataValue* SaveDataValue = mValueMap.Find(InTag))
@@ -84,4 +103,14 @@ bool FCSKitDebug_SaveData::GetBool(const FString& InTag) const
 		return SaveDataValue->mValueString.ToBool();
 	}
 	return false;
+}
+
+FString FCSKitDebug_SaveData::GetString(const FString& InTag) const
+{
+	if (const FCSKitDebug_SaveDataValue* SaveDataValue = mValueMap.Find(InTag))
+	{
+		ensure(SaveDataValue->GetValueType() == ECSKitDebug_SaveDataValueType::String);
+		return SaveDataValue->mValueString;
+	}
+	return FString();
 }
