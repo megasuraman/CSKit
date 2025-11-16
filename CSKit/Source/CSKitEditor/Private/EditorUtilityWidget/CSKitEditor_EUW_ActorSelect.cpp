@@ -18,28 +18,8 @@
 void UCSKitEditor_EUW_ActorSelect::PostInitProperties()
 {
 	Super::PostInitProperties();
-	
-	const FCSKitDebug_SaveData& SaveData = UCSKitDebug_Subsystem::sGetSaveData();
-	mbActive = SaveData.GetBool(FString(TEXT("EUW_ActorSelect.mbActive")));
-	mbAutoSelect = SaveData.GetBool(FString(TEXT("EUW_ActorSelect.mbAutoSelect")));
-	mbOnlyUpdateSelectActor = SaveData.GetBool(FString(TEXT("EUW_ActorSelect.mbOnlyUpdateSelectActor")));
-	const FString TargetAssetClassPath = SaveData.GetString(FString(TEXT("EUW_ActorSelect.mTargetClass")));
-	if (!TargetAssetClassPath.IsEmpty())
-	{
-		mTargetClass = TSoftObjectPtr<UObject>( FSoftObjectPath(TargetAssetClassPath)).LoadSynchronous();
-	}
 
-	mBookmarkClass.Empty();
-	const FString BookmarkClassString = SaveData.GetString(FString(TEXT("EUW_ActorSelect.mBookmarkClass")));
-	TArray<FString> BookmarkClassStringList;
-	BookmarkClassString.ParseIntoArray(BookmarkClassStringList, TEXT("|"));
-	for (const FString& ClassString : BookmarkClassStringList)
-	{
-		if (TSoftClassPtr<UObject> ClassPtr = TSoftClassPtr<UObject>( FSoftObjectPath(ClassString)).LoadSynchronous())
-		{
-			mBookmarkClass.Add(ClassPtr);
-		}
-	}
+	LoadSaveData();
 }
 
 /**
@@ -49,24 +29,17 @@ void UCSKitEditor_EUW_ActorSelect::PostEditChangeProperty(FPropertyChangedEvent&
 {
 	Super::PostEditChangeProperty(PropertyChangedEvent);
 
-	FCSKitDebug_SaveData& SaveData = UCSKitDebug_Subsystem::sGetSaveData();
-	SaveData.SetBool(FString(TEXT("EUW_ActorSelect.mbActive")), mbActive);
-	SaveData.SetBool(FString(TEXT("EUW_ActorSelect.mbAutoSelect")), mbAutoSelect);
-	SaveData.SetBool(FString(TEXT("EUW_ActorSelect.mbOnlyUpdateSelectActor")), mbOnlyUpdateSelectActor);
-	if (mTargetClass.IsValid())
-	{
-		SaveData.SetString(FString(TEXT("EUW_ActorSelect.mTargetClass")), mTargetClass->GetPathName());
+	if (PropertyChangedEvent.GetPropertyName() == FName(TEXT("mBookmarkClassSelector")))
+	{//Bookmark変更されたら、それに合わせて選択クラスを変更
+		SelectTargetClassByBookmark();
 	}
-	FString BookmarkClassString;
-	for (const TSoftClassPtr<UObject>& ClassPtr : mBookmarkClass)
+	else if (PropertyChangedEvent.GetPropertyName() == FName(TEXT("mTargetObjectSelector")))
 	{
-		if (ClassPtr.IsValid())
-		{
-			BookmarkClassString += FString::Printf(TEXT("%s|"), *ClassPtr->GetPathName());
-		}
+		SelectTargetObjectByList();
+		SelectActorSelector();
 	}
-	SaveData.SetString(FString(TEXT("EUW_ActorSelect.mBookmarkClass")), BookmarkClassString);
-	
+
+	UpdateSaveData();
 	AssignParameterToGame();
 }
 
@@ -164,7 +137,7 @@ void UCSKitEditor_EUW_ActorSelect::SelectActorSelector()
 		return;
 	}
 
-	if (UCSKitDebug_DebugMenuManager* DebugMenuManager = UCSKitDebug_DebugMenuManager::sGet(this))
+	if (UCSKitDebug_DebugMenuManager* DebugMenuManager = UCSKitDebug_DebugMenuManager::sGet(TargetWorld))
 	{
 		DebugMenuManager->SetNodeValue_Bool(FString(TEXT("CSKitDebug/ActorSelect/Active")), true);
 	}
@@ -451,4 +424,86 @@ void UCSKitEditor_EUW_ActorSelect::AssignParameterToGame() const
 		ActorSelectorManager->RequestAutoSelect(mTargetClass);
 	}
 	ActorSelectorManager->RequestSetOnlyUpdateSelectActor(mbOnlyUpdateSelectActor);
+}
+
+/**
+ * @brief	セーブデータをロード
+ */
+void UCSKitEditor_EUW_ActorSelect::LoadSaveData()
+{	const FCSKitDebug_SaveData& SaveData = UCSKitDebug_Subsystem::sGetSaveData();
+	mbActive = SaveData.GetBool(FString(TEXT("EUW_ActorSelect.mbActive")));
+	mbAutoSelect = SaveData.GetBool(FString(TEXT("EUW_ActorSelect.mbAutoSelect")));
+	mbOnlyUpdateSelectActor = SaveData.GetBool(FString(TEXT("EUW_ActorSelect.mbOnlyUpdateSelectActor")));
+	const FString TargetAssetClassPath = SaveData.GetString(FString(TEXT("EUW_ActorSelect.mTargetClass")));
+	if (!TargetAssetClassPath.IsEmpty())
+	{
+		mTargetClass = TSoftObjectPtr<UObject>( FSoftObjectPath(TargetAssetClassPath)).LoadSynchronous();
+	}
+
+	mBookmarkClass.Empty();
+	const FString BookmarkClassString = SaveData.GetString(FString(TEXT("EUW_ActorSelect.mBookmarkClass")));
+	TArray<FString> BookmarkClassStringList;
+	BookmarkClassString.ParseIntoArray(BookmarkClassStringList, TEXT("|"));
+	for (const FString& ClassString : BookmarkClassStringList)
+	{
+		if (TSoftClassPtr<UObject> ClassPtr = TSoftClassPtr<UObject>( FSoftObjectPath(ClassString)).LoadSynchronous())
+		{
+			mBookmarkClass.Add(ClassPtr);
+		}
+	}
+}
+
+/**
+ * @brief	セーブデータ更新
+ */
+void UCSKitEditor_EUW_ActorSelect::UpdateSaveData()
+{
+	FCSKitDebug_SaveData& SaveData = UCSKitDebug_Subsystem::sGetSaveData();
+	SaveData.SetBool(FString(TEXT("EUW_ActorSelect.mbActive")), mbActive);
+	SaveData.SetBool(FString(TEXT("EUW_ActorSelect.mbAutoSelect")), mbAutoSelect);
+	SaveData.SetBool(FString(TEXT("EUW_ActorSelect.mbOnlyUpdateSelectActor")), mbOnlyUpdateSelectActor);
+	if (mTargetClass.IsValid())
+	{
+		SaveData.SetString(FString(TEXT("EUW_ActorSelect.mTargetClass")), mTargetClass->GetPathName());
+	}
+	FString BookmarkClassString;
+	for (const TSoftClassPtr<UObject>& ClassPtr : mBookmarkClass)
+	{
+		if (ClassPtr.IsValid())
+		{
+			BookmarkClassString += FString::Printf(TEXT("%s|"), *ClassPtr->GetPathName());
+		}
+	}
+	SaveData.SetString(FString(TEXT("EUW_ActorSelect.mBookmarkClass")), BookmarkClassString);
+}
+
+/**
+ * @brief	選択されてるBookmarkのクラスを選択クラスに適用
+ */
+void UCSKitEditor_EUW_ActorSelect::SelectTargetClassByBookmark()
+{
+	for (int32 i = 0; i < mBookmarkClass.Num(); ++i)
+	{
+		if (mBookmarkClass[i]->GetName() == mBookmarkClassSelector)
+		{
+			mTargetClass = mBookmarkClass[i];
+			break;
+		}
+	}
+}
+
+/**
+ * @brief	mTargetObjectSelectorを選択対象に
+ */
+void UCSKitEditor_EUW_ActorSelect::SelectTargetObjectByList()
+{
+	for (TSoftObjectPtr<UObject>& TargetObjectPtr : mTargetObjectList)
+	{
+		if (TargetObjectPtr->GetName() != mTargetObjectSelector)
+		{
+			continue;
+		}
+		mTargetObject = TargetObjectPtr.Get();
+		break;
+	}
 }

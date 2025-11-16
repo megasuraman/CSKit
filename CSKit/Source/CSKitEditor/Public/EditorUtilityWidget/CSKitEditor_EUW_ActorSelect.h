@@ -63,6 +63,10 @@ protected:
 
 	static UCSKitDebug_ActorSelectManager* GetActorSelectorManager(const UWorld& InWorld);
 	void AssignParameterToGame() const;
+	void LoadSaveData();
+	void UpdateSaveData();
+	void SelectTargetClassByBookmark();
+	void SelectTargetObjectByList();
 	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EUW_ActorSelect", meta = (DisplayName = "選択対象クラス", DisplayPriority = 2))
