@@ -323,12 +323,68 @@ void UCSKitEditor_EUW_ActorSelect::LastSelectTargetWarp()
 /**
  * @brief	
  */
+TArray<FString> UCSKitEditor_EUW_ActorSelect::GetBookmarkSelectorList()
+{
+	TArray<FString> BookmarkList;
+	BookmarkList.Add(FString());
+	for (const TSoftClassPtr<UObject>& Bookmark : mBookmarkClass)
+	{
+		BookmarkList.Add(Bookmark->GetName());
+	}
+	return BookmarkList;
+}
+
+/**
+ * @brief	
+ */
+TArray<FString> UCSKitEditor_EUW_ActorSelect::GetTargetObjectSelectorList()
+{
+	TArray<FString> TargetObjectList;
+	TargetObjectList.Add(FString());
+	for (const TSoftObjectPtr<UObject>& TargetObject : mTargetObjectList)
+	{
+		TargetObjectList.Add(TargetObject->GetName());
+	}
+	return TargetObjectList;
+}
+
+/**
+ * @brief	TargetClassをBookmarkに追加
+ */
+void UCSKitEditor_EUW_ActorSelect::AddBookmarkFromTargetClass()
+{
+	if (!mTargetClass.IsValid())
+	{
+		return;
+	}
+	mBookmarkClass.AddUnique(mTargetClass);
+}
+
+/**
+ * @brief	Selectorで選択中のBookmarkを削除
+ */
+void UCSKitEditor_EUW_ActorSelect::SubBookmarkFromSelector()
+{
+	for (int32 i = 0; i < mBookmarkClass.Num(); ++i)
+	{
+		if (mBookmarkClass[i]->GetName() == mBookmarkClassSelector)
+		{
+			mBookmarkClass.RemoveAt(i);
+			mBookmarkClassSelector.Reset();
+			break;
+		}
+	}
+}
+
+/**
+ * @brief	
+ */
 void UCSKitEditor_EUW_ActorSelect::FakeTick()
 {
 	Super::FakeTick();
 	
-	mTargetObjectSearchIntervelSec -= GetWorld()->GetDeltaSeconds();
-	if (mTargetObjectSearchIntervelSec > 0.f)
+	mTargetObjectSearchIntervalSec -= GetWorld()->GetDeltaSeconds();
+	if (mTargetObjectSearchIntervalSec > 0.f)
 	{
 		return;
 	}
@@ -343,7 +399,7 @@ void UCSKitEditor_EUW_ActorSelect::OnRunGame(const UWorld& InWorld)
 	Super::OnRunGame(InWorld);
 
 	AssignParameterToGame();
-	mTargetObjectSearchIntervelSec = 1.f;
+	mTargetObjectSearchIntervalSec = 1.f;
 }
 
 /**

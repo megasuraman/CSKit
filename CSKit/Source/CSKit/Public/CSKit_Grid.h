@@ -33,6 +33,10 @@ union CSKIT_API FCSKit_GridIndex
 	void ShiftIndexX(const bool bInPlus);
 	void ShiftIndexY(const bool bInPlus);
 	bool IsValid() const{return mUID!=0;}
+	bool operator == (const FCSKit_GridIndex& In) const
+	{
+		return (mUID == In.mUID);
+	}
 };
 
 
@@ -64,7 +68,6 @@ struct CSKIT_API FCSKit_GridBase
 	void SetGridLength(const float InLength);
 	FCSKit_GridIndex CalcGridIndex(const FVector& InPos) const;
 	
-protected:
 	void CollectAroundGridIndexList(TArray<FCSKit_GridIndex>& OutList, const FCSKit_GridIndex& InBaseGridIndex, const float InRadius) const;
 	static void CollectAroundGridIndexList(TArray<FCSKit_GridIndex>& OutList, const FCSKit_GridIndex& InBaseGridIndex, const int32 InOffsetIndex);
 
@@ -88,9 +91,33 @@ public:
 	{
 		const FCSKit_GridIndex GridIndex = CalcGridIndex(InData.GetPos());
 		TArray<T>& DataList = mGridMap.FindOrAdd(GridIndex.mUID);
-		const int32 DataListIndex = DataList.Num();
-		DataList.Add(InData);
+		const int32 DataListIndex = DataList.AddUnique(InData);
 		return FCSKit_GridNodeIndex(GridIndex, DataListIndex);
+	}
+	bool Sub(const T& InData)
+	{
+		const FCSKit_GridIndex GridIndex = CalcGridIndex(InData.GetPos());
+		if (TArray<T>* DataList = mGridMap.Find(GridIndex.mUID))
+		{
+			const int32 DataListIndex = DataList->Find(InData);
+			if (DataListIndex != INDEX_NONE)
+			{
+				DataList->RemoveAtSwap(DataListIndex);
+			}
+		}
+		return false;
+	}
+	bool IsOwn(const T& InData) const
+	{
+		const FCSKit_GridIndex GridIndex = CalcGridIndex(InData.GetPos());
+		if (const TArray<T>* DataList = mGridMap.Find(GridIndex.mUID))
+		{
+			if (DataList->Find(InData) != -INDEX_NONE)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	void Collect(TArray<T*>& OutList, const FVector& InPos, const float InRadius)
 	{
