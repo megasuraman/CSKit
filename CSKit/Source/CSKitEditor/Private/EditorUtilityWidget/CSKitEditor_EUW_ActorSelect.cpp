@@ -1,6 +1,6 @@
 // Copyright 2022 megasuraman
 /**
- * @file CSKitEditor_EUW_Base.cpp
+ * @file CSKitEditor_EUW_ActorSelect.cpp
  * @brief ActorSelector操作EUW
  * @author megasuraman
  * @date 2023/03/30

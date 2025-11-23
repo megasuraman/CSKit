@@ -89,6 +89,17 @@ bool	UCSKitDebug_ShortcutCommand::DebugTick(float InDeltaSecond)
 			PlayerController->ConsoleCommand(FString(TEXT("ToggleDebugCamera")));
 			return true;
 		}
+        else
+        {//PersonalShortcutCommand
+	        for (const auto& MapElement : mPersonalShortcutCommand)
+	        {
+	        	if (MapElement.Value.IsJustPressed(*PlayerInput))
+	        	{
+	        		PlayerController->ConsoleCommand(MapElement.Key);
+	        		return true;
+	        	}
+	        }
+        }
     }
 
     return true;
@@ -99,6 +110,20 @@ bool	UCSKitDebug_ShortcutCommand::DebugTick(float InDeltaSecond)
  */
 void	UCSKitDebug_ShortcutCommand::DebugDraw(UCanvas* InCanvas)
 {
+}
+
+/**
+ * @brief	個人用ShortcutCommand設定
+ */
+void UCSKitDebug_ShortcutCommand::AddPersonalShortcutCommand(
+	const FString& InConsoleCommand,
+	const FCSKitDebugKey& InKey)
+{
+	mPersonalShortcutCommand.Add(InConsoleCommand, InKey);
+}
+void UCSKitDebug_ShortcutCommand::AddPersonalShortcutCommand(const TMap<FString, FCSKitDebugKey>& InCommand)
+{
+	mPersonalShortcutCommand.Append(InCommand);
 }
 
 /**

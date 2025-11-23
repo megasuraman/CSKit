@@ -20,9 +20,7 @@ class CSKITDEBUG_API UCSKitDebug_AutoPilotModeRecord : public UCSKitDebug_AutoPi
 {
 	GENERATED_BODY()
 
-	/* ------------------------------------------------------------
-		!�������샂�[�h
-	------------------------------------------------------------ */
+	//
 	enum class ECommandMode : uint8
 	{
 		Invalid,
@@ -32,9 +30,7 @@ class CSKITDEBUG_API UCSKitDebug_AutoPilotModeRecord : public UCSKitDebug_AutoPi
 		Record,
 		EndRecord,
 	};
-	/* ------------------------------------------------------------
-		!���͋L�^���[�h���̏��
-	------------------------------------------------------------ */
+	//
 	enum class EPlayInputRecordState : uint8
 	{
 		Invalid,
@@ -43,13 +39,11 @@ class CSKITDEBUG_API UCSKitDebug_AutoPilotModeRecord : public UCSKitDebug_AutoPi
 		Play,
 		Finish,
 	};
-	/* ------------------------------------------------------------
-	   !�������쎞�̃R�}���h�P��
-	------------------------------------------------------------ */
+	//
 	struct FCommandNode : public FJsonSerializable
 	{
 		BEGIN_JSON_SERIALIZER
-			JSON_SERIALIZE("mBeginFrame", mBeginFrame);
+		JSON_SERIALIZE("mBeginFrame", mBeginFrame);
 		JSON_SERIALIZE("mEndFrame", mEndFrame);
 		JSON_SERIALIZE("mAxisValue", mAxisValue);
 		JSON_SERIALIZE("mDeltaTime", mDeltaTime);
@@ -58,7 +52,7 @@ class CSKITDEBUG_API UCSKitDebug_AutoPilotModeRecord : public UCSKitDebug_AutoPi
 		JSON_SERIALIZE("mIndex", mIndex);
 		END_JSON_SERIALIZER
 
-			uint32	mBeginFrame = 0;
+		uint32	mBeginFrame = 0;
 		uint32	mEndFrame = 0;
 		float	mAxisValue = 0.f;
 		float	mDeltaTime = 0.f;
@@ -73,13 +67,11 @@ class CSKITDEBUG_API UCSKitDebug_AutoPilotModeRecord : public UCSKitDebug_AutoPi
 				&& mAxisValue == InCommand.mAxisValue);
 		}
 	};
-	/* ------------------------------------------------------------
-	   !�������쎞�̃R�}���h���X�g
-	------------------------------------------------------------ */
+	//
 	struct FCommandList : public FJsonSerializable
 	{
 		BEGIN_JSON_SERIALIZER
-			JSON_SERIALIZE_ARRAY_SERIALIZABLE("mCommandList", mList, FCommandNode);
+		JSON_SERIALIZE_ARRAY_SERIALIZABLE("mCommandList", mList, FCommandNode);
 		JSON_SERIALIZE("mStartPosX", mStartPosX);
 		JSON_SERIALIZE("mStartPosY", mStartPosY);
 		JSON_SERIALIZE("mStartPosZ", mStartPosZ);
@@ -93,7 +85,7 @@ class CSKITDEBUG_API UCSKitDebug_AutoPilotModeRecord : public UCSKitDebug_AutoPi
 		JSON_SERIALIZE("mEndFrame", mEndFrame);
 		END_JSON_SERIALIZER
 
-			TArray<FCommandNode>	mList;
+		TArray<FCommandNode>	mList;
 		float		mStartPosX = 0.f;
 		float		mStartPosY = 0.f;
 		float		mStartPosZ = 0.f;

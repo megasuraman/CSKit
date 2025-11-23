@@ -9,33 +9,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CSKitDebug_ShortcutCommand.h"
 #include "CSKitDebug_Config.generated.h"
 
 class UCheatManager;
-
-USTRUCT(BlueprintType)
-struct FCSKitDebugKey
-{
-	GENERATED_USTRUCT_BODY();
-
-	UPROPERTY(EditAnywhere, config, Category = CSKitDebugCommand)
-	FKey	mKeyboard;
-	UPROPERTY(EditAnywhere, config, Category = CSKitDebugCommand)
-	FKey	mPad;
-
-	bool	IsPressed(const class UPlayerInput& InInput) const;
-	bool	IsJustPressed(const class UPlayerInput& InInput) const;
-	bool	IsJustReleased(const class UPlayerInput& InInput) const;
-};
-
-USTRUCT(BlueprintType)
-struct FCSKitDebugSecretCommand
-{
-	GENERATED_USTRUCT_BODY();
-	
-	UPROPERTY(EditAnywhere, config, Category = CSKitDebugCommand)
-	TArray<FKey> mKeyList;
-};
 
 
 UCLASS(config = CSKitDebug, defaultconfig)

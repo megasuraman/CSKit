@@ -12,10 +12,6 @@
 #include "CSKitDebug_CommentPoint.h"
 #include "CSKitEditor_EUW_CommentPoint.generated.h"
 
-struct FCSKitEditor_ConfigKey;
-struct FCSKitEditor_ConfigConsoleCommandKey;
-class UCSKitEditor_CommentPoint;
-
 UCLASS()
 class CSKITEDITOR_API UCSKitEditor_EUW_CommentPoint : public UCSKitEditor_EUW_Base
 {

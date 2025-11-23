@@ -11,9 +11,31 @@
 #include "CoreMinimal.h"
 #include "CSKitDebug_ShortcutCommand.generated.h"
 
-
 class APlayerController;
 
+USTRUCT(BlueprintType)
+struct FCSKitDebugKey
+{
+	GENERATED_USTRUCT_BODY();
+
+	UPROPERTY(EditAnywhere, config, Category = CSKitDebugCommand)
+	FKey	mKeyboard;
+	UPROPERTY(EditAnywhere, config, Category = CSKitDebugCommand)
+	FKey	mPad;
+
+	bool	IsPressed(const class UPlayerInput& InInput) const;
+	bool	IsJustPressed(const class UPlayerInput& InInput) const;
+	bool	IsJustReleased(const class UPlayerInput& InInput) const;
+};
+
+USTRUCT(BlueprintType)
+struct FCSKitDebugSecretCommand
+{
+	GENERATED_USTRUCT_BODY();
+	
+	UPROPERTY(EditAnywhere, config, Category = CSKitDebugCommand)
+	TArray<FKey> mKeyList;
+};
 
 UCLASS()
 class CSKITDEBUG_API UCSKitDebug_ShortcutCommand : public UObject
@@ -27,6 +49,8 @@ public:
 	void	Init() const;
 	bool	DebugTick(float InDeltaSecond);
 	void	DebugDraw(class UCanvas* InCanvas);
+	void	AddPersonalShortcutCommand(const FString& InConsoleCommand, const FCSKitDebugKey& InKey);
+	void	AddPersonalShortcutCommand(const TMap<FString, FCSKitDebugKey>& InCommand);
 
 protected:
 	struct FSecretCommandLog
@@ -46,6 +70,7 @@ protected:
 	void	SetStopMotionBlur(bool bInStop, APlayerController* InPlayerController);
 
 private:
+	TMap<FString, FCSKitDebugKey> mPersonalShortcutCommand;
 	TMap<FString, FSecretCommandLog> mSecretCommandLog;
 	float	mDebugStepRepeatBeginSec = 0.3f;//DebugStepRepeat発動までの押しっぱなし時間
 	float	mDebugStepRepeatBeginTimer = 0.f;//DebugStepRepeat発動までの押しっぱなし計測時間
