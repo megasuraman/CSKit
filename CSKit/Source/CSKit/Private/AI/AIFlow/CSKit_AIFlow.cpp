@@ -372,6 +372,26 @@ void ACSKit_AIFlow::EditorSetupNodeDataListButton()
 /**
  * @brief 
  */
+void ACSKit_AIFlow::EditorAddNode()
+{
+	FTransform SpawnTransform = GetActorTransform();
+	SpawnTransform.SetLocation(SpawnTransform.GetLocation() + SpawnTransform.GetRotation().RotateVector(FVector(100.f,0.f,0.f)));
+	FActorSpawnParameters SpawnParam;
+	SpawnParam.OverrideLevel = GetLevel();
+	ACSKit_AIFlowNode* AIFlowNode = GetWorld()->SpawnActor<ACSKit_AIFlowNode>(ACSKit_AIFlowNode::StaticClass(), SpawnTransform, SpawnParam);
+	if (AIFlowNode == nullptr)
+	{
+		return;
+	}
+	const FAttachmentTransformRules Rules(EAttachmentRule::KeepWorld, false);
+	AIFlowNode->AttachToActor(this, Rules);
+	//AIFlowNode->SetActorLabel(FString::Printf(TEXT("%s_%d"), *GetActorLabel(), AIFlowNode->GetLinkList().Num()+1));
+	//EditorAddLinkNode(AIFlowNode);
+}
+
+/**
+ * @brief 
+ */
 void ACSKit_AIFlow::EditorSetupNodeDataList()
 {
 	TArray<const ACSKit_AIFlowNode*> AIFlowNodeActorList;
@@ -555,9 +575,9 @@ void ACSKit_AIFlow::EditorGenerateRoute_Loop()
 	}
 }
 
-/* ------------------------------------------------------------
-  !自動生成のNodeを削除
------------------------------------------------------------- */
+/**
+ * @brief 自動生成のNodeを削除
+ */
 void ACSKit_AIFlow::EditorDeleteNodeGeneratedByRoute()
 {
 	while(true)
@@ -580,9 +600,9 @@ void ACSKit_AIFlow::EditorDeleteNodeGeneratedByRoute()
 	}
 }
 
-/* ------------------------------------------------------------
-  !エラーチェック
------------------------------------------------------------- */
+/**
+ * @brief エラーチェック
+ */
 void ACSKit_AIFlow::EditorCheckError() const
 {
 	if(!GetWorld()->IsEditorWorld())

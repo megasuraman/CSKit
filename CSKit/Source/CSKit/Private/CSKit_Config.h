@@ -26,7 +26,7 @@ public:
 	FSoftClassPath mNeedLevelClass;
 	UPROPERTY(EditAnywhere, config, Category = CSKit_NeedLevel, meta = (MetaClass = "/Script/CSKit.CSKit_WorrySourceManager") )
 	FSoftClassPath mWorrySourceManagerClass;
-	UPROPERTY(EditAnywhere, config, Category = CSKit_NeedLevel )
+	UPROPERTY(EditAnywhere, config, Category = CSKit_AI )
 	FGameplayTag mAIFlowNodeTag;
 	UPROPERTY(EditAnywhere, config, Category = CSKit_NeedLevel )
 	float mNeedLevelDistanceBorderHigh = 2000.f;

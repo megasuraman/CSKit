@@ -24,9 +24,9 @@ UCSKit_BTTask_AIFlowCommand::UCSKit_BTTask_AIFlowCommand(const FObjectInitialize
 	NodeName = TEXT("CSKit_AIFlowCommand");
 }
 
-/* ------------------------------------------------------------
-   !Task開始
------------------------------------------------------------- */
+/**
+ * @brief Task開始
+ */
 EBTNodeResult::Type UCSKit_BTTask_AIFlowCommand::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
    switch (mCommandType)
@@ -43,9 +43,9 @@ EBTNodeResult::Type UCSKit_BTTask_AIFlowCommand::ExecuteTask(UBehaviorTreeCompon
    return EBTNodeResult::Failed;
 }
 
-/* ------------------------------------------------------------
-   !静的なパラメータ表示？
------------------------------------------------------------- */
+/**
+ * @brief 
+ */
 FString UCSKit_BTTask_AIFlowCommand::GetStaticDescription() const
 {
 	const FString KeyDesc("invalid");
@@ -53,9 +53,9 @@ FString UCSKit_BTTask_AIFlowCommand::GetStaticDescription() const
 	return FString::Printf(TEXT("%s: %s"), *Super::GetStaticDescription(), *KeyDesc);
 }
 
-/* ------------------------------------------------------------
-   !AIFlowNode準備
------------------------------------------------------------- */
+/**
+ * @brief AIFlowNode準備
+ */
 EBTNodeResult::Type UCSKit_BTTask_AIFlowCommand::Setup(UBehaviorTreeComponent& OwnerComp)
 {
    const ACSKit_AIController* AIController = Cast<ACSKit_AIController>(OwnerComp.GetOwner());
@@ -77,9 +77,9 @@ EBTNodeResult::Type UCSKit_BTTask_AIFlowCommand::Setup(UBehaviorTreeComponent& O
    return EBTNodeResult::Succeeded;
 }
 
-/* ------------------------------------------------------------
-   !AIFlowNodeを次へ進める
------------------------------------------------------------- */
+/**
+ * @brief AIFlowNodeを次へ進める
+ */
 EBTNodeResult::Type UCSKit_BTTask_AIFlowCommand::StepNext(UBehaviorTreeComponent& OwnerComp)
 {
    const ACSKit_AIController* AIController = Cast<ACSKit_AIController>(OwnerComp.GetOwner());
@@ -105,9 +105,9 @@ EBTNodeResult::Type UCSKit_BTTask_AIFlowCommand::StepNext(UBehaviorTreeComponent
    return EBTNodeResult::Succeeded;
 }
 
-/* ------------------------------------------------------------
-   !AIFlowの値をBlackboardにセット
------------------------------------------------------------- */
+/**
+ * @brief AIFlowの値をBlackboardにセット
+ */
 EBTNodeResult::Type UCSKit_BTTask_AIFlowCommand::SetBlackboard(UBehaviorTreeComponent& OwnerComp) const
 {
    UBlackboardComponent* BlackboardComponent = OwnerComp.GetBlackboardComponent();
@@ -142,6 +142,9 @@ EBTNodeResult::Type UCSKit_BTTask_AIFlowCommand::SetBlackboard(UBehaviorTreeComp
 }
 
 #if WITH_EDITOR
+/**
+ * @brief 
+ */
 void UCSKit_BTTask_AIFlowCommand::PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent)
 {
    Super::PostEditChangeProperty(PropertyChangedEvent);

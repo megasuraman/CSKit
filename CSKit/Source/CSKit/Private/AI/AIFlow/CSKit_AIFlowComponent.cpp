@@ -177,9 +177,9 @@ const FCSKit_AIFlowActionTableRow* UCSKit_AIFlowComponent::GetAIFlowActionTableR
 }
 
 #if USE_CSKIT_DEBUG
-/* ------------------------------------------------------------
-  !ActorWatcher選択時
------------------------------------------------------------- */
+/**
+ * @brief ActorWatcher選択時
+ */
 FString UCSKit_AIFlowComponent::DebugDrawSelectedActorWatcher(UCanvas* InCanvas) const
 {
 	FString DebugInfo;

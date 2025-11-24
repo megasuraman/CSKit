@@ -64,8 +64,12 @@ private:
 public:
 	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent) override;
 
+	// mNodeDataListのセットアップ
 	UFUNCTION(CallInEditor, Category = CSKit_AIFlow)
 	void EditorSetupNodeDataListButton();
+	// ACSKit_AIFlowNode を追加
+	UFUNCTION(CallInEditor, Category = CSKit_AIFlow)
+	void EditorAddNode();
 	
 	void EditorSetupNodeDataList();
 	void EditorUpdateNodeDataList(const ACSKit_AIFlowNode* InNode);

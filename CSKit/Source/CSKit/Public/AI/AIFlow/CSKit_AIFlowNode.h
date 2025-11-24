@@ -66,8 +66,6 @@ protected:
 	TArray<TSoftObjectPtr<ACSKit_AIFlowNode>> mLinkList;
 	UPROPERTY(EditInstanceOnly, Category = "AIFlowNode", meta=(DisplayName = "アクション"))
 	FCSKit_DataTableRowSelector mActionRowSelector;
-	UPROPERTY(EditInstanceOnly, Category = "AIFlowNode", meta=(DisplayName = "アクション", GetOptions="EditorGetActionNameList"))
-	FName mActionName;
 	UPROPERTY(EditInstanceOnly, Category = "AIFlowNode", meta=(DisplayName = "アクション後待機時間"))
 	float mWaitTimeAfterAction = 0.f;
 	

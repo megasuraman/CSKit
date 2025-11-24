@@ -18,9 +18,6 @@ UCSKit_BTTask_AIFlowRun::UCSKit_BTTask_AIFlowRun(const FObjectInitializer& Objec
 	InjectionTag = CSKitConfig->mAIFlowNodeTag;
 }
 
-/* ------------------------------------------------------------
-   !静的なパラメータ表示？
------------------------------------------------------------- */
 FString UCSKit_BTTask_AIFlowRun::GetStaticDescription() const
 {
 	const FString KeyDesc("invalid");
