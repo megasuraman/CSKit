@@ -22,8 +22,11 @@ protected:
 	void SetupManualCacheBounds() const;
 	void OffsetBoundsExtent() const;
 	static void OffsetBoundsExtent(FBox& InBox, const FVector& InExtent);
+	void OffsetBoundsPos() const;
 
 protected:
+	UPROPERTY(EditAnywhere, Category = "CSKit_NavModifier", meta = (DisplayName = "位置Offset"))
+	FVector mOffsetBoundsPos = FVector::ZeroVector;
 	UPROPERTY(EditAnywhere, Category = "CSKit_NavModifier", meta = (DisplayName = "範囲Offset"))
 	FVector mOffsetBoundsExtent = FVector::ZeroVector;
 	UPROPERTY(EditAnywhere, Category = "CSKit_NavModifier", meta = (DisplayName = "範囲手動指定", EditCondition = "mbUseManualBoundsExtent"))

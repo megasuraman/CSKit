@@ -25,6 +25,10 @@ void UCSKit_NavModifierComponent::CalcAndCacheBounds() const
 	{
 		OffsetBoundsExtent();
 	}
+	if (!mOffsetBoundsPos.IsZero())
+	{
+		OffsetBoundsPos();
+	}
 }
 
 /**
@@ -80,4 +84,16 @@ void UCSKit_NavModifierComponent::OffsetBoundsExtent(FBox& InBox, const FVector&
 	Extent.Z  = FMath::Max(Extent.Z + InExtent.Z, 0.0f);
 
 	InBox = FBox::BuildAABB(Pos, Extent);
+}
+
+/**
+ * @brief 
+ */
+void UCSKit_NavModifierComponent::OffsetBoundsPos() const
+{
+	Bounds = Bounds.ShiftBy(mOffsetBoundsPos);
+	for (int32 Idx = 0; Idx < ComponentBounds.Num(); Idx++)
+	{
+		ComponentBounds[Idx].Box = ComponentBounds[Idx].Box.ShiftBy(mOffsetBoundsPos);
+	}
 }
