@@ -29,7 +29,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "CSKit_BrainQueryTestSelector")
 	FString mEditorDisplayName;
 	//FCSKit_BrainQueryTableRowを得るためのRowName
-	UPROPERTY(EditAnywhere, Category = "CSKit_BrainQueryTestSelector")
+	UPROPERTY(EditAnywhere, Category = "CSKit_BrainQueryTestSelector", meta = (DisplayName = "RawName"))
 	FName mEditorDataTableRowName;
 #endif
 

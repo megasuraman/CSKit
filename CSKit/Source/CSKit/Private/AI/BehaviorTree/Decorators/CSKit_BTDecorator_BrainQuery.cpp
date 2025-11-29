@@ -25,11 +25,6 @@ UCSKit_BTDecorator_BrainQuery::UCSKit_BTDecorator_BrainQuery(const FObjectInitia
 
 	mBBKey.AddNameFilter(this, GET_MEMBER_NAME_CHECKED(UCSKit_BTDecorator_BrainQuery, mBBKey));
 
-#if WITH_EDITOR
-	const UCSKit_Config* CSKitConfig = GetDefault<UCSKit_Config>();
-	mTestSelector.mEditorDataTablePathList.Add(CSKitConfig->mEditorBrainQuery_DataTable->GetPathName());
-	mTestSelector.mEditorDisplayName = FString(TEXT("Test"));
-#endif
 }
 
 /**
@@ -48,6 +43,19 @@ void UCSKit_BTDecorator_BrainQuery::InitializeFromAsset(UBehaviorTree& Asset)
 		UE_LOG(LogBehaviorTree, Warning, TEXT("Can't initialize %s due to missing blackboard data."), *GetName());
 		mBBKey.InvalidateResolvedKey();
 	}
+	
+#if WITH_EDITOR
+	const UCSKit_Config* CSKitConfig = GetDefault<UCSKit_Config>();
+	if (CSKitConfig->mEditorBrainQuery_DataTable.IsNull())
+	{
+		UE_LOG(LogBehaviorTree, Error, TEXT("No Assign ProjectSettings->CSKit->mEditorBrainQuery_DataTable"));
+		return;
+	}
+	mTestSelector.mEditorDataTablePathList.Empty();
+	const FString DataTablePath = CSKitConfig->mEditorBrainQuery_DataTable.ToSoftObjectPath().GetAssetPathString();
+	mTestSelector.mEditorDataTablePathList.Add(DataTablePath);
+	mTestSelector.mEditorDisplayName = FString(TEXT("Test"));
+#endif
 }
 
 bool	UCSKit_BTDecorator_BrainQuery::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const

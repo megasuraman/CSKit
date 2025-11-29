@@ -32,10 +32,10 @@ protected:
 	virtual EBlackboardNotificationResult OnBlackboardKeyValueChange(const UBlackboardComponent& Blackboard, FBlackboard::FKey ChangedKeyID);
 
 protected:
-	UPROPERTY(EditAnywhere, Category = "Condition", DisplayName = "判定対象")
-	FBlackboardKeySelector mBBKey;
-	UPROPERTY(EditAnywhere, Category = "Condition", DisplayName = "Test")
+	UPROPERTY(EditAnywhere, Category = "Condition", meta = (DisplayName = "Test", DisplayPriority = 1))
 	FCSKit_BrainQueryTestSelector mTestSelector;
+	UPROPERTY(VisibleAnywhere, Category = "Condition", meta = (DisplayName = "判定対象", DisplayPriority = 1))
+	FBlackboardKeySelector mBBKey;
 
 #if WITH_EDITOR
 public:	
