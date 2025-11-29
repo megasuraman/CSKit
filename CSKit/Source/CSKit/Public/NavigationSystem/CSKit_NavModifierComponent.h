@@ -21,6 +21,7 @@ class CSKIT_API UCSKit_NavModifierComponent : public UNavModifierComponent
 protected:
 	void SetupManualCacheBounds() const;
 	void OffsetBoundsExtent() const;
+	static void OffsetBoundsExtent(FBox& InBox, const FVector& InExtent);
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "CSKit_NavModifier", meta = (DisplayName = "範囲Offset"))

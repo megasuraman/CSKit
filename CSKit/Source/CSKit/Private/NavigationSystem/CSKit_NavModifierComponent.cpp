@@ -59,11 +59,25 @@ void UCSKit_NavModifierComponent::SetupManualCacheBounds() const
  */
 void UCSKit_NavModifierComponent::OffsetBoundsExtent() const
 {
-	Bounds.Min -= mOffsetBoundsExtent;
-	Bounds.Max += mOffsetBoundsExtent;
+	OffsetBoundsExtent(Bounds, mOffsetBoundsExtent);
 	for (int32 Idx = 0; Idx < ComponentBounds.Num(); Idx++)
 	{
-		ComponentBounds[Idx].Box.Min -= mOffsetBoundsExtent;
-		ComponentBounds[Idx].Box.Max += mOffsetBoundsExtent;
+		OffsetBoundsExtent(ComponentBounds[Idx].Box, mOffsetBoundsExtent);
 	}
+}
+
+/**
+ * @brief 
+ */
+void UCSKit_NavModifierComponent::OffsetBoundsExtent(FBox& InBox, const FVector& InExtent)
+{
+	FVector Pos;
+	FVector Extent;
+	InBox.GetCenterAndExtents(Pos, Extent);
+
+	Extent.X  = FMath::Max(Extent.X + InExtent.X, 0.0f);
+	Extent.Y  = FMath::Max(Extent.Y + InExtent.Y, 0.0f);
+	Extent.Z  = FMath::Max(Extent.Z + InExtent.Z, 0.0f);
+
+	InBox = FBox::BuildAABB(Pos, Extent);
 }
