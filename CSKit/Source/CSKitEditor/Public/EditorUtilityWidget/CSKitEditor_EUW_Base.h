@@ -75,6 +75,7 @@ protected:
 	virtual void AutoRun_OnBegin();
 	virtual bool AutoRun_ExecPostLoadSubLevel();
 	virtual void AutoRun_OnEnd();
+	static void CollectAssetObject(TArray<UObject*>& OutList, const FName& InFolderPath, const UClass* InClass);
 
 protected:
 	UPROPERTY()

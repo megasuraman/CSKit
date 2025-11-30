@@ -19,6 +19,7 @@
 #include "UnrealEdGlobals.h"
 #include "SLevelViewport.h"
 #include "SourceControlOperations.h"
+#include "AssetRegistry/AssetRegistryModule.h"
 #include "Engine/LevelStreamingDynamic.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -635,4 +636,50 @@ bool UCSKitEditor_EUW_Base::AutoRun_ExecPostLoadSubLevel()
  */
 void UCSKitEditor_EUW_Base::AutoRun_OnEnd()
 {
+}
+
+/**
+ * @brief	指定フォルダ以下にある指定クラスAssetを取得
+ * @param	OutList	Assetリスト
+ * @param	InFolderPath	例：/Game/Sample
+ * @param	InClass	Class
+ */
+void UCSKitEditor_EUW_Base::CollectAssetObject(TArray<UObject*>& OutList, const FName& InFolderPath, const UClass* InClass)
+{
+	FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
+	TArray<FAssetData> AssetDataList;
+	AssetRegistryModule.Get().GetAssetsByPath(InFolderPath, AssetDataList, true);
+	for (const FAssetData& AssetData : AssetDataList)
+	{
+		UObject* AssetObject = AssetData.GetAsset();
+		if (AssetObject == nullptr)
+		{
+			continue;
+		}
+		if (InClass == nullptr)
+		{
+			OutList.Add(AssetObject);
+			continue;
+		}
+		if (AssetObject->IsA(InClass))
+		{
+			OutList.Add(AssetObject);
+			continue;
+		}
+		
+		const UBlueprint* AssetBlueprint = Cast<UBlueprint>(AssetObject);
+		if (AssetBlueprint == nullptr
+			|| AssetBlueprint->GeneratedClass == nullptr)
+		{
+			continue;
+		}
+		if (UObject* DefaultObject = AssetBlueprint->GeneratedClass->GetDefaultObject())
+		{
+			if (DefaultObject->IsA(InClass))
+			{
+				OutList.Add(DefaultObject);
+				continue;
+			}
+		}
+	}
 }
