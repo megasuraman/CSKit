@@ -31,6 +31,7 @@ public:
 		}
 		return FString::Printf(TEXT("%lld"), EnumValue);
 	}
+	static FString GetObjectDisplayName(const UObject* InObject);
 	static FEnvQueryInstance* FindLastEnvQueryInstance(float& OutLastTimeStamp, const APawn* InOwner);
 	static void MakeGhostPlayer(ACharacter* InPlayer, AActor* InTarget);
 	static bool	IsNeedStopDebugDraw(const UWorld* InWorld);

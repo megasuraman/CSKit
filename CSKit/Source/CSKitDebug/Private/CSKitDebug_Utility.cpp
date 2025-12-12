@@ -25,6 +25,34 @@
 DEFINE_LOG_CATEGORY_STATIC(LogCSKitDebug_ScopeTime, Log, All);
 
 /**
+ * @brief	デバッグ表示用のObject名取得
+ */
+FString UCSKitDebug_Utility::GetObjectDisplayName(const UObject* InObject)
+{
+	if (const AActor* Actor = Cast<AActor>(InObject))
+	{
+#if WITH_EDITOR
+		return Actor->GetActorLabel();
+#else
+		return Actor->GetName();
+#endif
+	}
+	else if (const UActorComponent* ActorComponent = Cast<UActorComponent>(InObject))
+	{
+		if (const AActor* ActorActor = ActorComponent->GetOwner())
+		{
+#if WITH_EDITOR
+			return FString::Printf(TEXT("%s - %s"), *Actor->GetActorLabel(), *ActorComponent->GetName());
+#else
+			return FString::Printf(TEXT("%s - %s"), *Actor->GetName(), *ActorComponent->GetName());
+#endif
+		}
+		return ActorComponent->GetName();
+	}
+	return FString(TEXT(""));
+}
+
+/**
  * @brief	最終のEQS情報取得
  */
 FEnvQueryInstance* UCSKitDebug_Utility::FindLastEnvQueryInstance(float& OutLastTimeStamp, const APawn* InOwner)

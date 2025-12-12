@@ -9,11 +9,13 @@
 #include "CSKitDebug_ShortcutCommand.h"
 #include "CSKitDebug_Subsystem.h"
 #include "CSKitDebug_Config.h"
+#include "CSKitDebug_DebugCameraController.h"
 #include "DebugMenu/CSKitDebug_DebugMenuManager.h"
 
 #include "GameFramework/PlayerInput.h"
 #include "InputCoreTypes.h"
 #include "Engine/DebugCameraController.h"
+#include "GameFramework/CheatManager.h"
 
 UCSKitDebug_ShortcutCommand::UCSKitDebug_ShortcutCommand()
 #if USE_CSKIT_DEBUG
@@ -86,6 +88,10 @@ bool	UCSKitDebug_ShortcutCommand::DebugTick(float InDeltaSecond)
 		//デバッグカメラon/off
 		else if (CSKitDebugConfig->mDebugCommand_DebugCameraKey.IsJustPressed(*PlayerInput))
 		{
+			if (UCheatManager* CheatManager = PlayerController->CheatManager)
+			{
+				CheatManager->DebugCameraControllerClass = ACSKitDebug_DebugCameraController::StaticClass();
+			}
 			PlayerController->ConsoleCommand(FString(TEXT("ToggleDebugCamera")));
 			return true;
 		}
