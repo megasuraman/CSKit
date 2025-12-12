@@ -12,6 +12,7 @@
 #include "CSKitDebug_GhostController.h"
 #include "CSKitDebug_GhostPawn.h"
 #include "CSKitDebug_ShortcutCommand.h"
+#include "CollisionInspector/CSKitDebug_CollisionInspectorManager.h"
 #include "Debug/DebugDrawService.h"
 #include "DebugMenu/CSKitDebug_DebugMenuManager.h"
 #include "Engine/Engine.h"
@@ -175,6 +176,11 @@ void	UCSKitDebug_Subsystem::Initialize(FSubsystemCollectionBase& Collection)
 		mGCObject.mScreenWindowManager = NewObject<UCSKitDebug_ScreenWindowManager>(this);
 		mGCObject.mScreenWindowManager->Init();
 	}
+	if (mGCObject.mCollisionInspectorManager == nullptr)
+	{
+		mGCObject.mCollisionInspectorManager = NewObject<UCSKitDebug_CollisionInspectorManager>(this);
+		mGCObject.mCollisionInspectorManager->Init();
+	}
 }
 /**
  * @brief Deinitialize
@@ -256,6 +262,10 @@ bool	UCSKitDebug_Subsystem::DebugTick(float InDeltaSecond) const
 	{
 		mGCObject.mScreenWindowManager->DebugTick(InDeltaSecond);
 	}
+	if (mGCObject.mCollisionInspectorManager)
+	{
+		mGCObject.mCollisionInspectorManager->DebugTick(InDeltaSecond);
+	}
 
 	return true;
 }
@@ -279,6 +289,10 @@ void	UCSKitDebug_Subsystem::DebugDraw(UCanvas* InCanvas, APlayerController* InPl
 	if (mGCObject.mScreenWindowManager)
 	{
 		mGCObject.mScreenWindowManager->DebugDraw(InCanvas);
+	}
+	if (mGCObject.mCollisionInspectorManager)
+	{
+		mGCObject.mCollisionInspectorManager->DebugDraw(InCanvas);
 	}
 }
 #endif//USE_CSKIT_DEBUG

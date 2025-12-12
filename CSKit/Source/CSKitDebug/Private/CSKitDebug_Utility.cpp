@@ -39,12 +39,12 @@ FString UCSKitDebug_Utility::GetObjectDisplayName(const UObject* InObject)
 	}
 	else if (const UActorComponent* ActorComponent = Cast<UActorComponent>(InObject))
 	{
-		if (const AActor* ActorActor = ActorComponent->GetOwner())
+		if (const AActor* OwnerActor = ActorComponent->GetOwner())
 		{
 #if WITH_EDITOR
-			return FString::Printf(TEXT("%s - %s"), *Actor->GetActorLabel(), *ActorComponent->GetName());
+			return FString::Printf(TEXT("%s - %s"), *OwnerActor->GetActorLabel(), *ActorComponent->GetName());
 #else
-			return FString::Printf(TEXT("%s - %s"), *Actor->GetName(), *ActorComponent->GetName());
+			return FString::Printf(TEXT("%s - %s"), *OwnerActor->GetName(), *ActorComponent->GetName());
 #endif
 		}
 		return ActorComponent->GetName();

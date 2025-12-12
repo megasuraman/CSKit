@@ -18,6 +18,7 @@ class CSKITDEBUG_API UCSKitDebug_DebugMenuManager : public UObject
 	
 public:
 	static UCSKitDebug_DebugMenuManager* sGet(const UObject* InObject);
+	static bool sGetNodeValue_Bool(const UObject* InObject, const FString& InPath);
 
 	UCSKitDebug_DebugMenuManager();
 	virtual void BeginDestroy() override;

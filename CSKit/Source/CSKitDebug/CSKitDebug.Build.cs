@@ -42,6 +42,7 @@ public class CSKitDebug : ModuleRules
                 "RenderCore",
                 "UMG",
                 "Json",
+                "JsonUtilities",
                 "AIModule",
                 "NavigationSystem",
                 "ApplicationCore",

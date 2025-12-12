@@ -21,6 +21,15 @@ UCSKitDebug_DebugMenuManager* UCSKitDebug_DebugMenuManager::sGet(const UObject* 
 	return CSKitDebugSubsystem->GetDebugMenuManager();
 }
 
+bool UCSKitDebug_DebugMenuManager::sGetNodeValue_Bool(const UObject* InObject, const FString& InPath)
+{
+	if (const UCSKitDebug_DebugMenuManager* DebugMenuManager = sGet(InObject))
+	{
+		return  DebugMenuManager->GetNodeValue_Bool(InPath);
+	}
+	return false;
+}
+
 UCSKitDebug_DebugMenuManager::UCSKitDebug_DebugMenuManager()
 {
 }

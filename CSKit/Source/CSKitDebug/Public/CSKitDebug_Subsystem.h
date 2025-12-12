@@ -12,6 +12,7 @@
 #include "CSKitDebug_SaveData.h"
 #include "CSKitDebug_Subsystem.generated.h"
 
+class UCSKitDebug_CollisionInspectorManager;
 class ACSKitDebug_GhostController;
 class ACSKitDebug_GhostPawn;
 class UCSKitDebug_ScreenWindowManager;
@@ -43,6 +44,7 @@ public:
 	UCSKitDebug_ActorSelectManager* GetActorSelectManager() const { return mGCObject.mActorSelectManager; }
 	UCSKitDebug_DebugMenuManager* GetDebugMenuManager() const { return mGCObject.mDebugMenuManager; }
 	UCSKitDebug_ScreenWindowManager* GetScreenWindowManager() const { return mGCObject.mScreenWindowManager; }
+	UCSKitDebug_CollisionInspectorManager* GetCollisionInspectorManager() const{return mGCObject.mCollisionInspectorManager;}
 
 	void OneShotWarning(const bool bInExpression, const FName& InKey, const FString& InLog);
 	void BeginGhostController(AActor* InTarget);
@@ -63,6 +65,7 @@ protected:
 		UCSKitDebug_ActorSelectManager* mActorSelectManager = nullptr;
 		UCSKitDebug_DebugMenuManager* mDebugMenuManager = nullptr;
 		UCSKitDebug_ScreenWindowManager* mScreenWindowManager = nullptr;
+		UCSKitDebug_CollisionInspectorManager* mCollisionInspectorManager = nullptr;
 		ACSKitDebug_GhostPawn* mGhostPawn = nullptr;
 		ACSKitDebug_GhostController* mGhostController = nullptr;
 		virtual void AddReferencedObjects(FReferenceCollector& Collector) override
@@ -71,6 +74,7 @@ protected:
 			Collector.AddReferencedObject(mActorSelectManager);
 			Collector.AddReferencedObject(mDebugMenuManager);
 			Collector.AddReferencedObject(mScreenWindowManager);
+			Collector.AddReferencedObject(mCollisionInspectorManager);
 			Collector.AddReferencedObject(mGhostPawn);
 			Collector.AddReferencedObject(mGhostController);
 		}
