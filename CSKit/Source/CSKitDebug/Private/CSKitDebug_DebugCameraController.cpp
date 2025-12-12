@@ -115,9 +115,13 @@ void ACSKitDebug_DebugCameraController::SetupInputComponent()
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("CSKit_DebugCamera_MoveRight", EKeys::Gamepad_LeftX, 1.f));
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("CSKit_DebugCamera_MoveUp", EKeys::Gamepad_RightTrigger, 1.f));
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("CSKit_DebugCamera_MoveUp", EKeys::Gamepad_LeftTrigger, -1.f));
+		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("CSKit_DebugCamera_MoveUp", EKeys::E, 1.f));
+		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("CSKit_DebugCamera_MoveUp", EKeys::Q, -1.f));
 
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("CSKit_DebugCamera_TurnRate", EKeys::Gamepad_RightX, 1.f));
+		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("CSKit_DebugCamera_TurnRate", EKeys::MouseX, 1.f));
 		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("CSKit_DebugCamera_LookUpRate", EKeys::Gamepad_RightY, 1.f));
+		UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping("CSKit_DebugCamera_LookUpRate", EKeys::MouseY, -1.f));
 
 		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping("CSKit_DebugCamera_SpeedLevelUp", EKeys::Gamepad_RightShoulder));
 		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping("CSKit_DebugCamera_SpeedLevelDown", EKeys::Gamepad_LeftShoulder));
