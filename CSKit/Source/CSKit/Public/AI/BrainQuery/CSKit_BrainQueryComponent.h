@@ -9,6 +9,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CSKit_DataTableRowSelector.h"
 #include "Components/ActorComponent.h"
 #include "CSKit_BrainQueryComponent.generated.h"
 
@@ -36,6 +37,10 @@ protected:
 	void	CalcBrainQuery(const FCSKit_BrainQueryTableRow& InBrainQueryTableRow);
 	float	CalcBrainQueryTestScore(const FCSKit_BrainQueryTest& InBrainQueryTest, const ACSKit_AIController& InOwner);
 
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FCSKit_DataTableRowSelector mBrainQueryRowNameSelector;
+	
 private:
 	TWeakObjectPtr<UBlackboardComponent>	mBlackboardComponent;
 

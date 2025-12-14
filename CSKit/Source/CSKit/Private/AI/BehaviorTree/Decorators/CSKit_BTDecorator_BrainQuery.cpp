@@ -19,6 +19,7 @@ UCSKit_BTDecorator_BrainQuery::UCSKit_BTDecorator_BrainQuery(const FObjectInitia
 {
 	NodeName = "CSKit BrainQuery";
 	FlowAbortMode = EBTFlowAbortMode::Self;
+	bNotifyBecomeRelevant = true;
 #if ENGINE_MAJOR_VERSION == 5
 	INIT_DECORATOR_NODE_NOTIFY_FLAGS();
 #endif
@@ -102,6 +103,10 @@ void UCSKit_BTDecorator_BrainQuery::PostEditChangeProperty(FPropertyChangedEvent
 
 void UCSKit_BTDecorator_BrainQuery::EditorCheckBBKey()
 {
+	if (mTestSelector.mEditorDataTablePathList.Num() <= 0)
+	{
+		return;
+	}
 	const FString& DataTablePath = mTestSelector.mEditorDataTablePathList[0];
 	const UDataTable* DataTable = LoadObject<UDataTable>(nullptr, *DataTablePath, nullptr, LOAD_None, nullptr);
 	if (DataTable == nullptr)

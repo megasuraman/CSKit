@@ -27,6 +27,7 @@ public:
 	void AttachComponentToPlayer() const;
 	void DetachComponentToPlayer() const;
 	void OutputErrorFile() const;
+	void OutputErrorFile(const struct FCSKitDebug_DebugMenuNodeActionParameter& InParameter) const;
 
 private:
 	TArray<TWeakObjectPtr<UCSKitDebug_CollisionInspectorComponent>> mComponentList;

@@ -8,6 +8,7 @@
  */
 #include "AI/BrainQuery/CSKit_BrainQueryComponent.h"
 
+#include "CSKit_Config.h"
 #include "AI/CSKit_AIController.h"
 #include "AI/BrainQuery/CSKit_BrainQueryDataTable.h"
 #include "AI/BrainQuery/Test/CSKit_BrainQueryTest_Base.h"
@@ -24,6 +25,13 @@ DEFINE_LOG_CATEGORY_STATIC(LogCSKit_BrainQueryComponent, Warning, All);
 UCSKit_BrainQueryComponent::UCSKit_BrainQueryComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
+
+#if WITH_EDITOR
+	if (const UCSKit_Config* CSKitConfig = GetDefault<UCSKit_Config>())
+	{
+		mBrainQueryRowNameSelector.mDataTablePath = CSKitConfig->mEditorBrainQuery_DataTable.ToSoftObjectPath().GetAssetPathString();
+	}
+#endif
 }
 
 void UCSKit_BrainQueryComponent::BeginPlay()
@@ -61,7 +69,21 @@ void UCSKit_BrainQueryComponent::EndPlay(const EEndPlayReason::Type EndPlayReaso
 ------------------------------------------------------------ */
 void UCSKit_BrainQueryComponent::Update(const float InDeltaSec)
 {
-	//派生先でCalcBrainQuery()を呼んで更新する感じ
+	const UCSKit_Config* CSKitConfig = GetDefault<UCSKit_Config>();
+	if (CSKitConfig == nullptr)
+	{
+		return;
+	}
+	const UDataTable* BrainQueryDataTable = CSKitConfig->mEditorBrainQuery_DataTable.LoadSynchronous();
+	if (BrainQueryDataTable == nullptr)
+	{
+		ensureMsgf(false, TEXT("Need Assign mEditorBrainQuery_DataTable"));
+		return;
+	}
+	if (const FCSKit_BrainQueryTableRow* TableRow = BrainQueryDataTable->FindRow<FCSKit_BrainQueryTableRow>(mBrainQueryRowNameSelector.mRowName, TEXT("")))
+	{
+		CalcBrainQuery(*TableRow);
+	}
 }
 
 /* ------------------------------------------------------------

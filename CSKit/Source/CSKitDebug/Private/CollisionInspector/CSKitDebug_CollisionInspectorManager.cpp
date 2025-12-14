@@ -43,6 +43,10 @@ void UCSKitDebug_CollisionInspectorManager::Init()
 	DebugMenuManager->AddNode_Bool(BaseDebugMenuPath, FString(TEXT("DrawLastSafePoint")), false);
 	DebugMenuManager->AddNode_Bool(BaseDebugMenuPath, FString(TEXT("DrawVoxel")), false);
 	DebugMenuManager->AddNode_Bool(BaseDebugMenuPath, FString(TEXT("DrawError")), false);
+	{
+		const auto& Delegate = FCSKitDebug_DebugMenuNodeActionDelegate::CreateUObject(this, &UCSKitDebug_CollisionInspectorManager::OutputErrorFile);
+		DebugMenuManager->AddNode_Button(BaseDebugMenuPath, FString(TEXT("OutputError")), Delegate);
+	}
 }
 
 /**
@@ -135,6 +139,12 @@ void UCSKitDebug_CollisionInspectorManager::OutputErrorFile() const
 	
 	FString FilePath = FPaths::ConvertRelativePathToFull(FPaths::ProjectSavedDir());
 	const FString LevelName = UGameplayStatics::GetCurrentLevelName(GetWorld());
-	FilePath += FString::Printf(TEXT("CollisionInspector/%s.txt"), *LevelName);
+	FilePath += FString::Printf(TEXT("CSKit/CollisionInspector/%s.txt"), *LevelName);
 	FFileHelper::SaveStringToFile(AllError.ToJson(), *FilePath, FFileHelper::EEncodingOptions::ForceUTF8);
+}
+
+void UCSKitDebug_CollisionInspectorManager::OutputErrorFile(
+	const struct FCSKitDebug_DebugMenuNodeActionParameter& InParameter) const
+{
+	OutputErrorFile();
 }
