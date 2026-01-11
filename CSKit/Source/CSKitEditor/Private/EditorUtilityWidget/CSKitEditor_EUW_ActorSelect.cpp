@@ -430,7 +430,8 @@ void UCSKitEditor_EUW_ActorSelect::AssignParameterToGame() const
  * @brief	セーブデータをロード
  */
 void UCSKitEditor_EUW_ActorSelect::LoadSaveData()
-{	const FCSKitDebug_SaveData& SaveData = UCSKitDebug_Subsystem::sGetSaveData();
+{
+	const FCSKitDebug_SaveData& SaveData = UCSKitDebug_Subsystem::sGetSaveData();
 	mbActive = SaveData.GetBool(FString(TEXT("EUW_ActorSelect.mbActive")));
 	mbAutoSelect = SaveData.GetBool(FString(TEXT("EUW_ActorSelect.mbAutoSelect")));
 	mbOnlyUpdateSelectActor = SaveData.GetBool(FString(TEXT("EUW_ActorSelect.mbOnlyUpdateSelectActor")));

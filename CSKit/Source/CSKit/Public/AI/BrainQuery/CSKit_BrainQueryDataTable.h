@@ -94,19 +94,24 @@ USTRUCT(BlueprintType)
 struct FCSKit_BrainQueryTest
 {
 	GENERATED_USTRUCT_BODY()
-	
+
+	//評価名
 	UPROPERTY(EditDefaultsOnly, Category = "BrainQuery", Meta = (DisplayName = "TestName", DisplayPriority = 3))
 	FName mTestName;
+	//親評価名
 	UPROPERTY(EditDefaultsOnly, Category = "BrainQuery", Meta = (DisplayName = "ParrentTestName", DisplayPriority = 4))
 	FName mParentTestName;
+	//評価結果格納するBlackboardKey
 	UPROPERTY(EditDefaultsOnly, Category = "BrainQuery", Meta = (DisplayName = "結果格納するBlackboardKey", DisplayPriority = 5))
 	FName mBlackboardKeyName;
 	// UPROPERTY(EditDefaultsOnly, Category = "BrainQuery", Meta = (DisplayName = "選択時Scoreボーナス", DisplayPriority = 6))
 	// float mScoreBonus = 0.f;
 	// UPROPERTY(EditDefaultsOnly, Category = "BrainQuery", Meta = (DisplayName = "選択時Scoreボーナス減少速度", DisplayPriority = 7))
 	// float mScoreBonusDownSpeed = 0.1f;
+	//同着時の優先度
 	UPROPERTY(EditDefaultsOnly, Category = "BrainQuery", Meta = (DisplayName = "同着時の優先度", DisplayPriority = 8))
 	uint32 mTestPriority = 0;
+	//評価値を決めるテストリスト
 	UPROPERTY(EditDefaultsOnly, Category = "BrainQuery", meta = (DisplayName = "テストリスト", TitleProperty = "mEditorComment", DisplayPriority = 9))
 	TArray<FCSKit_BrainQueryTestNode> mTestNodeList;
 
