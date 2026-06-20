@@ -1,2 +1,5 @@
 CSKit/Intermediate/*
 CSKit/Binaries/*
+*.user
+CSKit/Tools/ScreenRecorder/Source/.vs/*
+CSKit/Tools/ScreenRecorder/Source/Debug/*
