@@ -139,6 +139,7 @@ FString UCSKitDebug_Utility::GetActorLevelName(const AActor* InActor)
 	{
 		return FString();
 	}
+	//UGameplayStatics::GetCurrentLevelName(InActor->GetWorld());
 	if (InActor->GetWorld()->WorldType == EWorldType::Editor)
 	{
 		return GetActorLevelNameInEditor(InActor);
