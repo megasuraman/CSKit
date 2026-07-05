@@ -46,6 +46,7 @@ public class CSKitDebug : ModuleRules
                 "AIModule",
                 "NavigationSystem",
                 "ApplicationCore",
+                "ProceduralMeshComponent"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

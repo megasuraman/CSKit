@@ -17,9 +17,12 @@
 #include "NavigationSystem.h"
 #include "DrawDebugHelpers.h"
 #include "NavLinkCustomComponent.h"
+#include "Components/BrushComponent.h"
 #include "Engine/Canvas.h"
 #include "EnvironmentQuery/Items/EnvQueryItemType_VectorBase.h"
 #include "EnvironmentQuery/EnvQueryDebugHelpers.h"
+#include "ProceduralMeshComponent.h"
+#include "Engine/Polys.h"
 
 #if USE_CSKIT_DEBUG
 /**
@@ -664,6 +667,9 @@ void	UCSKitDebug_Draw::DrawCanvasQuadrangle(UCanvas* InCanvas, const FVector& In
 	UCSKitDebug_Draw::DrawCanvasQuadrangle(InCanvas, ScreenPos, InExtent, InColor);
 }
 
+/**
+ * @brief	SkeltalMeshの骨表示
+ */
 void UCSKitDebug_Draw::DrawBone(UCanvas* InCanvas, const USkeletalMeshComponent* InSkeletalMeshComponent)
 {
 	if (InSkeletalMeshComponent == nullptr)
@@ -701,6 +707,9 @@ void UCSKitDebug_Draw::DrawBone(UCanvas* InCanvas, const USkeletalMeshComponent*
 	}
 }
 
+/**
+ * @brief	xyzの軸表示
+ */
 void UCSKitDebug_Draw::DrawAxis(const UWorld* InWorld, const FTransform& InTransform, const float InLength)
 {
 	const FVector BasePos = InTransform.GetLocation();
@@ -716,6 +725,107 @@ void UCSKitDebug_Draw::DrawAxis(const UWorld* InWorld, const FTransform& InTrans
 	{
 		const FVector AxisV = BaseRot.RotateVector(FVector(0.f, 0.f, InLength));
 		DrawDebugDirectionalArrow(InWorld, BasePos, BasePos + AxisV, 10.f, FColor::Blue, false, -1.f, UINT8_MAX, 1.f);
+	}
+}
+
+void UCSKitDebug_Draw::DebugCreateProceduralMeshComponent(ABrush* InBrush, UMaterialInterface* InMaterial)
+{
+	if (InBrush == nullptr)
+	{
+		return;
+	}
+	if (InBrush->GetComponentByClass(UProceduralMeshComponent::StaticClass()) != nullptr)
+	{
+		return;
+	}
+	UBrushComponent* BrushComponent = InBrush->GetBrushComponent();
+	if (BrushComponent == nullptr)
+	{
+		return;
+	}
+	UModel* Brush = BrushComponent->Brush;
+	if (Brush == nullptr)
+	{
+		return;
+	}
+	if(Brush->Polys == nullptr)
+	{
+		return;
+	}
+	TArray<FVector> Vertices;
+    TArray<int32> Triangles;
+    TArray<FVector> Normals;
+    TArray<FVector2D> UV0;
+	// ReSharper disable once CppTooWideScope
+	TArray<FProcMeshTangent> Tangents;
+	// ReSharper disable once CppTooWideScope
+	TArray<FColor> VertexColors;
+	
+	// 頂点インデックスのズレを補正するためのカウンタ
+	int32 VertexOffset = 0;
+	for( int32 poly = 0 ; poly < Brush->Polys->Element.Num() ; poly++ )
+	{
+		FPoly* Poly = &(Brush->Polys->Element[poly]);
+		if (Poly == nullptr)
+		{
+			continue;
+		}
+		// この面が持っている頂点を配列に追加
+#if 0
+		for (const FVector3f& Vertex : Poly->Vertices)
+		{
+			Vertices.Add(FVector(Vertex));
+			UV0.Add(FVector2D(Vertex.X, Vertex.Y) * 0.01f); 
+			Normals.Add(FVector(-Poly->Normal));
+		}
+#else
+		for (const FVector& Vertex : Poly->Vertices)
+		{
+			Vertices.Add(Vertex);
+			UV0.Add(FVector2D(Vertex.X, Vertex.Y) * 0.01f); 
+			Normals.Add(-Poly->Normal);
+		}
+#endif
+
+		// 三角形のインデックスを構築（多角形を三角形に分割する処理）
+		for (int32 i = 2; i < Poly->Vertices.Num(); ++i)
+		{
+			Triangles.Add(VertexOffset);
+			Triangles.Add(VertexOffset + i);
+			Triangles.Add(VertexOffset + i - 1);
+		}
+
+		VertexOffset += Poly->Vertices.Num();
+	}
+
+	// 動的メッシュコンポーネントをVolumeアクターの中に生成
+	if (UProceduralMeshComponent* ProcMesh = NewObject<UProceduralMeshComponent>(InBrush))
+	{
+		ProcMesh->SetCanEverAffectNavigation(false);
+		ProcMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		ProcMesh->SetCollisionResponseToAllChannels(ECR_Ignore);
+		ProcMesh->RegisterComponent();
+        
+		ProcMesh->AttachToComponent(InBrush->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+
+		ProcMesh->CreateMeshSection(0, Vertices, Triangles, Normals, UV0, VertexColors, Tangents, false);
+
+		ProcMesh->SetMaterial(0, InMaterial);
+	}
+}
+
+/**
+ * @brief	BrushComponentにつけたProceduralMeshを削除
+ */
+void UCSKitDebug_Draw::DebugDeleteProceduralMeshComponent(const ABrush* InBrush)
+{
+	if (InBrush == nullptr)
+	{
+		return;
+	}
+	if (UProceduralMeshComponent* ProceduralMeshComponent = Cast<UProceduralMeshComponent>(InBrush->GetComponentByClass(UProceduralMeshComponent::StaticClass())))
+	{
+		ProceduralMeshComponent->DestroyComponent();
 	}
 }
 

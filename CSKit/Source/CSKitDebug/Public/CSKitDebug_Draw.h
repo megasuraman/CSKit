@@ -65,5 +65,8 @@ public:
 
 	static void DrawBone(UCanvas* InCanvas, const USkeletalMeshComponent* InSkeletalMeshComponent);
 	static void DrawAxis(const UWorld* InWorld, const FTransform& InTransform, const float InLength=100.f);
+
+	static void DebugCreateProceduralMeshComponent(ABrush* InBrush, UMaterialInterface* InMaterial);
+	static void DebugDeleteProceduralMeshComponent(const ABrush* InBrush);
 #endif//USE_CSKIT_DEBUG
 };
