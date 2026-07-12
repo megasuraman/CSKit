@@ -1,99 +1,35 @@
 #include "pch.h"
 #include "VideoWriter.h"
-#include <vector>
+#include "Logger.h"
+
+#include <atomic>
+#include <chrono>
+#include <conio.h>
+#include <csignal>
+#include <dwmapi.h>
+#include <filesystem>
 #include <iostream>
-#include <fstream>
 #include <limits>
 #include <shobjidl.h>
-#include <conio.h>
-#include <winrt/Windows.Graphics.Capture.h>
-#include <winrt/Windows.Graphics.DirectX.Direct3d11.h>
-#include <winrt/Windows.Foundation.h>
-#include <winrt/Windows.UI.Composition.h>
+#include <sstream>
+#include <type_traits> 
+#include <vector>
 #include <windows.graphics.capture.interop.h>
 #include <windows.graphics.directx.direct3d11.interop.h>
+#include <winrt/Windows.Foundation.h>
+#include <winrt/Windows.Graphics.Capture.h>
+#include <winrt/Windows.Graphics.DirectX.Direct3d11.h>
+#include <winrt/Windows.UI.Composition.h>
 
 using namespace winrt::Windows::Graphics::Capture;
 using namespace winrt::Windows::Graphics::DirectX;
 using namespace winrt::Windows::Graphics::DirectX::Direct3D11;
 
-#include <dwmapi.h>
-#include <csignal>
-#include <atomic>
-#include <sstream>
-#include <type_traits> 
-#include <filesystem>
-#include <chrono>
-
-// ログ出力をファイルとコンソールの両方に行うためのクラス
-class Logger {
-public:
-	static void Init(const std::string& filename) {
-		m_file.open(filename, std::ios::out);
-	}
-
-	template<typename T>
-	Logger& operator<<(const T& msg) {
-		if constexpr (std::is_convertible_v<T, std::wstring>) {
-			return (*this) << std::wstring(msg);
-		}
-		else {
-			std::cout << msg;
-			if (m_file.is_open()) {
-				m_file << msg;
-				m_file.flush();
-			}
-			return *this;
-		}
-	}
-
-	// std::endl などのマニピュレータ用
-	Logger& operator<<(std::ostream& (*manip)(std::ostream&)) {
-		manip(std::cout);
-		if (m_file.is_open()) {
-			manip(m_file);
-			m_file.flush();
-		}
-		return *this;
-	}
-
-	// ワイド文字列用
-	Logger& operator<<(const std::wstring& msg) {
-		std::wcout << msg;
-		if (m_file.is_open()) {
-			// ファイルへの出力。簡易的にUTF-8への変換などはせず、
-			// そのままワイド文字として書き込むか、ナロー文字に変換するか検討が必要だが
-			// ここでは標準出力と同様にコンソールにはwcout、ファイルには変換して出力する。
-			std::string narrow = WideToUtf8(msg);
-			m_file << narrow;
-			m_file.flush();
-		}
-		return *this;
-	}
-
-	static Logger& Instance() {
-		static Logger instance;
-		return instance;
-	}
-
-private:
-	Logger() = default;
-	static std::ofstream m_file;
-
-	static std::string WideToUtf8(const std::wstring& wstr) {
-		if (wstr.empty()) return std::string();
-		int size_needed = WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int)wstr.size(), NULL, 0, NULL, NULL);
-		std::string strTo(size_needed, 0);
-		WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int)wstr.size(), &strTo[0], size_needed, NULL, NULL);
-		return strTo;
-	}
-};
 
 std::ofstream Logger::m_file;
 #define LOG Logger::Instance()
 #pragma comment(lib, "dwmapi.lib")
 
-// グローバルなフラグとハンドラ
 std::atomic<bool> g_stopRequested(false);
 BOOL WINAPI ConsoleHandler(DWORD signal)
 {
@@ -106,7 +42,6 @@ BOOL WINAPI ConsoleHandler(DWORD signal)
 	return FALSE;
 }
 
-// Direct3D 11 デバイスの作成
 winrt::com_ptr<ID3D11Device> CreateD3D11Device()
 {
 	UINT flags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
@@ -166,7 +101,6 @@ winrt::Windows::Graphics::Capture::GraphicsCaptureItem CreateCaptureItemForWindo
 	return item;
 }
 
-// ID3D11Device から IDirect3DDevice (WinRT) を作成
 IDirect3DDevice CreateDirect3DDevice(ID3D11Device* d3d11Device)
 {
 	winrt::com_ptr<IDXGIDevice> dxgiDevice;
@@ -176,7 +110,7 @@ IDirect3DDevice CreateDirect3DDevice(ID3D11Device* d3d11Device)
 	return inspectable.as<IDirect3DDevice>();
 }
 
-// デバッグ用: ピクセルデータを BMP ファイルとして保存
+// デバッグ用にピクセルデータを.bmpで出力
 void SavePixelsToBmp(const std::vector<uint8_t>& pixelData, uint32_t width, uint32_t height, const std::wstring& filename)
 {
 	std::ofstream file(filename, std::ios::binary);
@@ -202,7 +136,7 @@ void SavePixelsToBmp(const std::vector<uint8_t>& pixelData, uint32_t width, uint
 
 int main(int argc, char* argv[])
 {
-	// 実行ファイルのパスを取得して、同じフォルダに log.txt を作成する
+	// 実行ファイルと同じフォルダに log.txt を作成する
 	wchar_t exePath[MAX_PATH];
 	GetModuleFileNameW(NULL, exePath, MAX_PATH);
 	std::filesystem::path logPath(exePath);
@@ -218,6 +152,7 @@ int main(int argc, char* argv[])
 	std::wstring watchFilePath = L"";
 	int recordSeconds = -1;
 
+	//.mp4の出力パス
 	if (argc > 1)
 	{
 		int size_needed = MultiByteToWideChar(CP_UTF8, 0, argv[1], -1, NULL, 0);
@@ -226,6 +161,7 @@ int main(int argc, char* argv[])
 		LOG << L"Output file: " << filename << std::endl;
 	}
 
+	//選択ウィンドウの指定
 	if (argc > 2)
 	{
 		int size_needed = MultiByteToWideChar(CP_UTF8, 0, argv[2], -1, NULL, 0);
@@ -234,6 +170,7 @@ int main(int argc, char* argv[])
 		LOG << L"Target window filter: \"" << targetWindowTitle << L"\"" << std::endl;
 	}
 
+	//録画中かどうかを外部から判定する用のファイルパス
 	if (argc > 3)
 	{
 		int size_needed = MultiByteToWideChar(CP_UTF8, 0, argv[3], -1, NULL, 0);
@@ -242,6 +179,7 @@ int main(int argc, char* argv[])
 		LOG << L"Watch file: \"" << watchFilePath << L"\"" << std::endl;
 	}
 
+	//録画時間の指定
 	if (argc > 4)
 	{
 		try {
@@ -275,7 +213,7 @@ int main(int argc, char* argv[])
 			}
 		}
 
-		// 既存のファイルを削除してロックを回避（必要に応じて）
+		// 既存のファイルを削除してロックを回避
 		DeleteFile(filename.c_str());
 
 		GraphicsCaptureItem item{ nullptr };
@@ -324,7 +262,7 @@ int main(int argc, char* argv[])
 
 		if (item == nullptr)
 		{
-			// 1. キャプチャ対象の選択
+			// キャプチャ対象の選択
 			GraphicsCapturePicker picker;
 			auto initializeWithWindow = picker.as<IInitializeWithWindow>();
 			winrt::check_hresult(initializeWithWindow->Initialize(GetConsoleWindow()));
@@ -341,7 +279,7 @@ int main(int argc, char* argv[])
 
 		LOG << L"Selected: " << item.DisplayName().c_str() << std::endl;
 
-		// 2. D3D11 デバイスと VideoWriter の準備
+		// D3D11 デバイスと VideoWriter の準備
 		auto d3d11Device = CreateD3D11Device();
 		auto direct3DDevice = CreateDirect3DDevice(d3d11Device.get());
 
@@ -352,7 +290,7 @@ int main(int argc, char* argv[])
 		uint32_t width = static_cast<uint32_t>(itemSize.Width);
 		uint32_t height = static_cast<uint32_t>(itemSize.Height);
 
-		// H.264 エンコーダは通常、偶数の解像度を必要とするため、切り捨てて偶数にする
+		// H.264 エンコーダ用に切り捨てて偶数にする
 		width &= ~1;
 		height &= ~1;
 
@@ -378,7 +316,7 @@ int main(int argc, char* argv[])
 		auto controller = DispatcherQueueController::CreateOnDedicatedThread();
 		auto queue = controller.DispatcherQueue();
 
-		// 3. キャプチャセッションの構成
+		// キャプチャセッションの構成
 		winrt::Windows::Graphics::SizeInt32 captureSize = { static_cast<int32_t>(width), static_cast<int32_t>(height) };
 
 		// FramePool は DispatcherQueue が存在するスレッドで作成する必要がある
@@ -447,8 +385,7 @@ int main(int argc, char* argv[])
 				}
 				context->Unmap(stagingTexture.get(), 0);
 
-				// デバッグ用: 最初の1フレームを画像として保存
-#if 0
+#if 0			// デバッグ用: 最初の1フレームを画像として保存
 				if (!debugFrameSaved)
 				{
 					debugFrameSaved = true;
@@ -469,7 +406,8 @@ int main(int argc, char* argv[])
 		{
 			std::cout << "Press Enter to START recording..." << std::endl;
 			// 外部パイプからの入力を待つ可能性も考慮
-			if (std::cin.good()) {
+			if (std::cin.good())
+			{
 				std::cin.get();
 			}
 		}
@@ -505,20 +443,21 @@ int main(int argc, char* argv[])
 		{
 			// cin.get() で Enter を待った後の残りをクリア
 			// ただし、既に EOF の場合は何もしない
-			if (std::cin.good()) {
+			if (std::cin.good())
+			{
 				// std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
 			}
 		}
 
 		while (isRecording)
 		{
-			// 0. シグナルハンドラからの停止要求をチェック
+			// シグナルハンドラからの停止要求をチェック
 			if (g_stopRequested)
 			{
 				break;
 			}
 
-			// 1. Enterキーが押されたかチェック (コンソール入力がある場合)
+			// Enterキーが押されたかチェック (コンソール入力がある場合)
 			if (_kbhit())
 			{
 				int ch = _getch();
@@ -529,22 +468,21 @@ int main(int argc, char* argv[])
 				}
 			}
 
-			// 2. 標準入力の状態をチェック (パイプ経由の制御や EOF 検知)
-			// cin.eof() は入力がリダイレクトされている場合に有効
+			// 標準入力の状態をチェック
 			if (std::cin.eof())
 			{
 				LOG << "Standard input reached EOF. Stopping capture..." << std::endl;
 				break;
 			}
 
-			// パイプが切断されたかどうかをより確実に検知する (Windows API)
+			// パイプが切断されたかどうか検知
 			HANDLE hStdIn = GetStdHandle(STD_INPUT_HANDLE);
 			if (hStdIn != INVALID_HANDLE_VALUE)
 			{
 				DWORD dwMode;
 				if (GetConsoleMode(hStdIn, &dwMode))
 				{
-					// コンソール入力モード。特に追加のチェックは不要（_kbhitで対応）
+					// コンソール入力モード
 				}
 				else
 				{
@@ -579,21 +517,21 @@ int main(int argc, char* argv[])
 				}
 			}
 
-			// 3. ターゲットウィンドウがまだ存在するかチェック
+			// ターゲットウィンドウがまだ存在するかチェック
 			if (targetHwnd && !IsWindow(targetHwnd))
 			{
 				LOG << "Target window closed. Stopping capture..." << std::endl;
 				break;
 			}
 
-			// 4. 監視ファイルが存在するかチェック
+			// 監視ファイルが存在するかチェック
 			if (!watchFilePath.empty() && !std::filesystem::exists(watchFilePath))
 			{
 				LOG << L"Watch file \"" << watchFilePath << L"\" no longer exists. Stopping capture..." << std::endl;
 				break;
 			}
 
-			// 5. 指定秒数が経過したかチェック
+			// 指定秒数が経過したかチェック
 			if (recordSeconds > 0)
 			{
 				auto now = std::chrono::steady_clock::now();

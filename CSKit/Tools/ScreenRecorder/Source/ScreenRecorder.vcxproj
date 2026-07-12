@@ -152,6 +152,7 @@ runtimeobject.lib
     <ClCompile Include="ScreenRecorder.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Logger.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="VideoWriter.h" />
   </ItemGroup>

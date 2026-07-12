@@ -4,3 +4,5 @@ CSKit/Binaries/*
 CSKit/Tools/ScreenRecorder/Source/.vs/*
 CSKit/Tools/ScreenRecorder/Source/Debug/*
 CSKit/Tools/ScreenRecorder/Source/ScreenRecorder.sln
+CSKit/Tools/ScreenRecorder/Source/.idea/*
+CSKit/Tools/ScreenRecorder/Source/x64/*
