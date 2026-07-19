@@ -7,3 +7,8 @@ CSKit/Tools/ScreenRecorder/Source/ScreenRecorder.sln
 CSKit/Tools/ScreenRecorder/Source/.idea/*
 CSKit/Tools/ScreenRecorder/Source/x64/*
 CSKit/Tools/ScreenRecorder/bin/log.txt
+CSKit/Tools/RunBat/Source/.vs/*
+CSKit/Tools/RunBat/Source/Debug/*
+CSKit/Tools/RunBat/Source/RunBat.sln
+CSKit/Tools/RunBat/Source/.idea/*
+CSKit/Tools/RunBat/Source/x64/*
