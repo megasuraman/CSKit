@@ -160,3 +160,146 @@ struct FCSKit_CompressInt64Vector
 		mValue = Calculator.mBitValue;
 	}
 };
+
+//64bitのFVector(小数点切り捨て & 2^20制限)
+union FCSKit_CompressedVector64
+{
+	int64 mData = 0;
+	struct FCompressVector
+	{
+		int64 mX : 21;
+		int64 mY : 21;
+		int64 mZ : 21;
+		int64 :1;
+
+		FVector GetVector() const
+		{
+			return FVector(
+				static_cast<double>(mX),
+				static_cast<double>(mY),
+				static_cast<double>(mZ)
+			);
+		}
+		void SetVector(const FVector& InVector)
+		{
+			check( FMath::Abs(InVector.X)<1048576.0
+				&& FMath::Abs(InVector.Y)<1048576.0
+				&& FMath::Abs(InVector.Z)<1048576.0
+				);
+			mX = static_cast<int32>(InVector.X);
+			mY = static_cast<int32>(InVector.Y);
+			mZ = static_cast<int32>(InVector.Z);
+		}
+	};
+	FCompressVector mCompressVector;
+
+	void Set(const FVector& InVector)
+	{
+		mCompressVector.SetVector(InVector);
+	}
+	FVector	Get() const
+	{
+		return mCompressVector.GetVector();
+	}
+	int64 GetData() const{return mData;}
+	void SetData(const int64 InData)
+	{
+		mData = InData;
+	}
+	FCSKit_CompressedVector64(){}
+	FCSKit_CompressedVector64(const FVector& InVector)
+	{
+		Set(InVector);
+	}
+	FCSKit_CompressedVector64(const int64 InData)
+	{
+		SetData(InData);
+	}
+};
+//64bitのFRotator(小数点第2位まで)
+union FCSKit_CompressedRotator64
+{
+	int64 mData = 0;
+	struct FCompressElement
+	{
+		int64 mPitch : 21;
+		int64 mYaw : 21;
+		int64 mRoll : 21;
+		int64 :1;
+
+		FRotator GetRotator() const
+		{
+			return FRotator(
+				static_cast<double>(mPitch)*0.01,
+				static_cast<double>(mYaw)*0.01,
+				static_cast<double>(mRoll)*0.01
+			);
+		}
+		void SetRotator(const FRotator& InRot)
+		{
+			check( FMath::Abs(InRot.Pitch)<=180.0
+				&& FMath::Abs(InRot.Yaw)<=180.0
+				&& FMath::Abs(InRot.Roll)<=180.0
+				);
+			mPitch = static_cast<int64>(InRot.Pitch*100.0);
+			mYaw = static_cast<int64>(InRot.Yaw*100.0);
+			mRoll = static_cast<int64>(InRot.Roll*100.0);
+		}
+	};
+	FCompressElement mCompressElement;
+
+	void Set(const FRotator& InRot)
+	{
+		mCompressElement.SetRotator(InRot);
+	}
+	FRotator Get() const
+	{
+		return mCompressElement.GetRotator();
+	}
+	int64 GetData() const{return mData;}
+	void SetData(const int64 InData)
+	{
+		mData = InData;
+	}
+	FCSKit_CompressedRotator64(){}
+	FCSKit_CompressedRotator64(const FRotator& InRot)
+	{
+		Set(InRot);
+	}
+	FCSKit_CompressedRotator64(const int64 InData)
+	{
+		SetData(InData);
+	}
+};
+
+//128bitのTransform(Scaleは1固定)
+struct FCSKit_CompressedTransformOneScale
+{
+	int64 mPosCompressed = 0;//FCompressedVector64
+	int64 mRotCompressed = 0;//FCompressedRotator64
+	
+	FCSKit_CompressedTransformOneScale(){}
+	FCSKit_CompressedTransformOneScale(const FTransform& InTransform)
+	{
+		Set(InTransform);
+	}
+	void Set(const FTransform& InTransform)
+	{
+		ensure(InTransform.GetScale3D() == FVector::OneVector);
+		mPosCompressed = FCSKit_CompressedVector64(InTransform.GetLocation()).GetData();
+		mRotCompressed = FCSKit_CompressedRotator64(InTransform.GetRotation().Rotator()).GetData();
+	}
+	FTransform Get() const
+	{
+		return FTransform(
+			FCSKit_CompressedRotator64(mRotCompressed).Get().Quaternion(),
+			FCSKit_CompressedVector64(mPosCompressed).Get(),
+			FVector::OneVector);
+	}
+	friend FArchive& operator<<(FArchive& Ar, FCSKit_CompressedTransformOneScale& Data)
+	{
+		Ar << Data.mPosCompressed;
+		Ar << Data.mRotCompressed;
+		return Ar;
+	}
+};
