@@ -3,9 +3,6 @@
 #include <iostream>
 
 // ScreenRecorder.cpp で定義されている Logger クラスへのアクセスを簡略化
-// （循環参照を避けるため、ここでは標準出力への出力に留めるか、
-//   ScreenRecorder.cpp 側でグローバルな LOG マクロが有効な環境でコンパイルされることを期待する）
-// 確実に log.txt にも出したい場合は、外部宣言するか関数を介する。
 #ifdef LOG
 #define VW_LOG LOG
 #else

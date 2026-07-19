@@ -136,67 +136,71 @@ void SavePixelsToBmp(const std::vector<uint8_t>& pixelData, uint32_t width, uint
 
 int main(int argc, char* argv[])
 {
-	// 実行ファイルと同じフォルダに log.txt を作成する
-	wchar_t exePath[MAX_PATH];
-	GetModuleFileNameW(NULL, exePath, MAX_PATH);
-	std::filesystem::path logPath(exePath);
-	logPath.replace_filename(L"log.txt");
+    // 実行ファイルのパスを取得して、同じフォルダに log.txt を作成する
+    wchar_t exePath[MAX_PATH];
+    GetModuleFileNameW(NULL, exePath, MAX_PATH);
+    std::filesystem::path basePath(exePath);
+    std::filesystem::path logPath = basePath;
+    logPath.replace_filename(L"log.txt");
 
-	Logger::Init(logPath.string());
-	LOG << "--- Session Start ---" << std::endl;
-	winrt::init_apartment();
-	winrt::check_hresult(MFStartup(MF_VERSION));
+    Logger::Init(logPath.string());
+    LOG << "--- Session Start ---" << std::endl;
 
-	std::wstring filename = L"output.mp4";
-	std::wstring targetWindowTitle = L"";
-	std::wstring watchFilePath = L"";
-	int recordSeconds = -1;
+    // .ini ファイルから設定を読み込む
+    std::filesystem::path iniPath = basePath;
+    if (argc > 1)
+    {
+        // 第1引数があればそれをINIファイルパスとして使用
+        int size_needed = MultiByteToWideChar(CP_UTF8, 0, argv[1], -1, NULL, 0);
+        std::wstring customIniPath;
+        customIniPath.resize(size_needed - 1);
+        MultiByteToWideChar(CP_UTF8, 0, argv[1], -1, &customIniPath[0], size_needed);
+        iniPath = customIniPath;
+    }
+    else
+    {
+        // 引数がなければデフォルトの config.ini
+        iniPath.replace_filename(L"config.ini");
+    }
+    
+    std::wstring filename = L"output.mp4";
+    std::wstring targetWindowTitle = L"";
+    std::wstring watchFilePath = L"";
+    int recordSeconds = -1;
 
-	//.mp4の出力パス
-	if (argc > 1)
-	{
-		int size_needed = MultiByteToWideChar(CP_UTF8, 0, argv[1], -1, NULL, 0);
-		filename.resize(size_needed - 1);
-		MultiByteToWideChar(CP_UTF8, 0, argv[1], -1, &filename[0], size_needed);
-		LOG << L"Output file: " << filename << std::endl;
-	}
+    if (std::filesystem::exists(iniPath))
+    {
+        wchar_t buf[1024];
+        GetPrivateProfileStringW(L"Capture", L"OutputFile", filename.c_str(), buf, 1024, iniPath.wstring().c_str());
+        filename = buf;
+        
+        GetPrivateProfileStringW(L"Capture", L"TargetWindowTitle", targetWindowTitle.c_str(), buf, 1024, iniPath.wstring().c_str());
+        targetWindowTitle = buf;
 
-	//選択ウィンドウの指定
-	if (argc > 2)
-	{
-		int size_needed = MultiByteToWideChar(CP_UTF8, 0, argv[2], -1, NULL, 0);
-		targetWindowTitle.resize(size_needed - 1);
-		MultiByteToWideChar(CP_UTF8, 0, argv[2], -1, &targetWindowTitle[0], size_needed);
-		LOG << L"Target window filter: \"" << targetWindowTitle << L"\"" << std::endl;
-	}
+        GetPrivateProfileStringW(L"Capture", L"WatchFilePath", watchFilePath.c_str(), buf, 1024, iniPath.wstring().c_str());
+        watchFilePath = buf;
 
-	//録画中かどうかを外部から判定する用のファイルパス
-	if (argc > 3)
-	{
-		int size_needed = MultiByteToWideChar(CP_UTF8, 0, argv[3], -1, NULL, 0);
-		watchFilePath.resize(size_needed - 1);
-		MultiByteToWideChar(CP_UTF8, 0, argv[3], -1, &watchFilePath[0], size_needed);
-		LOG << L"Watch file: \"" << watchFilePath << L"\"" << std::endl;
-	}
+        recordSeconds = GetPrivateProfileIntW(L"Capture", L"RecordSeconds", recordSeconds, iniPath.wstring().c_str());
+        
+        LOG << L"Loaded settings from INI: " << iniPath.wstring() << std::endl;
+        LOG << L"  OutputFile: " << filename << std::endl;
+        LOG << L"  TargetWindowTitle: " << targetWindowTitle << std::endl;
+        LOG << L"  WatchFilePath: " << watchFilePath << std::endl;
+        LOG << L"  RecordSeconds: " << recordSeconds << std::endl;
+    }
+    else if (argc > 1)
+    {
+        LOG << L"Specified INI file not found: " << iniPath.wstring() << std::endl;
+    }
 
-	//録画時間の指定
-	if (argc > 4)
-	{
-		try {
-			recordSeconds = std::stoi(argv[4]);
-			LOG << L"Record duration: " << recordSeconds << L" seconds" << std::endl;
-		}
-		catch (...) {
-			LOG << L"Invalid duration specified: " << argv[4] << std::endl;
-		}
-	}
+    winrt::init_apartment();
+    winrt::check_hresult(MFStartup(MF_VERSION));
 
-	if (argc <= 1)
-	{
-		LOG << "Usage: ScreenRecorder.exe <output_path> [window_name_filters] [watch_file_path] [duration_seconds]" << std::endl;
-		LOG << "  window_name_filters: Comma-separated list of window titles to search for." << std::endl;
-		LOG << "Using default output: output.mp4" << std::endl;
-	}
+    if (!std::filesystem::exists(iniPath))
+    {
+        LOG << "Usage: SimpleCapture.exe [ini_file_path]" << std::endl;
+        LOG << "Using default output: output.mp4" << std::endl;
+    }
 
 	SetConsoleCtrlHandler(ConsoleHandler, TRUE);
 	int exitCode = 0;
