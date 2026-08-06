@@ -42,7 +42,8 @@ public class CSKit : ModuleRules
 				"AIModule",
 				"Json",
 				"GameplayTags",
-				"GameplayTasks"
+				"GameplayTasks",
+				"UMG"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

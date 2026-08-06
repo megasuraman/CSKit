@@ -3,7 +3,7 @@
 #include <vector>
 #include <windows.h>
 
-//ˆø”‚Åw’è‚µ‚½ .bat ‚ğÀs‚·‚é
+//å¼•æ•°ã§æŒ‡å®šã—ãŸ .bat ã‚’å®Ÿè¡Œã™ã‚‹
 int main(int argc, char* argv[])
 {
 	if (argc < 2)
