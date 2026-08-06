@@ -1,5 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
+// Copyright 2020 megasuraman.
 #pragma once
 
 #include "CoreMinimal.h"
