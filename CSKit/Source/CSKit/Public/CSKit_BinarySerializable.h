@@ -20,10 +20,24 @@ struct CSKIT_API FCSKit_BinarySerializable
 	
 	virtual ~FCSKit_BinarySerializable(){}
 	virtual FString GetFilePath() const = 0;
+	virtual uint8 GetLastVersion() const = 0;
 	virtual void Serializable(FArchive& Ar) = 0;
 	// {
 	// 	Ar << mHoge;//Save,Loadしたいメンバ変数を流し込む
 	//	自前の構造体を渡す場合はFArchive用に oprator<< を定義する
+	//	BitFieldの場合はuint8等の変数のBitFlagに変換して使用
+	//	uint8 TempBitFlag = 0;
+	//	if (Ar.IsSaving())
+	//	{
+	//		if (mbHogeA) TempBitFlag |= (1 << 0);
+	//		if (mbHogeB) TempBitFlag |= (1 << 1);
+	//	}
+	//	Ar << TempBitFlag;
+	//	if (Ar.IsLoading())
+	//	{
+	//		mbHogeA = (TempBitFlag & (1 << 0)) != 0;
+	//		mbHogeB = (TempBitFlag & (1 << 1)) != 0;
+	//	}
 	// }
 	void Save();
 	void Load();

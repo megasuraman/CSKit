@@ -63,6 +63,14 @@ union FCSKit_CompressOneVector
 	};
 	FCompressVector	mCompressVector;
 
+	FCSKit_CompressOneVector(){}
+	FCSKit_CompressOneVector(const int32 InData)
+		:mData(InData)
+	{}
+	FCSKit_CompressOneVector(const FVector& InVector)
+	{
+		Set(InVector);
+	}
 	void	Set(const FVector& InVector)
 	{
 		mCompressVector.SetVector(InVector);
